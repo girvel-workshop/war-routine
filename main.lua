@@ -1,0 +1,89 @@
+function draw_image_centralized(image, x, y, r)
+	love.graphics.draw(image, x, y, r, 1, 1, image:getWidth() / 2, image:getHeight() / 2)
+end
+
+function love.load()
+	soldier_normal = love.graphics.newImage("assets/sprites/soldier.png")
+	soldier_armed = love.graphics.newImage("assets/sprites/soldier - armed.png")
+	bullet = love.graphics.newImage("assets/sprites/bullet.png")
+
+	bullet_speed = 1000
+
+	mc_x = 400
+	mc_y = 300
+	mc_vx = 0
+	mc_vy = 0
+	mc_rotation = 0
+	mc_speed = 250
+	mc_image = soldier_normal
+	mc_fire_source_x = -54
+	mc_fire_source_y = -16
+
+	bullets = {{x=100, y=100, r=3}}
+end
+
+function love.update(dt)
+	-- MOVEMENT
+
+	mc_vx = 0
+	mc_vy = 0
+
+	if love.keyboard.isDown("w") then
+		mc_vy = -mc_speed
+	end
+	if love.keyboard.isDown("s") then
+		mc_vy = mc_speed
+	end
+	if love.keyboard.isDown("a") then
+		mc_vx = -mc_speed
+	end
+	if love.keyboard.isDown("d") then
+		mc_vx = mc_speed
+	end
+
+	mc_x = mc_x + mc_vx * dt
+	mc_y = mc_y + mc_vy * dt
+
+	-- MOUSE
+
+	local mx, my = love.mouse.getPosition()
+	mc_rotation = math.atan2(mc_y - my, mc_x - mx)
+
+	-- BULLETS
+
+	for i, b in ipairs(bullets) do 
+		b.x = b.x - math.cos(b.r) * bullet_speed * dt
+		b.y = b.y - math.sin(b.r) * bullet_speed * dt
+	end
+end
+
+function love.keypressed(key)
+	-- ARM / DISARM
+
+	if key == "q" then
+		if mc_image == soldier_normal then
+			mc_image = soldier_armed
+		else
+			mc_image = soldier_normal
+		end
+	end
+end
+
+function love.mousepressed(x, y, button, istouch)
+	if button == 1 and mc_image == soldier_armed then
+		table.insert(bullets, {
+			x=mc_x + math.cos(mc_rotation) * mc_fire_source_x - math.sin(mc_rotation) * mc_fire_source_y, 
+			y=mc_y + math.sin(mc_rotation) * mc_fire_source_x + math.cos(mc_rotation) * mc_fire_source_y, 
+			r=mc_rotation
+		})
+	end
+end
+
+function love.draw()
+	love.graphics.setBackgroundColor(.75, .75, .75)
+	draw_image_centralized(mc_image, mc_x, mc_y, mc_rotation)
+
+	for i, b in ipairs(bullets) do 
+		draw_image_centralized(bullet, b.x, b.y, b.r)
+	end
+end
