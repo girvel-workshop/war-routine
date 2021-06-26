@@ -18,6 +18,9 @@ function love.load()
 	mc_image = soldier_normal
 	mc_fire_source_x = -54
 	mc_fire_source_y = -16
+	mc_bullets = 30
+	mc_bullets_max = 30
+	mc_bullets_other = 90
 
 	bullets = {{x=100, y=100, r=3}}
 end
@@ -67,15 +70,21 @@ function love.keypressed(key)
 			mc_image = soldier_normal
 		end
 	end
+
+	if key == 'r' then
+		mc_bullets = math.min(mc_bullets_max, mc_bullets_other)
+		mc_bullets_other = mc_bullets_other - mc_bullets
+	end
 end
 
 function love.mousepressed(x, y, button, istouch)
-	if button == 1 and mc_image == soldier_armed then
+	if button == 1 and mc_image == soldier_armed and mc_bullets > 0 then
 		table.insert(bullets, {
 			x=mc_x + math.cos(mc_rotation) * mc_fire_source_x - math.sin(mc_rotation) * mc_fire_source_y, 
 			y=mc_y + math.sin(mc_rotation) * mc_fire_source_x + math.cos(mc_rotation) * mc_fire_source_y, 
 			r=mc_rotation
 		})
+		mc_bullets = mc_bullets - 1
 	end
 end
 
