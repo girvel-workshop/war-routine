@@ -15,14 +15,17 @@ function love.load()
 	mc_vy = 0
 	mc_rotation = 0
 	mc_speed = 250
+	mc_run_multiplier = 1.5
 	mc_image = soldier_normal
 	mc_fire_source_x = -54
 	mc_fire_source_y = -16
 	mc_bullets = 30
 	mc_bullets_max = 30
 	mc_bullets_other = 90
+	mc_stamina = 5
+	mc_stamina_max = 5
 
-	bullets = {{x=100, y=100, r=3}}
+	bullets = {}
 end
 
 function love.update(dt)
@@ -42,6 +45,16 @@ function love.update(dt)
 	end
 	if love.keyboard.isDown("d") then
 		mc_vx = mc_speed
+	end
+
+	if love.keyboard.isDown("lshift") then 
+		if mc_stamina > 0 then 
+			mc_vx = mc_vx * mc_run_multiplier
+			mc_vy = mc_vy * mc_run_multiplier
+			mc_stamina = mc_stamina - dt
+		end
+	else
+		mc_stamina = mc_stamina + dt
 	end
 
 	mc_x = mc_x + mc_vx * dt
