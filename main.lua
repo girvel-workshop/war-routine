@@ -1,6 +1,7 @@
 require("vmath")
 tiny = require("libraries.tiny")
 require("systems.drawing")
+require("systems.moving")
 
 draw_system_filter = tiny.requireAll("is_drawing_system")
 update_system_filter = tiny.rejectAll("is_drawing_system")
