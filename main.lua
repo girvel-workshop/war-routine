@@ -1,7 +1,7 @@
 require "vmath"
 
-function draw_image_centralized(image, x, y, r)
-	love.graphics.draw(image, x, y, r, 1, 1, image:getWidth() / 2, image:getHeight() / 2)
+function draw_image_centralized(image, p, r)
+	love.graphics.draw(image, p.x, p.y, r, 1, 1, image:getWidth() / 2, image:getHeight() / 2)
 end
 
 function love.load()
@@ -13,9 +13,10 @@ function love.load()
 
 	mc = {
 		position = vector:new(400, 300),
-		velocity = vector.zero()
+		velocity = vector.zero(),
+		fire_source = vector:new(-54, -16),
+		rotation = 0
 	}
-	mc_rotation = 0
 	mc_speed = 250
 	mc_run_multiplier = 1.5
 	mc_image = soldier_normal
@@ -62,13 +63,12 @@ function love.update(dt)
 	-- MOUSE
 
 	local mx, my = love.mouse.getPosition()
-	mc_rotation = math.atan2(mc.position.y - my, mc.position.x - mx)
+	mc.rotation = math.atan2(mc.position.y - my, mc.position.x - mx)
 
 	-- BULLETS
 
 	for i, b in ipairs(bullets) do 
-		b.x = b.x - math.cos(b.r) * bullet_speed * dt
-		b.y = b.y - math.sin(b.r) * bullet_speed * dt
+		b.position = b.position - vector.right():rotated(b.r) * bullet_speed * dt
 	end
 end
 
@@ -92,9 +92,8 @@ end
 function love.mousepressed(x, y, button, istouch)
 	if button == 1 and mc_image == soldier_armed and mc_bullets > 0 then
 		table.insert(bullets, {
-			x=mc.position.x + math.cos(mc_rotation) * mc_fire_source_x - math.sin(mc_rotation) * mc_fire_source_y, 
-			y=mc.position.y + math.sin(mc_rotation) * mc_fire_source_x + math.cos(mc_rotation) * mc_fire_source_y, 
-			r=mc_rotation
+			position = mc.position + mc.fire_source:rotated(mc.rotation),
+			r = mc.rotation
 		})
 		mc_bullets = mc_bullets - 1
 	end
@@ -102,9 +101,9 @@ end
 
 function love.draw()
 	love.graphics.setBackgroundColor(.75, .75, .75)
-	draw_image_centralized(mc_image, mc.position.x, mc.position.y, mc_rotation)
+	draw_image_centralized(mc_image, mc.position, mc.rotation)
 
 	for i, b in ipairs(bullets) do 
-		draw_image_centralized(bullet, b.x, b.y, b.r)
+		draw_image_centralized(bullet, b.position, b.r)
 	end
 end
