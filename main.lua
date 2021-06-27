@@ -1,7 +1,8 @@
-require("vmath")
+vmath = require("vmath")
 tiny = require("libraries.tiny")
-require("libraries.girvel_toolkit")
-require_all("systems")
+toolkit = require("libraries.girvel_toolkit")
+
+toolkit.require_all("systems")
 
 draw_system_filter = tiny.requireAll("is_drawing_system")
 update_system_filter = tiny.rejectAll("is_drawing_system")
@@ -22,19 +23,22 @@ function love.load()
 
 	mc = {
 		sprite = sprites.soldier_normal,
-		arming_loop = loop:new({sprites.soldier_normal, sprites.soldier_armed}),
-		position = vector:new(400, 300),
-		velocity = vector.zero(),
-		fire_source = vector:new(-54, -16),
+		arming_loop = toolkit.loop:new({sprites.soldier_normal, sprites.soldier_armed}),
+		position = vmath.vector:new(400, 300),
+		velocity = vmath.vector.zero(),
+		fire_source = vmath.vector:new(-54, -16),
 		rotation = 0,
 		speed = 250,
 		run_multiplier = 1.5,
-		bullets = limited:new(30),
+		bullets = toolkit.limited:new(30),
 		bullets_other = 90,
-		stamina = limited:new(5)
+		stamina = toolkit.limited:new(5)
 	}
 
 	tiny.add(world, mc)
+	tiny.add(world, {
+
+	})
 
 	bullets = {}
 end
@@ -44,7 +48,7 @@ function love.update(dt)
 
 	-- MOVEMENT
 
-	mc.velocity = vector.zero()
+	mc.velocity = vmath.vector.zero()
 
 	if love.keyboard.isDown("w") then
 		mc.velocity.y = -mc.speed
@@ -92,7 +96,7 @@ function love.mousepressed(x, y, button, istouch)
 			sprite = sprites.bullet,
 			position = mc.position + mc.fire_source:rotated(mc.rotation),
 			rotation = mc.rotation,
-			velocity = vector.left():rotated(mc.rotation) * bullet_speed
+			velocity = vmath.vector.left():rotated(mc.rotation) * bullet_speed
 		})
 	end
 end

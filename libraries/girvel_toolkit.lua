@@ -1,14 +1,16 @@
 require "love.filesystem"
 
-function require_all(directory)
+local toolkit = {}
+
+function toolkit.require_all(directory)
 	for _, lua in ipairs(love.filesystem.getDirectoryItems(directory)) do
 		require("systems." .. string.gsub(lua, ".lua", ""))
 	end
 end
 
-loop = {}
+toolkit.loop = {}
 
-function loop:new(collection, index)
+function toolkit.loop:new(collection, index)
 	index = index or 1
 	obj={collection=collection, index=index, value=collection[index]}
 	setmetatable(obj, self)
@@ -16,7 +18,7 @@ function loop:new(collection, index)
 	return obj
 end
 
-function loop:next()
+function toolkit.loop:next()
 	self.index = self.index + 1
 	
 	if self.index > #self.collection then 
@@ -27,16 +29,16 @@ function loop:next()
 	return self.value
 end
 
-limited = {}
+toolkit.limited = {}
 
-function limited:new(limit, value, lower_limit)
+function toolkit.limited:new(limit, value, lower_limit)
 	obj = {limit=limit, value=value or limit, lower_limit=lower_limit or 0}
 	setmetatable(obj, self)
 	self.__index = self
 	return obj
 end
 
-function limited:move(delta)
+function toolkit.limited:move(delta)
 	if delta < 0 then
 		if self.value > 0 then
 			self.value = math.max(self.lower_limit, self.value + delta)
@@ -53,3 +55,5 @@ function limited:move(delta)
 		return false
 	end
 end
+
+return toolkit
