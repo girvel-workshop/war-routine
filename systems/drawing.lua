@@ -1,5 +1,11 @@
+tiny = require("libraries.tiny")
+
 drawing = tiny.processingSystem()
 drawing.filter = tiny.requireAll("sprite", "position")
+
+function drawing:preProcess(_)
+	love.graphics.setBackgroundColor(.75, .75, .75)
+end
 
 function drawing:process(e, _)
 	love.graphics.draw(

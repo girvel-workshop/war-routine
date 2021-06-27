@@ -1,6 +1,8 @@
 require("vmath")
 tiny = require("libraries.tiny")
-require("systems")
+require("systems.drawing")
+require("libraries.girvel_toolkit")
+--require_all("systems")
 
 function love.load()
 	world = tiny.world(
@@ -107,6 +109,5 @@ function love.mousepressed(x, y, button, istouch)
 end
 
 function love.draw()
-	love.graphics.setBackgroundColor(.75, .75, .75)
 	world:update(1)
 end
