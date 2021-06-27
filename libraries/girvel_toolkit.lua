@@ -6,6 +6,27 @@ function require_all(directory)
 	end
 end
 
+loop = {}
+
+function loop:new(collection, index)
+	index = index or 1
+	obj={collection=collection, index=index, value=collection[index]}
+	setmetatable(obj, self)
+	self.__index = self
+	return obj
+end
+
+function loop:next()
+	self.index = self.index + 1
+	
+	if self.index > #self.collection then 
+		self.index = 1
+	end
+
+	self.value = self.collection[self.index]
+	return self.value
+end
+
 limited = {}
 
 function limited:new(limit, value, lower_limit)

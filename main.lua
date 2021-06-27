@@ -22,6 +22,7 @@ function love.load()
 
 	mc = {
 		sprite = sprites.soldier_normal,
+		arming_loop = loop:new({sprites.soldier_normal, sprites.soldier_armed}),
 		position = vector:new(400, 300),
 		velocity = vector.zero(),
 		fire_source = vector:new(-54, -16),
@@ -76,11 +77,7 @@ function love.keypressed(key)
 	-- ARM / DISARM
 
 	if key == "q" then -- loop class
-		if mc.sprite == sprites.soldier_normal then
-			mc.sprite = sprites.soldier_armed
-		else
-			mc.sprite = sprites.soldier_normal
-		end
+		mc.sprite = mc.arming_loop:next()
 	end
 
 	if key == 'r' then
