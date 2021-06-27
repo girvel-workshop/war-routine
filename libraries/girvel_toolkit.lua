@@ -15,4 +15,20 @@ function limited:new(limit, value, lower_limit)
 	return obj
 end
 
---function limited:decrease(delta)
+function limited:move(delta)
+	if delta < 0 then
+		if self.value > 0 then
+			self.value = math.max(self.lower_limit, self.value + delta)
+			return true
+		end
+
+		return false
+	else
+		if self.value < self.limit then
+			self.value = math.min(self.limit, self.value + delta)
+			return true
+		end
+
+		return false
+	end
+end

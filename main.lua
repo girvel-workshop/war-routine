@@ -28,8 +28,7 @@ function love.load()
 		rotation = 0,
 		speed = 250,
 		run_multiplier = 1.5,
-		bullets = 30,
-		bullets_max = 30,
+		bullets = limited:new(30),
 		bullets_other = 90,
 		stamina = limited:new(5)
 	}
@@ -60,12 +59,11 @@ function love.update(dt)
 	end
 
 	if love.keyboard.isDown("lshift") then 
-		if mc.stamina.value > 0 then 
-			mc.velocity = mc.velocity * mc.run_multiplier
-			mc.stamina.value = math.max(0, mc.stamina.value - dt)
+		if mc.stamina:move(-dt) then
+			mc.velocity = mc.velocity * mc.run_multipler
 		end
 	else
-		mc.stamina.value = math.min(mc.stamina.limit, mc.stamina.value + dt)
+		mc.stamina:move(dt)
 	end
 
 	-- MOUSE
@@ -86,20 +84,19 @@ function love.keypressed(key)
 	end
 
 	if key == 'r' then
-		mc.bullets = math.min(mc.bullets_max, mc.bullets_other)
-		mc.bullets_other = mc.bullets_other - mc.bullets
+		mc.bullets.value = math.min(mc.bullets.limit, mc.bullets_other)
+		mc.bullets_other = mc.bullets_other - mc.bullets.value
 	end
 end
 
 function love.mousepressed(x, y, button, istouch)
-	if button == 1 and mc.sprite == sprites.soldier_armed and mc.bullets > 0 then
+	if button == 1 and mc.sprite == sprites.soldier_armed and mc.bullets:move(-1) then
 		tiny.add(world, {
 			sprite = sprites.bullet,
 			position = mc.position + mc.fire_source:rotated(mc.rotation),
 			rotation = mc.rotation,
 			velocity = vector.left():rotated(mc.rotation) * bullet_speed
 		})
-		mc.bullets = mc.bullets - 1
 	end
 end
 
