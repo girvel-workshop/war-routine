@@ -1,8 +1,9 @@
 require("vmath")
 tiny = require("libraries.tiny")
 require("systems.drawing")
-require("libraries.girvel_toolkit")
---require_all("systems")
+
+draw_system_filter = tiny.requireAll("is_drawing_system")
+update_system_filter = tiny.rejectAll("is_drawing_system")
 
 function love.load()
 	world = tiny.world(
@@ -109,5 +110,5 @@ function love.mousepressed(x, y, button, istouch)
 end
 
 function love.draw()
-	world:update(1)
+	world:update(0, draw_system_filter)
 end

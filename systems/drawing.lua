@@ -1,6 +1,6 @@
 tiny = require("libraries.tiny")
 
-drawing = tiny.processingSystem()
+drawing = tiny.processingSystem({is_drawing_system = true})
 drawing.filter = tiny.requireAll("sprite", "position")
 
 function drawing:preProcess(_)
