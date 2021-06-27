@@ -1,26 +1,30 @@
-require "vmath"
+vmath = require("vmath")
+tiny = require("tiny")
 
 function draw_image_centralized(image, p, r)
 	love.graphics.draw(image, p.x, p.y, r, 1, 1, image:getWidth() / 2, image:getHeight() / 2)
 end
 
 function love.load()
-	soldier_normal = love.graphics.newImage("assets/sprites/soldier.png")
-	soldier_armed = love.graphics.newImage("assets/sprites/soldier - armed.png")
-	bullet = love.graphics.newImage("assets/sprites/bullet.png")
-
+	sprites = {
+		soldier_normal = love.graphics.newImage("assets/sprites/soldier.png"),
+		soldier_armed = love.graphics.newImage("assets/sprites/soldier - armed.png"),
+		bullet = love.graphics.newImage("assets/sprites/bullet.png")
+	}
+	
 	bullet_speed = 1000
 
 	mc = {
-		image=soldier_normal,
-		position = vector:new(400, 300),
-		velocity = vector.zero(),
-		fire_source = vector:new(-54, -16),
+		image = sprites.soldier_normal,
+		position = vmath.vector:new(400, 300),
+		velocity = vmath.vector.zero(),
+		fire_source = vmath.vector:new(-54, -16),
 		rotation = 0,
 		speed = 250,
 		run_multiplier = 1.5,
 		bullets = 30,
 		bullets_max = 30,
+		bullets_other = 90,
 		stamina = 5,
 		stamina_max = 5
 	}
@@ -31,7 +35,7 @@ end
 function love.update(dt)
 	-- MOVEMENT
 
-	mc.velocity = vector.zero()
+	mc.velocity = vmath.vector.zero()
 
 	if love.keyboard.isDown("w") then
 		mc.velocity.y = -mc.speed
@@ -65,7 +69,7 @@ function love.update(dt)
 	-- BULLETS
 
 	for i, b in ipairs(bullets) do 
-		b.position = b.position - vector.right():rotated(b.r) * bullet_speed * dt
+		b.position = b.position - vmath.vector.right():rotated(b.r) * bullet_speed * dt
 	end
 end
 
@@ -73,10 +77,10 @@ function love.keypressed(key)
 	-- ARM / DISARM
 
 	if key == "q" then
-		if mc.image == soldier_normal then
-			mc.image = soldier_armed
+		if mc.image == sprites.soldier_normal then
+			mc.image = sprites.soldier_armed
 		else
-			mc.image = soldier_normal
+			mc.image = sprites.soldier_normal
 		end
 	end
 
@@ -87,7 +91,7 @@ function love.keypressed(key)
 end
 
 function love.mousepressed(x, y, button, istouch)
-	if button == 1 and mc.image == soldier_armed and mc.bullets > 0 then
+	if button == 1 and mc.image == sprites.soldier_armed and mc.bullets > 0 then
 		table.insert(bullets, {
 			position = mc.position + mc.fire_source:rotated(mc.rotation),
 			r = mc.rotation
@@ -101,6 +105,6 @@ function love.draw()
 	draw_image_centralized(mc.image, mc.position, mc.rotation)
 
 	for i, b in ipairs(bullets) do 
-		draw_image_centralized(bullet, b.position, b.r)
+		draw_image_centralized(sprites.bullet, b.position, b.r)
 	end
 end
