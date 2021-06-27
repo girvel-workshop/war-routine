@@ -1,11 +1,12 @@
-vmath = require("vmath")
-tiny = require("tiny")
-
-function draw_image_centralized(image, p, r)
-	love.graphics.draw(image, p.x, p.y, r, 1, 1, image:getWidth() / 2, image:getHeight() / 2)
-end
+require("vmath")
+tiny = require("libraries.tiny")
+require("systems")
 
 function love.load()
+	world = tiny.world(
+		drawing
+	)
+
 	sprites = {
 		soldier_normal = love.graphics.newImage("assets/sprites/soldier.png"),
 		soldier_armed = love.graphics.newImage("assets/sprites/soldier - armed.png"),
@@ -15,10 +16,10 @@ function love.load()
 	bullet_speed = 1000
 
 	mc = {
-		image = sprites.soldier_normal,
-		position = vmath.vector:new(400, 300),
-		velocity = vmath.vector.zero(),
-		fire_source = vmath.vector:new(-54, -16),
+		sprite = sprites.soldier_normal,
+		position = vector:new(400, 300),
+		velocity = vector.zero(),
+		fire_source = vector:new(-54, -16),
 		rotation = 0,
 		speed = 250,
 		run_multiplier = 1.5,
@@ -29,13 +30,15 @@ function love.load()
 		stamina_max = 5
 	}
 
+	tiny.add(world, mc)
+
 	bullets = {}
 end
 
 function love.update(dt)
 	-- MOVEMENT
 
-	mc.velocity = vmath.vector.zero()
+	mc.velocity = vector.zero()
 
 	if love.keyboard.isDown("w") then
 		mc.velocity.y = -mc.speed
@@ -69,7 +72,7 @@ function love.update(dt)
 	-- BULLETS
 
 	for i, b in ipairs(bullets) do 
-		b.position = b.position - vmath.vector.right():rotated(b.r) * bullet_speed * dt
+		b.position = b.position - vector.right():rotated(b.rotation) * bullet_speed * dt
 	end
 end
 
@@ -77,10 +80,10 @@ function love.keypressed(key)
 	-- ARM / DISARM
 
 	if key == "q" then
-		if mc.image == sprites.soldier_normal then
-			mc.image = sprites.soldier_armed
+		if mc.sprite == sprites.soldier_normal then
+			mc.sprite = sprites.soldier_armed
 		else
-			mc.image = sprites.soldier_normal
+			mc.sprite = sprites.soldier_normal
 		end
 	end
 
@@ -91,20 +94,19 @@ function love.keypressed(key)
 end
 
 function love.mousepressed(x, y, button, istouch)
-	if button == 1 and mc.image == sprites.soldier_armed and mc.bullets > 0 then
-		table.insert(bullets, {
+	if button == 1 and mc.sprite == sprites.soldier_armed and mc.bullets > 0 then
+		b = {
+			sprite = sprites.bullet,
 			position = mc.position + mc.fire_source:rotated(mc.rotation),
-			r = mc.rotation
-		})
+			rotation = mc.rotation
+		}
+		table.insert(bullets, b)
+		tiny.add(world, b)
 		mc.bullets = mc.bullets - 1
 	end
 end
 
 function love.draw()
 	love.graphics.setBackgroundColor(.75, .75, .75)
-	draw_image_centralized(mc.image, mc.position, mc.rotation)
-
-	for i, b in ipairs(bullets) do 
-		draw_image_centralized(sprites.bullet, b.position, b.r)
-	end
+	world:update(1)
 end
