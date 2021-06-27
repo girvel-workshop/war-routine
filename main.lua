@@ -1,17 +1,8 @@
+require "vmath"
+
 function draw_image_centralized(image, x, y, r)
 	love.graphics.draw(image, x, y, r, 1, 1, image:getWidth() / 2, image:getHeight() / 2)
 end
-
-vector = {}
-
-function vector:new(x, y)
-	local v={x=x, y=y}
-	setmetatable(v, self)
-	self.__index = self
-	return v
-end
-
-vector.zero = vector:new(0, 0)
 
 function love.load()
 	soldier_normal = love.graphics.newImage("assets/sprites/soldier.png")
@@ -20,10 +11,10 @@ function love.load()
 
 	bullet_speed = 1000
 
-	mc_velocity = vector:new(0, 0)
-
-	mc_x = 400
-	mc_y = 300
+	mc = {
+		position = vector:new(400, 300),
+		velocity = vector.zero()
+	}
 	mc_rotation = 0
 	mc_speed = 250
 	mc_run_multiplier = 1.5
@@ -42,38 +33,36 @@ end
 function love.update(dt)
 	-- MOVEMENT
 
-	mc_velocity = vector:new(0, 0)
+	mc.velocity = vector.zero()
 
 	if love.keyboard.isDown("w") then
-		mc_velocity.y = -mc_speed
+		mc.velocity.y = -mc_speed
 	end
 	if love.keyboard.isDown("s") then
-		mc_velocity.y = mc_speed
+		mc.velocity.y = mc_speed
 	end
 	if love.keyboard.isDown("a") then
-		mc_velocity.x = -mc_speed
+		mc.velocity.x = -mc_speed
 	end
 	if love.keyboard.isDown("d") then
-		mc_velocity.x = mc_speed
+		mc.velocity.x = mc_speed
 	end
 
 	if love.keyboard.isDown("lshift") then 
 		if mc_stamina > 0 then 
-			mc_velocity.x = mc_velocity.x * mc_run_multiplier
-			mc_velocity.y = mc_velocity.y * mc_run_multiplier
+			mc.velocity = mc.velocity * mc_run_multiplier
 			mc_stamina = mc_stamina - dt
 		end
 	else
 		mc_stamina = mc_stamina + dt
 	end
 
-	mc_x = mc_x + mc_velocity.x * dt
-	mc_y = mc_y + mc_velocity.y * dt
+	mc.position = mc.position + mc.velocity * dt
 
 	-- MOUSE
 
 	local mx, my = love.mouse.getPosition()
-	mc_rotation = math.atan2(mc_y - my, mc_x - mx)
+	mc_rotation = math.atan2(mc.position.y - my, mc.position.x - mx)
 
 	-- BULLETS
 
@@ -103,8 +92,8 @@ end
 function love.mousepressed(x, y, button, istouch)
 	if button == 1 and mc_image == soldier_armed and mc_bullets > 0 then
 		table.insert(bullets, {
-			x=mc_x + math.cos(mc_rotation) * mc_fire_source_x - math.sin(mc_rotation) * mc_fire_source_y, 
-			y=mc_y + math.sin(mc_rotation) * mc_fire_source_x + math.cos(mc_rotation) * mc_fire_source_y, 
+			x=mc.position.x + math.cos(mc_rotation) * mc_fire_source_x - math.sin(mc_rotation) * mc_fire_source_y, 
+			y=mc.position.y + math.sin(mc_rotation) * mc_fire_source_x + math.cos(mc_rotation) * mc_fire_source_y, 
 			r=mc_rotation
 		})
 		mc_bullets = mc_bullets - 1
@@ -113,7 +102,7 @@ end
 
 function love.draw()
 	love.graphics.setBackgroundColor(.75, .75, .75)
-	draw_image_centralized(mc_image, mc_x, mc_y, mc_rotation)
+	draw_image_centralized(mc_image, mc.position.x, mc.position.y, mc_rotation)
 
 	for i, b in ipairs(bullets) do 
 		draw_image_centralized(bullet, b.x, b.y, b.r)
