@@ -2,6 +2,17 @@ function draw_image_centralized(image, x, y, r)
 	love.graphics.draw(image, x, y, r, 1, 1, image:getWidth() / 2, image:getHeight() / 2)
 end
 
+vector = {}
+
+function vector:new(x, y)
+	local v={x=x, y=y}
+	setmetatable(v, self)
+	self.__index = self
+	return v
+end
+
+vector.zero = vector:new(0, 0)
+
 function love.load()
 	soldier_normal = love.graphics.newImage("assets/sprites/soldier.png")
 	soldier_armed = love.graphics.newImage("assets/sprites/soldier - armed.png")
@@ -9,10 +20,10 @@ function love.load()
 
 	bullet_speed = 1000
 
+	mc_velocity = vector:new(0, 0)
+
 	mc_x = 400
 	mc_y = 300
-	mc_vx = 0
-	mc_vy = 0
 	mc_rotation = 0
 	mc_speed = 250
 	mc_run_multiplier = 1.5
@@ -31,34 +42,33 @@ end
 function love.update(dt)
 	-- MOVEMENT
 
-	mc_vx = 0
-	mc_vy = 0
+	mc_velocity = vector:new(0, 0)
 
 	if love.keyboard.isDown("w") then
-		mc_vy = -mc_speed
+		mc_velocity.y = -mc_speed
 	end
 	if love.keyboard.isDown("s") then
-		mc_vy = mc_speed
+		mc_velocity.y = mc_speed
 	end
 	if love.keyboard.isDown("a") then
-		mc_vx = -mc_speed
+		mc_velocity.x = -mc_speed
 	end
 	if love.keyboard.isDown("d") then
-		mc_vx = mc_speed
+		mc_velocity.x = mc_speed
 	end
 
 	if love.keyboard.isDown("lshift") then 
 		if mc_stamina > 0 then 
-			mc_vx = mc_vx * mc_run_multiplier
-			mc_vy = mc_vy * mc_run_multiplier
+			mc_velocity.x = mc_velocity.x * mc_run_multiplier
+			mc_velocity.y = mc_velocity.y * mc_run_multiplier
 			mc_stamina = mc_stamina - dt
 		end
 	else
 		mc_stamina = mc_stamina + dt
 	end
 
-	mc_x = mc_x + mc_vx * dt
-	mc_y = mc_y + mc_vy * dt
+	mc_x = mc_x + mc_velocity.x * dt
+	mc_y = mc_y + mc_velocity.y * dt
 
 	-- MOUSE
 
