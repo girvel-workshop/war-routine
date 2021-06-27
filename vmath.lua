@@ -37,3 +37,7 @@ end
 vector.right = function()
 	return vector:new(1, 0)
 end
+
+vector.left = function()
+	return vector:new(-1, 0)
+end

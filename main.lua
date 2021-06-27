@@ -8,7 +8,8 @@ update_system_filter = tiny.rejectAll("is_drawing_system")
 
 function love.load()
 	world = tiny.world(
-		drawing
+		drawing,
+		moving
 	)
 
 	sprites = {
@@ -40,6 +41,8 @@ function love.load()
 end
 
 function love.update(dt)
+	world:update(dt, update_system_filter)
+
 	-- MOVEMENT
 
 	mc.velocity = vector.zero()
@@ -66,18 +69,10 @@ function love.update(dt)
 		mc.stamina = mc.stamina + dt
 	end
 
-	mc.position = mc.position + mc.velocity * dt
-
 	-- MOUSE
 
 	local mx, my = love.mouse.getPosition()
 	mc.rotation = math.atan2(mc.position.y - my, mc.position.x - mx)
-
-	-- BULLETS
-
-	for i, b in ipairs(bullets) do 
-		b.position = b.position - vector.right():rotated(b.rotation) * bullet_speed * dt
-	end
 end
 
 function love.keypressed(key)
@@ -99,13 +94,12 @@ end
 
 function love.mousepressed(x, y, button, istouch)
 	if button == 1 and mc.sprite == sprites.soldier_armed and mc.bullets > 0 then
-		b = {
+		tiny.add(world, {
 			sprite = sprites.bullet,
 			position = mc.position + mc.fire_source:rotated(mc.rotation),
-			rotation = mc.rotation
-		}
-		table.insert(bullets, b)
-		tiny.add(world, b)
+			rotation = mc.rotation,
+			velocity = vector.left():rotated(mc.rotation) * bullet_speed
+		})
 		mc.bullets = mc.bullets - 1
 	end
 end
