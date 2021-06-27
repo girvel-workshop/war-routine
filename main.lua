@@ -4,19 +4,31 @@ toolkit = require("libraries.girvel_toolkit")
 
 toolkit.require_all("systems")
 
-draw_system_filter = tiny.requireAll("is_drawing_system")
-update_system_filter = tiny.rejectAll("is_drawing_system")
+draw_system_filter = tiny.requireAll("drawing_system_flag")
+update_system_filter = tiny.rejectAll("drawing_system_flag")
+
+function load(name)
+	return love.graphics.newImage("assets/sprites/" .. name .. ".png")
+end
 
 function love.load()
+	window_size = vmath.vector:new(
+		love.graphics.getWidth(),
+		love.graphics.getHeight()
+	)
+
 	world = tiny.world(
 		drawing,
-		moving
+		moving,
+		following
 	)
 
 	sprites = {
-		soldier_normal = love.graphics.newImage("assets/sprites/soldier.png"),
-		soldier_armed = love.graphics.newImage("assets/sprites/soldier - armed.png"),
-		bullet = love.graphics.newImage("assets/sprites/bullet.png")
+		soldier_normal = load("soldier_normal"),
+		soldier_armed = load("soldier_armed"),
+		bullet = load("bullet"),
+		magazine = load("magazine"),
+		square = load("square")
 	}
 	
 	bullet_speed = 1000
@@ -35,9 +47,17 @@ function love.load()
 		stamina = toolkit.limited:new(5)
 	}
 
+	camera = {
+		follows = mc,
+		anchor = window_size / 2,
+	}
+
+	tiny.add(world, camera)
+
 	tiny.add(world, mc)
 	tiny.add(world, {
-
+		sprite = sprites.square,
+		position = copy(mc.position)
 	})
 
 	bullets = {}
@@ -50,7 +70,7 @@ function love.update(dt)
 
 	mc.velocity = vmath.vector.zero()
 
-	if love.keyboard.isDown("w") then
+	if love.keyboard.isDown("w") then -- TODO REFACTOR
 		mc.velocity.y = -mc.speed
 	end
 	if love.keyboard.isDown("s") then
@@ -74,7 +94,7 @@ function love.update(dt)
 	-- MOUSE
 
 	local mx, my = love.mouse.getPosition()
-	mc.rotation = math.atan2(mc.position.y - my, mc.position.x - mx)
+	mc.rotation = math.atan2(window_size.y / 2 - my, window_size.x / 2 - mx)
 end
 
 function love.keypressed(key)
@@ -84,7 +104,12 @@ function love.keypressed(key)
 		mc.sprite = mc.arming_loop:next()
 	end
 
-	if key == 'r' then
+	if key == 'r' and mc.sprite == sprites.soldier_armed and mc.bullets.value > 0 then
+		tiny.add(world, {
+			sprite = sprites.magazine,
+			position = copy(mc.position)
+		})
+
 		mc.bullets.value = math.min(mc.bullets.limit, mc.bullets_other)
 		mc.bullets_other = mc.bullets_other - mc.bullets.value
 	end
@@ -102,5 +127,8 @@ function love.mousepressed(x, y, button, istouch)
 end
 
 function love.draw()
+	--love.graphics.translate((tools.get_anchor(camera) - camera.position):unpack())
+	love.graphics.translate(camera.anchor.x - camera.position.x, camera.anchor.y - camera.position.y)
+
 	world:update(0, draw_system_filter)
 end

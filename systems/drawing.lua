@@ -1,6 +1,7 @@
 tiny = require("libraries.tiny")
+tools = require("tools")
 
-drawing = tiny.processingSystem({is_drawing_system = true})
+drawing = tiny.processingSystem({drawing_system_flag = true})
 drawing.filter = tiny.requireAll("sprite", "position")
 
 function drawing:preProcess(_)
@@ -8,12 +9,13 @@ function drawing:preProcess(_)
 end
 
 function drawing:process(e, _)
+	local anchor = tools.get_anchor(e)
+
 	love.graphics.draw(
 		e.sprite,
 		e.position.x, e.position.y,
 		e.rotation, 
 		1, 1, 
-		e.sprite_anchor and e.sprite_anchor.x or e.sprite:getWidth() / 2,
-		e.sprite_anchor and e.sprite_anchor.y or e.sprite:getHeight() / 2
+		anchor:unpack()
 	)
 end

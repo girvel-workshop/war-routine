@@ -1,5 +1,11 @@
 require "love.filesystem"
 
+function copy(t)
+	local u = {}
+	for k, v in pairs(t) do u[k] = v end
+	return setmetatable(u, getmetatable(t))
+end
+
 local toolkit = {}
 
 function toolkit.require_all(directory)

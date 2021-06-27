@@ -16,6 +16,10 @@ function vmath.vector:rotated(angle)
 	)	
 end
 
+function vmath.vector:unpack()
+	return self.x, self.y
+end
+
 function vmath.vector.__unm(v)
 	return v * -1
 end
@@ -28,8 +32,12 @@ function vmath.vector.__sub(v, u)
 	return v + -u
 end
 
-function vmath.vector.__mul(v, angle)
-	return vmath.vector:new(v.x * angle, v.y * angle)
+function vmath.vector.__mul(v, k)
+	return vmath.vector:new(v.x * k, v.y * k)
+end
+
+function vmath.vector.__div(v, k)
+	return v * (1 / k)
 end
 
 vmath.vector.zero = function()
