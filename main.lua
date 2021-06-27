@@ -1,7 +1,7 @@
 require("vmath")
 tiny = require("libraries.tiny")
-require("systems.drawing")
-require("systems.moving")
+require("libraries.girvel_toolkit")
+require_all("systems")
 
 draw_system_filter = tiny.requireAll("is_drawing_system")
 update_system_filter = tiny.rejectAll("is_drawing_system")
@@ -31,8 +31,7 @@ function love.load()
 		bullets = 30,
 		bullets_max = 30,
 		bullets_other = 90,
-		stamina = 5,
-		stamina_max = 5
+		stamina = limited:new(5)
 	}
 
 	tiny.add(world, mc)
@@ -61,12 +60,12 @@ function love.update(dt)
 	end
 
 	if love.keyboard.isDown("lshift") then 
-		if mc.stamina > 0 then 
-			mc.velocity = mc.velocity * mc_run_multiplier
-			mc.stamina = mc.stamina - dt
+		if mc.stamina.value > 0 then 
+			mc.velocity = mc.velocity * mc.run_multiplier
+			mc.stamina.value = math.max(0, mc.stamina.value - dt)
 		end
 	else
-		mc.stamina = mc.stamina + dt
+		mc.stamina.value = math.min(mc.stamina.limit, mc.stamina.value + dt)
 	end
 
 	-- MOUSE
@@ -78,7 +77,7 @@ end
 function love.keypressed(key)
 	-- ARM / DISARM
 
-	if key == "q" then
+	if key == "q" then -- loop class
 		if mc.sprite == sprites.soldier_normal then
 			mc.sprite = sprites.soldier_armed
 		else
