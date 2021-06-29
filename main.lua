@@ -127,8 +127,9 @@ function love.mousepressed(x, y, button, istouch)
 end
 
 function love.draw()
-	--love.graphics.translate((tools.get_anchor(camera) - camera.position):unpack())
-	love.graphics.translate(camera.anchor.x - camera.position.x, camera.anchor.y - camera.position.y)
+	-- love.graphics.translate((tools.get_anchor(camera) - camera.position):unpack())
+	-- love.graphics.translate(camera.anchor.x - camera.position.x, camera.anchor.y - camera.position.y)
+	love.graphics.translate((camera.anchor - camera.position):unpack())
 
 	world:update(0, draw_system_filter)
 end
