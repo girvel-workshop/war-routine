@@ -4,19 +4,6 @@ tk = require("libraries.girvel_toolkit")
 
 tk.require_all("systems")
 
-action = {}
-
-function action:new(name, duration)
-	obj={name = name, duration = duration}
-	setmetatable(obj, self)
-	self.__index = self
-	return obj
-end
-
-actions = {
-	fire = action:new("fire", tk.limited:new(0.3))
-}
-
 draw_system_filter = tiny.requireAll("drawing_system_flag")
 update_system_filter = tiny.rejectAll("drawing_system_flag")
 
@@ -38,17 +25,21 @@ function love.load()
 	)
 
 	sprites = {
-		soldier_normal = load("soldier_normal"),
-		soldier_armed = load("soldier_armed"),
 		bullet = load("bullet"),
 		magazine = load("magazine"),
 		square = load("square"),
 		shell = load("shell")
 	}
 
+	soldier_cluster = {
+		normal = load("soldier_normal"),
+		armed = load("soldier_armed")
+	}
+
 	mc = {
-		sprite = sprites.soldier_normal,
-		arming_loop = tk.loop:new({sprites.soldier_normal, sprites.soldier_armed}),
+		cluster = soldier_cluster,
+		sprite = soldier_cluster.normal,
+		arming_loop = tk.loop:new({soldier_cluster.normal, soldier_cluster.armed}),
 		position = vmath.vector:new(400, 300),
 		velocity = vmath.vector.zero(),
 		fire_source = vmath.vector:new(-54, -16),
@@ -58,7 +49,8 @@ function love.load()
 		bullets = tk.limited:new(30),
 		bullets_other = 90,
 		stamina = tk.limited:new(5),
-		action = false
+		action = false,
+		fire_time = .12
 	}
 
 	camera = {
@@ -111,7 +103,7 @@ function love.keypressed(key)
 		mc.sprite = mc.arming_loop:next()
 	end
 
-	if key == 'r' and mc.sprite == sprites.soldier_armed and mc.bullets_other > 0 then
+	if key == 'r' and mc.sprite == mc.cluster.armed and mc.bullets_other > 0 then
 		tiny.add(world, {
 			sprite = sprites.magazine,
 			position = mc.position + mc.fire_source:rotated(mc.rotation) / 2
@@ -123,8 +115,8 @@ function love.keypressed(key)
 end
 
 function love.mousepressed(x, y, button, istouch)
-	if button == 1 and mc.sprite == sprites.soldier_armed and mc.bullets:move(-1) then
-		mc.action = copy(actions.fire)
+	if button == 1 then
+		actions.fire:order(mc)
 	end
 end
 
