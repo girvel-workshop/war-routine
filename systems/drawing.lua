@@ -1,7 +1,7 @@
 tiny = require("libraries.tiny")
 tools = require("tools")
 
-drawing = tiny.processingSystem({drawing_system_flag = true})
+local drawing = tiny.processingSystem({drawing_system_flag = true})
 drawing.filter = tiny.requireAll("sprite", "position")
 
 function drawing:preProcess(_)
@@ -19,3 +19,5 @@ function drawing:process(e, _)
 		anchor:unpack()
 	)
 end
+
+return drawing

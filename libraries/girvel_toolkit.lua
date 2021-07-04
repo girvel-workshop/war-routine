@@ -9,9 +9,14 @@ end
 local toolkit = {}
 
 function toolkit.require_all(directory)
-	for _, lua in ipairs(love.filesystem.getDirectoryItems(directory)) do
-		require("systems." .. string.gsub(lua, ".lua", ""))
+	local module = {}
+
+	for _, file in ipairs(love.filesystem.getDirectoryItems(directory)) do
+		name = string.gsub(file, ".lua", "")
+		module[name] = require(directory .. "." .. name)
 	end
+
+	return module
 end
 
 toolkit.loop = {}
