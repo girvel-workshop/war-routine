@@ -28,7 +28,8 @@ function love.load()
 		soldier_armed = load("soldier_armed"),
 		bullet = load("bullet"),
 		magazine = load("magazine"),
-		square = load("square")
+		square = load("square"),
+		shell = load("shell")
 	}
 	
 	bullet_speed = 1000
@@ -104,7 +105,7 @@ function love.keypressed(key)
 		mc.sprite = mc.arming_loop:next()
 	end
 
-	if key == 'r' and mc.sprite == sprites.soldier_armed and mc.bullets.value > 0 then
+	if key == 'r' and mc.sprite == sprites.soldier_armed and mc.bullets_other > 0 then
 		tiny.add(world, {
 			sprite = sprites.magazine,
 			position = copy(mc.position)
@@ -117,6 +118,12 @@ end
 
 function love.mousepressed(x, y, button, istouch)
 	if button == 1 and mc.sprite == sprites.soldier_armed and mc.bullets:move(-1) then
+		tiny.add(world, {
+			sprite = sprites.shell,
+			position = copy(mc.position),
+			rotation = mc.rotation
+		})
+
 		tiny.add(world, {
 			sprite = sprites.bullet,
 			position = mc.position + mc.fire_source:rotated(mc.rotation),
