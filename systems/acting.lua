@@ -53,6 +53,11 @@ actions = {
 		entity.bullets_other = entity.bullets_other - entity.bullets.value
 
 		return entity.reload_time
+	end),
+	arm = action:new("arm", function(entity)
+		entity.sprite = entity.arming_loop:next()
+
+		return entity.arming_time
 	end)
 }
 

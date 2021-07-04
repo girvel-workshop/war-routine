@@ -51,7 +51,8 @@ function love.load()
 		stamina = tk.limited:new(5),
 		action = false,
 		fire_time = .12,
-		reload_time = 1.5
+		reload_time = 1.5,
+		arming_time = 1.3
 	}
 
 	camera = {
@@ -101,7 +102,7 @@ function love.keypressed(key)
 	-- ARM / DISARM
 
 	if key == "q" then -- loop class
-		mc.sprite = mc.arming_loop:next()
+		actions.arm:order(mc)
 	end
 
 	if key == 'r' then
