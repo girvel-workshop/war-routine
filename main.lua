@@ -50,7 +50,8 @@ function love.load()
 		bullets_other = 90,
 		stamina = tk.limited:new(5),
 		action = false,
-		fire_time = .12
+		fire_time = .12,
+		reload_time = 1.5
 	}
 
 	camera = {
@@ -103,14 +104,8 @@ function love.keypressed(key)
 		mc.sprite = mc.arming_loop:next()
 	end
 
-	if key == 'r' and mc.sprite == mc.cluster.armed and mc.bullets_other > 0 then
-		tiny.add(world, {
-			sprite = sprites.magazine,
-			position = mc.position + mc.fire_source:rotated(mc.rotation) / 2
-		})
-
-		mc.bullets.value = math.min(mc.bullets.limit, mc.bullets_other)
-		mc.bullets_other = mc.bullets_other - mc.bullets.value
+	if key == 'r' then
+		actions.reload:order(mc)
 	end
 end
 
