@@ -55,6 +55,17 @@ function love.load()
 		arming_time = 1.3
 	}
 
+	controller = {
+		controls = mc,
+		keyboard_map = {
+			q = actions.arm,
+			r = actions.reload
+		},
+		mouse_map = {
+			[1] = actions.fire
+		}
+	}
+
 	camera = {
 		follows = mc,
 		anchor = window_size / 2,
@@ -99,25 +110,17 @@ function love.update(dt)
 end
 
 function love.keypressed(key)
-	-- ARM / DISARM
-
-	if key == "q" then -- loop class
-		actions.arm:order(mc)
-	end
-
-	if key == 'r' then
-		actions.reload:order(mc)
-	end
+	local a = controller.keyboard_map[key]
+	if a then a:order(controller.controls) end
 end
 
 function love.mousepressed(x, y, button, istouch)
-	if button == 1 then
-		actions.fire:order(mc)
-	end
+	local a = controller.mouse_map[button]
+	if a then a:order(controller.controls) end
 end
 
 function love.draw()
-	love.graphics.translate((camera.anchor - camera.position):unpack())
+	love.graphics.translate((camera.anchor - camera.position):unpack()) -- TODO camera system
 
 	world:update(0, draw_system_filter)
 end
