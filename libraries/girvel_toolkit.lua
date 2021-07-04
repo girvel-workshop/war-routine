@@ -62,4 +62,8 @@ function toolkit.limited:move(delta)
 	end
 end
 
+function toolkit.limited:is_min()
+	return self.value == self.lower_limit
+end
+
 return toolkit

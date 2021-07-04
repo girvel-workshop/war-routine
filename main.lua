@@ -1,8 +1,21 @@
 vmath = require("vmath")
 tiny = require("libraries.tiny")
-toolkit = require("libraries.girvel_toolkit")
+tk = require("libraries.girvel_toolkit")
 
-toolkit.require_all("systems")
+tk.require_all("systems")
+
+action = {}
+
+function action:new(name, duration)
+	obj={name = name, duration = duration}
+	setmetatable(obj, self)
+	self.__index = self
+	return obj
+end
+
+actions = {
+	fire = action:new("fire", tk.limited:new(0.3))
+}
 
 draw_system_filter = tiny.requireAll("drawing_system_flag")
 update_system_filter = tiny.rejectAll("drawing_system_flag")
@@ -20,7 +33,8 @@ function love.load()
 	world = tiny.world(
 		drawing,
 		moving,
-		following
+		following,
+		acting
 	)
 
 	sprites = {
@@ -31,21 +45,20 @@ function love.load()
 		square = load("square"),
 		shell = load("shell")
 	}
-	
-	bullet_speed = 1000
 
 	mc = {
 		sprite = sprites.soldier_normal,
-		arming_loop = toolkit.loop:new({sprites.soldier_normal, sprites.soldier_armed}),
+		arming_loop = tk.loop:new({sprites.soldier_normal, sprites.soldier_armed}),
 		position = vmath.vector:new(400, 300),
 		velocity = vmath.vector.zero(),
 		fire_source = vmath.vector:new(-54, -16),
 		rotation = 0,
 		speed = 250,
 		run_multiplier = 1.5,
-		bullets = toolkit.limited:new(30),
+		bullets = tk.limited:new(30),
 		bullets_other = 90,
-		stamina = toolkit.limited:new(5)
+		stamina = tk.limited:new(5),
+		action = false
 	}
 
 	camera = {
@@ -54,14 +67,7 @@ function love.load()
 	}
 
 	tiny.add(world, camera)
-
 	tiny.add(world, mc)
-	tiny.add(world, {
-		sprite = sprites.square,
-		position = copy(mc.position)
-	})
-
-	bullets = {}
 end
 
 function love.update(dt)
@@ -108,7 +114,7 @@ function love.keypressed(key)
 	if key == 'r' and mc.sprite == sprites.soldier_armed and mc.bullets_other > 0 then
 		tiny.add(world, {
 			sprite = sprites.magazine,
-			position = copy(mc.position)
+			position = mc.position + mc.fire_source:rotated(mc.rotation) / 2
 		})
 
 		mc.bullets.value = math.min(mc.bullets.limit, mc.bullets_other)
@@ -118,24 +124,11 @@ end
 
 function love.mousepressed(x, y, button, istouch)
 	if button == 1 and mc.sprite == sprites.soldier_armed and mc.bullets:move(-1) then
-		tiny.add(world, {
-			sprite = sprites.shell,
-			position = copy(mc.position),
-			rotation = mc.rotation
-		})
-
-		tiny.add(world, {
-			sprite = sprites.bullet,
-			position = mc.position + mc.fire_source:rotated(mc.rotation),
-			rotation = mc.rotation,
-			velocity = vmath.vector.left():rotated(mc.rotation) * bullet_speed
-		})
+		mc.action = copy(actions.fire)
 	end
 end
 
 function love.draw()
-	-- love.graphics.translate((tools.get_anchor(camera) - camera.position):unpack())
-	-- love.graphics.translate(camera.anchor.x - camera.position.x, camera.anchor.y - camera.position.y)
 	love.graphics.translate((camera.anchor - camera.position):unpack())
 
 	world:update(0, draw_system_filter)
