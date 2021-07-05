@@ -6,6 +6,8 @@ animation = require("animation")
 
 systems = tk.require_all("systems")
 
+math.randomseed(os.time())
+
 local actions = {
 	fire = action:new("fire", function(entity)
 		if entity.sprite ~= entity.cluster.armed or not entity.bullets:move(-1) then
@@ -14,8 +16,11 @@ local actions = {
 
 		tiny.add(world, {
 			sprite = sprites.shell,
-			position = entity.position + entity.fire_source:rotated(entity.rotation) / 2,
-			rotation = entity.rotation
+			position = entity.position
+			+ (entity.fire_source 
+			   + vmath.vector:new(math.random() * 2 - 1, math.random() * 2 - 1) * 15
+			  ):rotated(entity.rotation) / 2,
+			rotation = entity.rotation + 60 * (math.random() * 2 - 1)
 		})
 
 		tiny.add(world, {
@@ -36,7 +41,10 @@ local actions = {
 
 		tiny.add(world, {
 			sprite = sprites.magazine,
-			position = entity.position + entity.fire_source:rotated(entity.rotation) / 2
+			position = entity.position 
+			+ (entity.fire_source 
+			   + vmath.vector:new(math.random() * 2 - 1, math.random() * 2 - 1) * 15
+			  ):rotated(entity.rotation) / 2
 		})
 
 		entity.bullets.value = math.min(entity.bullets.limit, entity.bullets_other)
