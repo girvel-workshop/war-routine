@@ -71,4 +71,8 @@ function toolkit.limited:is_min()
 	return self.value == self.lower_limit
 end
 
+function toolkit.limited:fraction()
+	return (self.limit - self.value) / (self.limit - self.lower_limit)
+end
+
 return toolkit

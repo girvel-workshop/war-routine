@@ -2,6 +2,7 @@ vmath = require("vmath")
 tiny = require("libraries.tiny")
 tk = require("libraries.girvel_toolkit")
 action = require("action")
+animation = require("animation")
 
 systems = tk.require_all("systems")
 
@@ -23,6 +24,8 @@ local actions = {
 			rotation = entity.rotation,
 			velocity = vmath.vector.left():rotated(entity.rotation) * 1000
 		})
+
+		entity.animations.fire:animate(entity, entity.fire_time)
 
 		return entity.fire_time
 	end),
@@ -59,6 +62,7 @@ function love.load()
 	)
 
 	world = tiny.world(
+		systems.animation,
 		systems.drawing,
 		systems.moving,
 		systems.following,
@@ -77,6 +81,10 @@ function love.load()
 		armed = load("soldier_armed")
 	}
 
+	soldier_animations = {
+		fire = animation:new("soldier_fire", soldier_cluster.armed)
+	}
+
 	mc = {
 		cluster = soldier_cluster,
 		sprite = soldier_cluster.normal,
@@ -93,7 +101,9 @@ function love.load()
 		action = false,
 		fire_time = .12,
 		reload_time = 1.5,
-		arming_time = 1.3
+		arming_time = 1.3,
+		animation = false,
+		animations = soldier_animations
 	}
 
 	controller = {
