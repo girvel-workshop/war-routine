@@ -1,14 +1,13 @@
 tiny = require("libraries.tiny")
 tk = require("libraries.girvel_toolkit")
-action = require("action")
-animation = require("animation")
+aspects = tk.require_all("aspects")
 
 systems = tk.require_all("systems")
 
 math.randomseed(os.time())
 
 local actions = {
-	fire = action:new("fire", function(entity)
+	fire = aspects.action:new("fire", function(entity)
 		if entity.sprite ~= entity.cluster.armed or not entity.weapon.bullets:move(-1) then
 			return 0
 		end
@@ -33,7 +32,7 @@ local actions = {
 
 		return entity.weapon.fire_time
 	end),
-	reload = action:new("reload", function(entity)
+	reload = aspects.action:new("reload", function(entity)
 		if entity.sprite ~= entity.cluster.armed or entity.weapon.bullets_other <= 0 then
 			return 0
 		end
@@ -51,7 +50,7 @@ local actions = {
 
 		return entity.reload_time
 	end),
-	arm = action:new("arm", function(entity)
+	arm = aspects.action:new("arm", function(entity)
 		entity.sprite = entity.arming_loop:next()
 
 		return entity.arming_time
@@ -94,7 +93,7 @@ function love.load()
 
 	animations = {
 		soldier = {
-			fire = animation:new("soldier_fire", clusters.soldier.armed)
+			fire = aspects.animation:new("soldier_fire", clusters.soldier.armed)
 		}
 	}
 

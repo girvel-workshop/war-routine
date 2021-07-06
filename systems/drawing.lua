@@ -1,5 +1,5 @@
 tiny = require("libraries.tiny")
-tools = require("tools")
+sprite = require("aspects.sprite")
 
 local drawing = tiny.processingSystem({drawing_system_flag = true})
 drawing.filter = tiny.requireAll("sprite", "position")
@@ -9,7 +9,7 @@ function drawing:preProcess(_)
 end
 
 function drawing:process(e, _)
-	local anchor = tools.get_anchor(e)
+	local anchor = sprite.get_anchor(e)
 
 	love.graphics.draw(
 		e.sprite,
