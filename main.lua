@@ -57,10 +57,6 @@ local actions = {
 	end)
 }
 
-function load(name)
-	return love.graphics.newImage("assets/sprites/" .. name .. ".png")
-end
-
 function love.load()
 	window_size = tk.vector:new(
 		love.graphics.getWidth(),
@@ -77,17 +73,12 @@ function love.load()
 
 	-- PRESETS
 
-	sprites = {
-		bullet = load("bullet"),
-		magazine = load("magazine"),
-		square = load("square"),
-		shell = load("shell")
-	}
+  sprites = aspects.container:new("assets/sprites", "png", love.graphics.newImage)
 
 	clusters = {
 		soldier = {
-			normal = load("soldier_normal"),
-			armed = load("soldier_armed")
+			normal = sprites.soldier_normal,
+			armed = sprites.soldier_armed
 		}
 	}
 
