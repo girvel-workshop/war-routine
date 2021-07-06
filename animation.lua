@@ -7,7 +7,6 @@ function animation:new(name, ending_sprite)
 	obj={name = name, frames = {}, ending_sprite = ending_sprite}
 
 	for _, file in pairs(fs.getDirectoryItems("assets/animations/" .. name)) do
-		print(file)
 		table.insert(obj.frames, love.graphics.newImage("assets/animations/" .. name .. "/" .. file))
 	end
 

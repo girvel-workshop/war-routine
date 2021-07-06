@@ -10,7 +10,7 @@ math.randomseed(os.time())
 
 local actions = {
 	fire = action:new("fire", function(entity)
-		if entity.sprite ~= entity.cluster.armed or not entity.bullets:move(-1) then
+		if entity.sprite ~= entity.cluster.armed or not entity.weapon.bullets:move(-1) then
 			return 0
 		end
 
@@ -30,12 +30,12 @@ local actions = {
 			velocity = vmath.vector.left():rotated(entity.rotation) * 1000
 		})
 
-		entity.animations.fire:animate(entity, entity.fire_time)
+		entity.animations.fire:animate(entity, entity.weapon.fire_time)
 
-		return entity.fire_time
+		return entity.weapon.fire_time
 	end),
 	reload = action:new("reload", function(entity)
-		if entity.sprite ~= entity.cluster.armed or entity.bullets_other <= 0 then
+		if entity.sprite ~= entity.cluster.armed or entity.weapon.bullets_other <= 0 then
 			return 0
 		end
 
@@ -47,8 +47,8 @@ local actions = {
 			  ):rotated(entity.rotation) / 2
 		})
 
-		entity.bullets.value = math.min(entity.bullets.limit, entity.bullets_other)
-		entity.bullets_other = entity.bullets_other - entity.bullets.value
+		entity.weapon.bullets.value = math.min(entity.weapon.bullets.limit, entity.weapon.bullets_other)
+		entity.weapon.bullets_other = entity.weapon.bullets_other - entity.weapon.bullets.value
 
 		return entity.reload_time
 	end),
@@ -77,6 +77,8 @@ function love.load()
 		systems.acting
 	)
 
+	-- PRESETS
+
 	sprites = {
 		bullet = load("bullet"),
 		magazine = load("magazine"),
@@ -84,34 +86,47 @@ function love.load()
 		shell = load("shell")
 	}
 
-	soldier_cluster = {
-		normal = load("soldier_normal"),
-		armed = load("soldier_armed")
+	clusters = {
+		soldier = {
+			normal = load("soldier_normal"),
+			armed = load("soldier_armed")
+		}
 	}
 
-	soldier_animations = {
-		fire = animation:new("soldier_fire", soldier_cluster.armed)
+	animations = {
+		soldier = {
+			fire = animation:new("soldier_fire", clusters.soldier.armed)
+		}
+	}
+
+	weapons = {
+		default = {
+			bullets = tk.limited:new(30),
+			bullets_other = 90,
+			fire_time = .12
+		}
 	}
 
 	mc = {
-		cluster = soldier_cluster,
-		sprite = soldier_cluster.normal,
-		arming_loop = tk.loop:new({soldier_cluster.normal, soldier_cluster.armed}),
+		cluster = clusters.soldier,
+		sprite = clusters.soldier.normal,
+		arming_loop = tk.loop:new({clusters.soldier.normal, clusters.soldier.armed}),
 		position = vmath.vector:new(400, 300),
 		velocity = vmath.vector.zero(),
 		fire_source = vmath.vector:new(-54, -16),
 		rotation = 0,
 		speed = 250,
 		run_multiplier = 1.5,
-		bullets = tk.limited:new(30),
-		bullets_other = 90,
+		weapon = weapons.default,
+		-- bullets = tk.limited:new(30),
+		-- bullets_other = 90,
 		stamina = tk.limited:new(5),
 		action = false,
-		fire_time = .12,
+		-- fire_time = .12,
 		reload_time = 1.5,
 		arming_time = 1.3,
 		animation = false,
-		animations = soldier_animations
+		animations = animations.soldier
 	}
 
 	controller = {
