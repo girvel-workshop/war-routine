@@ -1,4 +1,3 @@
-vmath = require("vmath")
 tiny = require("libraries.tiny")
 tk = require("libraries.girvel_toolkit")
 action = require("action")
@@ -18,7 +17,7 @@ local actions = {
 			sprite = sprites.shell,
 			position = entity.position
 			+ (entity.fire_source 
-			   + vmath.vector:new(math.random() * 2 - 1, math.random() * 2 - 1) * 15
+			   + tk.vector:new(math.random() * 2 - 1, math.random() * 2 - 1) * 15
 			  ):rotated(entity.rotation) / 2,
 			rotation = entity.rotation + 60 * (math.random() * 2 - 1)
 		})
@@ -27,7 +26,7 @@ local actions = {
 			sprite = sprites.bullet,
 			position = entity.position + entity.fire_source:rotated(entity.rotation),
 			rotation = entity.rotation,
-			velocity = vmath.vector.left():rotated(entity.rotation) * 1000
+			velocity = tk.vector.left():rotated(entity.rotation) * 1000
 		})
 
 		entity.animations.fire:animate(entity, entity.weapon.fire_time)
@@ -43,7 +42,7 @@ local actions = {
 			sprite = sprites.magazine,
 			position = entity.position 
 			+ (entity.fire_source 
-			   + vmath.vector:new(math.random() * 2 - 1, math.random() * 2 - 1) * 15
+			   + tk.vector:new(math.random() * 2 - 1, math.random() * 2 - 1) * 15
 			  ):rotated(entity.rotation) / 2
 		})
 
@@ -64,7 +63,7 @@ function load(name)
 end
 
 function love.load()
-	window_size = vmath.vector:new(
+	window_size = tk.vector:new(
 		love.graphics.getWidth(),
 		love.graphics.getHeight()
 	)
@@ -111,9 +110,9 @@ function love.load()
 		cluster = clusters.soldier,
 		sprite = clusters.soldier.normal,
 		arming_loop = tk.loop:new({clusters.soldier.normal, clusters.soldier.armed}),
-		position = vmath.vector:new(400, 300),
-		velocity = vmath.vector.zero(),
-		fire_source = vmath.vector:new(-54, -16),
+		position = tk.vector:new(400, 300),
+		velocity = tk.vector.zero(),
+		fire_source = tk.vector:new(-54, -16),
 		rotation = 0,
 		speed = 250,
 		run_multiplier = 1.5,
@@ -155,7 +154,7 @@ function love.update(dt)
 
 	-- MOVEMENT
 
-	mc.velocity = vmath.vector.zero()
+	mc.velocity = tk.vector.zero()
 
 	if love.keyboard.isDown("w") then -- TODO REFACTOR
 		mc.velocity.y = -mc.speed

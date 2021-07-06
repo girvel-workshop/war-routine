@@ -75,4 +75,56 @@ function toolkit.limited:fraction()
 	return (self.limit - self.value) / (self.limit - self.lower_limit)
 end
 
+toolkit.vector = {}
+
+function toolkit.vector:new(x, y)
+	local v={x=x, y=y}
+	setmetatable(v, self)
+	self.__index = self
+	return v
+end
+
+function toolkit.vector:rotated(angle)
+	return toolkit.vector:new(
+		math.cos(angle) * self.x - math.sin(angle) * self.y, 
+		math.sin(angle) * self.x + math.cos(angle) * self.y
+	)	
+end
+
+function toolkit.vector:unpack()
+	return self.x, self.y
+end
+
+function toolkit.vector.__unm(v)
+	return v * -1
+end
+
+function toolkit.vector.__add(v, u)
+	return toolkit.vector:new(v.x + u.x, v.y + u.y)
+end	
+
+function toolkit.vector.__sub(v, u)
+	return v + -u
+end
+
+function toolkit.vector.__mul(v, k)
+	return toolkit.vector:new(v.x * k, v.y * k)
+end
+
+function toolkit.vector.__div(v, k)
+	return v * (1 / k)
+end
+
+toolkit.vector.zero = function()
+	return toolkit.vector:new(0, 0)
+end
+
+toolkit.vector.right = function()
+	return toolkit.vector:new(1, 0)
+end
+
+toolkit.vector.left = function()
+	return toolkit.vector:new(-1, 0)
+end
+
 return toolkit
