@@ -46,51 +46,55 @@ function love.load()
 	}
   
   actions = {
-    fire = aspects.action:new("fire", "armed", "armed", function(entity)
-      if entity.sprite ~= entity.cluster.armed or not entity.weapon.bullets:move(-1) then
-        return 0
+    fire = aspects.action:new("fire", "armed", "armed", {
+      start = function(entity)
+        if entity.sprite ~= entity.cluster.armed or not entity.weapon.bullets:move(-1) then
+          return 0
+        end
+
+        tiny.add(world, {
+          sprite = sprites.shell,
+          position = entity.position
+          + (entity.fire_source 
+             + (tk.vector:new(math.random(), math.random()) * 2 - tk.vector:one()) * 15
+            ):rotated(entity.rotation) / 2,
+          rotation = entity.rotation + 60 * (math.random() * 2 - 1)
+        })
+
+        tiny.add(world, {
+          sprite = sprites.bullet,
+          position = entity.position + entity.fire_source:rotated(entity.rotation),
+          rotation = entity.rotation,
+          velocity = tk.vector.left():rotated(entity.rotation) * 1000
+        })
+
+        entity.animations.fire:animate(entity, entity.weapon.fire_time)
+
+        return entity.weapon.fire_time
       end
+    }),
+    reload = aspects.action:new("reload", "armed", "armed", {
+      start = function(entity)
+        if entity.sprite ~= entity.cluster.armed or entity.weapon.bullets_other <= 0 then
+          return 0
+        end
 
-      tiny.add(world, {
-        sprite = sprites.shell,
-        position = entity.position
-        + (entity.fire_source 
-           + (tk.vector:new(math.random(), math.random()) * 2 - tk.vector:one()) * 15
-          ):rotated(entity.rotation) / 2,
-        rotation = entity.rotation + 60 * (math.random() * 2 - 1)
-      })
+        tiny.add(world, {
+          sprite = sprites.magazine,
+          position = entity.position 
+          + (entity.fire_source 
+             + tk.vector:new(math.random() * 2 - 1, math.random() * 2 - 1) * 15
+            ):rotated(entity.rotation) / 2
+        })
 
-      tiny.add(world, {
-        sprite = sprites.bullet,
-        position = entity.position + entity.fire_source:rotated(entity.rotation),
-        rotation = entity.rotation,
-        velocity = tk.vector.left():rotated(entity.rotation) * 1000
-      })
+        entity.weapon.bullets.value = math.min(entity.weapon.bullets.limit, entity.weapon.bullets_other)
+        entity.weapon.bullets_other = entity.weapon.bullets_other - entity.weapon.bullets.value
 
-      entity.animations.fire:animate(entity, entity.weapon.fire_time)
-
-      return entity.weapon.fire_time
-    end),
-    reload = aspects.action:new("reload", "armed", "armed", function(entity)
-      if entity.sprite ~= entity.cluster.armed or entity.weapon.bullets_other <= 0 then
-        return 0
+        return entity.reload_time
       end
-
-      tiny.add(world, {
-        sprite = sprites.magazine,
-        position = entity.position 
-        + (entity.fire_source 
-           + tk.vector:new(math.random() * 2 - 1, math.random() * 2 - 1) * 15
-          ):rotated(entity.rotation) / 2
-      })
-
-      entity.weapon.bullets.value = math.min(entity.weapon.bullets.limit, entity.weapon.bullets_other)
-      entity.weapon.bullets_other = entity.weapon.bullets_other - entity.weapon.bullets.value
-
-      return entity.reload_time
-    end),
-    arm = aspects.action:new("arm", "normal", "armed", function(entity) return entity.arming_time end),
-    disarm = aspects.action:new("disarm", "armed", "normal", function(entity) return entity.arming_time end)
+    }),
+    arm = aspects.action:new("arm", "normal", "armed", {start = function(entity) return entity.arming_time end}),
+    disarm = aspects.action:new("disarm", "armed", "normal", {start = function(entity) return entity.arming_time end})
   }
 
 	mc = {
