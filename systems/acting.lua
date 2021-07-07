@@ -12,6 +12,7 @@ function acting:process(entity, dt)
 	end
 
 	if not entity.action.duration:move(-dt) then
+    entity.sprite = entity.cluster[entity.action.ending_state]
 		entity.action = false
 	end
 end

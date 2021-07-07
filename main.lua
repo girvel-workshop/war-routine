@@ -6,57 +6,6 @@ systems = tk.require_all("systems")
 
 math.randomseed(os.time())
 
-local actions = {
-	fire = aspects.action:new("fire", function(entity)
-		if entity.sprite ~= entity.cluster.armed or not entity.weapon.bullets:move(-1) then
-			return 0
-		end
-
-		tiny.add(world, {
-			sprite = sprites.shell,
-			position = entity.position
-			+ (entity.fire_source 
-			   + (tk.vector:new(math.random(), math.random()) * 2 - tk.vector:one()) * 15
-			  ):rotated(entity.rotation) / 2,
-			rotation = entity.rotation + 60 * (math.random() * 2 - 1)
-		})
-
-		tiny.add(world, {
-			sprite = sprites.bullet,
-			position = entity.position + entity.fire_source:rotated(entity.rotation),
-			rotation = entity.rotation,
-			velocity = tk.vector.left():rotated(entity.rotation) * 1000
-		})
-
-		entity.animations.fire:animate(entity, entity.weapon.fire_time)
-
-		return entity.weapon.fire_time
-	end),
-	reload = aspects.action:new("reload", function(entity)
-		if entity.sprite ~= entity.cluster.armed or entity.weapon.bullets_other <= 0 then
-			return 0
-		end
-
-		tiny.add(world, {
-			sprite = sprites.magazine,
-			position = entity.position 
-			+ (entity.fire_source 
-			   + tk.vector:new(math.random() * 2 - 1, math.random() * 2 - 1) * 15
-			  ):rotated(entity.rotation) / 2
-		})
-
-		entity.weapon.bullets.value = math.min(entity.weapon.bullets.limit, entity.weapon.bullets_other)
-		entity.weapon.bullets_other = entity.weapon.bullets_other - entity.weapon.bullets.value
-
-		return entity.reload_time
-	end),
-	arm = aspects.action:new("arm", function(entity)
-		entity.sprite = entity.arming_loop:next()
-
-		return entity.arming_time
-	end)
-}
-
 function love.load()
 	window_size = tk.vector:new(
 		love.graphics.getWidth(),
@@ -95,6 +44,54 @@ function love.load()
 			fire_time = .12
 		}
 	}
+  
+  actions = {
+    fire = aspects.action:new("fire", "armed", "armed", function(entity)
+      if entity.sprite ~= entity.cluster.armed or not entity.weapon.bullets:move(-1) then
+        return 0
+      end
+
+      tiny.add(world, {
+        sprite = sprites.shell,
+        position = entity.position
+        + (entity.fire_source 
+           + (tk.vector:new(math.random(), math.random()) * 2 - tk.vector:one()) * 15
+          ):rotated(entity.rotation) / 2,
+        rotation = entity.rotation + 60 * (math.random() * 2 - 1)
+      })
+
+      tiny.add(world, {
+        sprite = sprites.bullet,
+        position = entity.position + entity.fire_source:rotated(entity.rotation),
+        rotation = entity.rotation,
+        velocity = tk.vector.left():rotated(entity.rotation) * 1000
+      })
+
+      entity.animations.fire:animate(entity, entity.weapon.fire_time)
+
+      return entity.weapon.fire_time
+    end),
+    reload = aspects.action:new("reload", "armed", "armed", function(entity)
+      if entity.sprite ~= entity.cluster.armed or entity.weapon.bullets_other <= 0 then
+        return 0
+      end
+
+      tiny.add(world, {
+        sprite = sprites.magazine,
+        position = entity.position 
+        + (entity.fire_source 
+           + tk.vector:new(math.random() * 2 - 1, math.random() * 2 - 1) * 15
+          ):rotated(entity.rotation) / 2
+      })
+
+      entity.weapon.bullets.value = math.min(entity.weapon.bullets.limit, entity.weapon.bullets_other)
+      entity.weapon.bullets_other = entity.weapon.bullets_other - entity.weapon.bullets.value
+
+      return entity.reload_time
+    end),
+    arm = aspects.action:new("arm", "normal", "armed", function(entity) return entity.arming_time end),
+    disarm = aspects.action:new("disarm", "armed", "normal", function(entity) return entity.arming_time end)
+  }
 
 	mc = {
 		cluster = clusters.soldier,
@@ -121,11 +118,11 @@ function love.load()
 	controller = {
 		controls = mc,
 		keyboard_map = {
-			q = actions.arm,
-			r = actions.reload
+			q = {actions.arm, actions.disarm},
+			r = {actions.reload}
 		},
 		mouse_map = {
-			[1] = actions.fire
+			[1] = {actions.fire}
 		}
 	}
 
@@ -175,12 +172,26 @@ end
 
 function love.keypressed(key)
 	local a = controller.keyboard_map[key]
-	if a then a:order(controller.controls) end
+	if not a then return end
+  
+  for _, action in ipairs(a) do -- TODO unify
+    if controller.controls.cluster[action.starting_state] == controller.controls.sprite then
+      action:order(controller.controls) 
+      break
+    end
+  end
 end
 
 function love.mousepressed(x, y, button, istouch)
-	local a = controller.mouse_map[button]
-	if a then a:order(controller.controls) end
+  local a = controller.mouse_map[button]
+	if not a then return end
+  
+  for _, action in ipairs(a) do
+    if controller.controls.cluster[action.starting_state] == controller.controls.sprite then
+      action:order(controller.controls) 
+      break
+    end
+  end
 end
 
 function love.draw()

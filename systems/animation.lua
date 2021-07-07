@@ -12,7 +12,6 @@ function animation:process(entity, dt)
 			1 + math.floor(fr * #entity.animation.frames)
 		]
 	else
-		entity.sprite = entity.animation.ending_sprite
 		entity.animation = nil
 	end
 end
