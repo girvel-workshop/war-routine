@@ -8,6 +8,10 @@ end
 
 local toolkit = {}
 
+function toolkit.curry(f, argument)
+  return function(...) f(argument, unpack(arg)) end
+end
+
 function toolkit.require_all(directory)
 	local module = {}
 

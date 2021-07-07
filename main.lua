@@ -23,17 +23,14 @@ function love.load()
 	-- PRESETS
 
   sprites = aspects.container:new("assets/sprites", "png", love.graphics.newImage)
+  animations = aspects.container:new("assets/animations", "", tk.curry(aspects.animation.new, aspects.animation))
+  animations.soldier_fire = tk.curry(aspects.animation.new, aspects.animation)("assets/animations/soldier_fire")
+  animations.soldier_fire = aspects.animation:new("assets/animations/soldier_fire")
 
 	clusters = {
 		soldier = {
 			normal = sprites.soldier_normal,
 			armed = sprites.soldier_armed
-		}
-	}
-
-	animations = {
-		soldier = {
-			fire = aspects.animation:new("assets/animations/soldier_fire", clusters.soldier.armed)
 		}
 	}
 
@@ -46,7 +43,7 @@ function love.load()
 	}
   
   actions = {
-    fire = aspects.action:new("fire", "armed", "armed", {
+    fire = aspects.action:new("fire", "armed", "armed", "fire", {
       start = function(entity)
         if entity.sprite ~= entity.cluster.armed or not entity.weapon.bullets:move(-1) then
           return 0
@@ -68,12 +65,10 @@ function love.load()
           velocity = tk.vector.left():rotated(entity.rotation) * 1000
         })
 
-        entity.animations.fire:animate(entity, entity.weapon.fire_time)
-
         return entity.weapon.fire_time
       end
     }),
-    reload = aspects.action:new("reload", "armed", "armed", {
+    reload = aspects.action:new("reload", "armed", "armed", nil, {
       start = function(entity)
         if entity.sprite ~= entity.cluster.armed or entity.weapon.bullets_other <= 0 then
           return 0
@@ -93,8 +88,8 @@ function love.load()
         return entity.reload_time
       end
     }),
-    arm = aspects.action:new("arm", "normal", "armed", {start = function(entity) return entity.arming_time end}),
-    disarm = aspects.action:new("disarm", "armed", "normal", {start = function(entity) return entity.arming_time end})
+    arm = aspects.action:new("arm", "normal", "armed", nil, {start = function(entity) return entity.arming_time end}),
+    disarm = aspects.action:new("disarm", "armed", "normal", nil, {start = function(entity) return entity.arming_time end})
   }
 
 	mc = {
@@ -116,7 +111,9 @@ function love.load()
 		reload_time = 1.5,
 		arming_time = 1.3,
 		animation = false,
-		animations = animations.soldier
+		animations = {
+      fire = animations.soldier_fire
+    }
 	}
 
 	controller = {

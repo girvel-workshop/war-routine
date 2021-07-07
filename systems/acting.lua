@@ -9,6 +9,9 @@ function acting:process(entity, dt)
 
 	if entity.action.duration == nil then
 		entity.action.duration = tk.limited:new(entity.action.event_container.start(entity))
+    if entity.action.animation then 
+      entity.animations[entity.action.animation]:animate(entity, entity.action.duration.value)
+    end
 	end
 
 	if not entity.action.duration:move(-dt) then

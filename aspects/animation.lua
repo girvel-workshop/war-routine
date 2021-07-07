@@ -4,7 +4,7 @@ tk = require("libraries.girvel_toolkit")
 local animation = {}
 
 function animation:new(name)
-	obj = {name = name, frames = {}, ending_sprite = ending_sprite}
+	obj = {name = name, frames = {}}
 
 	for _, file in pairs(fs.getDirectoryItems(name)) do
 		table.insert(obj.frames, love.graphics.newImage(name .. "/" .. file))
