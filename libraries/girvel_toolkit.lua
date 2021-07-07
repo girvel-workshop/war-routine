@@ -115,16 +115,20 @@ function toolkit.vector.__div(v, k)
 	return v * (1 / k)
 end
 
-toolkit.vector.zero = function()
+function toolkit.vector:zero()
 	return toolkit.vector:new(0, 0)
 end
 
-toolkit.vector.right = function()
+function toolkit.vector:right()
 	return toolkit.vector:new(1, 0)
 end
 
-toolkit.vector.left = function()
+function toolkit.vector:left()
 	return toolkit.vector:new(-1, 0)
+end
+
+function toolkit.vector:one()
+  return toolkit.vector:new(1, 1)
 end
 
 return toolkit

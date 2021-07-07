@@ -16,7 +16,7 @@ local actions = {
 			sprite = sprites.shell,
 			position = entity.position
 			+ (entity.fire_source 
-			   + tk.vector:new(math.random() * 2 - 1, math.random() * 2 - 1) * 15
+			   + (tk.vector:new(math.random(), math.random()) * 2 - tk.vector:one()) * 15
 			  ):rotated(entity.rotation) / 2,
 			rotation = entity.rotation + 60 * (math.random() * 2 - 1)
 		})
@@ -84,7 +84,7 @@ function love.load()
 
 	animations = {
 		soldier = {
-			fire = aspects.animation:new("soldier_fire", clusters.soldier.armed)
+			fire = aspects.animation:new("assets/animations/soldier_fire", clusters.soldier.armed)
 		}
 	}
 
@@ -101,7 +101,7 @@ function love.load()
 		sprite = clusters.soldier.normal,
 		arming_loop = tk.loop:new({clusters.soldier.normal, clusters.soldier.armed}),
 		position = tk.vector:new(400, 300),
-		velocity = tk.vector.zero(),
+		velocity = tk.vector:zero(),
 		fire_source = tk.vector:new(-54, -16),
 		rotation = 0,
 		speed = 250,
@@ -144,7 +144,7 @@ function love.update(dt)
 
 	-- MOVEMENT
 
-	mc.velocity = tk.vector.zero()
+	mc.velocity = tk.vector:zero()
 
 	if love.keyboard.isDown("w") then -- TODO REFACTOR
 		mc.velocity.y = -mc.speed
@@ -161,7 +161,7 @@ function love.update(dt)
 
 	if love.keyboard.isDown("lshift") then 
 		if mc.stamina:move(-dt) then
-			mc.velocity = mc.velocity * mc.run_multipler
+			mc.velocity = mc.velocity * mc.run_multiplier
 		end
 	else
 		mc.stamina:move(dt)

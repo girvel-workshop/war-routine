@@ -6,8 +6,8 @@ local animation = {}
 function animation:new(name, ending_sprite)
 	obj={name = name, frames = {}, ending_sprite = ending_sprite}
 
-	for _, file in pairs(fs.getDirectoryItems("assets/animations/" .. name)) do
-		table.insert(obj.frames, love.graphics.newImage("assets/animations/" .. name .. "/" .. file))
+	for _, file in pairs(fs.getDirectoryItems(name)) do
+		table.insert(obj.frames, love.graphics.newImage(name .. "/" .. file))
 	end
 
 	setmetatable(obj, self)
