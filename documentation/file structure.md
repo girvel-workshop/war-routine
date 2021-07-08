@@ -1,0 +1,14 @@
+ - aspects/       -- modules w/ internal functionality
+ - assets/        -- game assets
+   - animations/
+   - sprites/
+   - content/
+ - bin/           -- project binaries
+ - build/         -- build system
+ - documentation/ -- project documentation
+   - concepts/    -- future features
+ - libraries/     -- portable modules
+ - systems/       -- ECS systems declaration
+ - main.lua       -- main source file
+ - main.conf      -- love2d config file
+ - README.md      -- readme file
