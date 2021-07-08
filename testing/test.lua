@@ -1,0 +1,5 @@
+describe("Just testing", function()
+  it("Should work", function()
+    assert.truthy(true)
+  end)
+end)
