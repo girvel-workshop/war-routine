@@ -10,5 +10,5 @@
  - libraries/     -- portable modules
  - systems/       -- ECS systems declaration
  - main.lua       -- main source file
- - main.conf      -- love2d config file
+ - conf.lua       -- love2d config file
  - README.md      -- readme file
