@@ -1,3 +1,5 @@
+require("love.filesystem")
+
 local toolkit = {}
 
 function toolkit.ls(directory)
@@ -20,7 +22,7 @@ end
 function toolkit.require_all(directory)
 	local module = {}
 
-	for _, file in ipairs(toolkit.ls(directory)) do
+	for _, file in ipairs(love.filesystem.getDirectoryItems(directory)) do
 		name = string.gsub(file, ".lua", "")
 		module[name] = require(directory .. "." .. name)
 	end
