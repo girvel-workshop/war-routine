@@ -45,5 +45,11 @@ describe("my own lua framework", function()
       assert.is_true(parent.sample1)
       assert.is_false(parent.sample2)
     end)
+
+    it("should be recursive", function()
+      local parent = tk.require_all("tests.libraries.sample2")
+
+      assert.is_true(parent.child.sample)
+    end)
   end)
 end)
