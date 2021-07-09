@@ -16,6 +16,6 @@ elif [[ "$1" == "commit" ]]; then
     git commit -m "$2"
     git push origin master
 elif [[ "$1" == "test" ]]; then
-    busted tests --pattern=".*%.lua"
+    love . test
     exit $?
 fi
