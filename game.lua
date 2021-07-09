@@ -74,7 +74,7 @@ function love.load()
     disarm = aspects.action:new("disarm", "armed", "normal", nil, {start = function(entity) return entity.arming_time end})
   }
 
-  mc = tk.copy(content.units.mc)
+  mc = tk.copy(content.units.soldier)
 
   controller = {
     controls = mc,

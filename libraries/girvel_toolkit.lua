@@ -2,7 +2,9 @@ require("love.filesystem")
 
 local toolkit = {}
 
-function toolkit.copy(t)
+function toolkit.copy(t) -- TODO copy non-table values
+	if t == nil then return nil end
+
 	if t.copy ~= nil then
 		return t:copy()
 	end
@@ -10,6 +12,14 @@ function toolkit.copy(t)
 	local u = {}
 	for k, v in pairs(t) do u[k] = v end
 	return setmetatable(u, getmetatable(t))
+end
+
+function toolkit.concat(table1, table2)
+	result = toolkit.copy(table1)
+	for k, v in pairs(table2) do
+		result[k] = v -- TODO copy here
+	end
+	return result
 end
 
 function toolkit.require_all(directory)
