@@ -8,7 +8,7 @@ end
 
 function container:__index(key)
   local value = self.converter(self.folder .. "/" .. key .. "." .. self.extension)
-  rawset(self, key, value)
+  self[key] = value
   return value
 end
 

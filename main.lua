@@ -1,3 +1,5 @@
+require_all = (require "libraries.girvel_toolkit").require_all
+
 if arg[2] == "test" then
 	arg = {}
 	result = pcall(function() require("tests.main") end)

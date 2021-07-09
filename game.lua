@@ -1,8 +1,10 @@
-tiny = require("libraries.tiny")
-tk = require("libraries.girvel_toolkit")
-aspects = tk.require_all("aspects")
+local tiny = require("libraries.tiny")
+local tk = require("libraries.girvel_toolkit")
+local inspect = require("libraries.inspect")
+local aspects = tk.require_all("aspects")
+local content = require_all("assets.content")
 
-systems = tk.require_all("systems")
+local systems = tk.require_all("systems")
 
 math.randomseed(os.time())
 
@@ -22,17 +24,6 @@ function love.load()
 
   -- PRESETS
 
-  sprites = aspects.container:new("assets/sprites", "png", love.graphics.newImage)
-  animations = {}
-  animations.soldier_fire = aspects.animation:new("assets/animations/soldier_fire")
-
-  clusters = {
-    soldier = {
-      normal = sprites.soldier_normal,
-      armed = sprites.soldier_armed
-    }
-  }
-
   weapons = {
     default = {
       bullets = tk.limited:new(30),
@@ -48,8 +39,8 @@ function love.load()
           return 0
         end
 
-        tiny.add(world, {
-          sprite = sprites.shell,
+        tiny.add(world, { -- TODO to content
+          sprite = content.sprites.shell,
           position = entity.position
           + (entity.fire_source 
              + (tk.vector:new(math.random(), math.random()) * 2 - tk.vector:one()) * 15
@@ -57,8 +48,8 @@ function love.load()
           rotation = entity.rotation + 60 * (math.random() * 2 - 1)
         })
 
-        tiny.add(world, {
-          sprite = sprites.bullet,
+        tiny.add(world, { -- TODO to content
+          sprite = content.sprites.bullet,
           position = entity.position + entity.fire_source:rotated(entity.rotation),
           rotation = entity.rotation,
           velocity = tk.vector.left():rotated(entity.rotation) * 1000
@@ -74,7 +65,7 @@ function love.load()
         end
 
         tiny.add(world, {
-          sprite = sprites.magazine,
+          sprite = content.sprites.magazine,
           position = entity.position 
           + (entity.fire_source 
              + tk.vector:new(math.random() * 2 - 1, math.random() * 2 - 1) * 15
@@ -92,9 +83,11 @@ function love.load()
   }
 
   mc = {
-    cluster = clusters.soldier,
-    sprite = clusters.soldier.normal,
-    arming_loop = tk.loop:new({clusters.soldier.normal, clusters.soldier.armed}),
+    cluster = {
+      normal = content.sprites.soldier_normal,
+      armed = content.sprites.soldier_armed
+    },
+    sprite = content.sprites.soldier_normal,
     position = tk.vector:new(400, 300),
     velocity = tk.vector:zero(),
     fire_source = tk.vector:new(-54, -16),
@@ -111,7 +104,7 @@ function love.load()
     arming_time = 1.3,
     animation = false,
     animations = {
-      fire = animations.soldier_fire
+      fire = content.animations.soldier_fire
     }
   }
 
