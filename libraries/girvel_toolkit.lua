@@ -2,18 +2,11 @@ require("love.filesystem")
 
 local toolkit = {}
 
-function toolkit.ls(directory)
-    local i, t, popen = 0, {}, io.popen
-    local pfile = popen('ls -a "'..directory..'"')
-    for filename in pfile:lines() do
-        i = i + 1
-        t[i] = filename
-    end
-    pfile:close()
-    return t
-end
-
 function toolkit.copy(t)
+	if t.copy ~= nil then
+		return t:copy()
+	end
+
 	local u = {}
 	for k, v in pairs(t) do u[k] = v end
 	return setmetatable(u, getmetatable(t))
