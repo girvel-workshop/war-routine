@@ -1,6 +1,15 @@
 #!/usr/bin/bash
 
 if [[ "$1" == "run" ]]; then
+    game test
+    if [[ $? == 1 ]]; then
+        read -p "There are failed tests. Do you want to stop run? [y/N] " -n 1 -r
+        echo
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            exit 1
+        fi
+    fi
+
 	love .
 elif [[ "$1" == "commit" ]]; then
     game test

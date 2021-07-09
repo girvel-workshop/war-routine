@@ -1,4 +1,5 @@
 require 'busted.runner'()
+inspect = require "libraries.inspect"
 tk = require "libraries.girvel_toolkit"
 
 describe("my own lua framework", function()
@@ -34,6 +35,15 @@ describe("my own lua framework", function()
       }
 
       assert.are.same({}, tk.copy(test_table))
+    end)
+  end)
+
+  describe("require all function", function()
+    it("should import all modules from directory", function()
+      parent = tk.require_all("tests.libraries.sample1")
+
+      assert.is_true(parent.sample1)
+      assert.is_false(parent.sample2)
     end)
   end)
 end)
