@@ -23,14 +23,6 @@ function love.load()
   )
 
   -- PRESETS
-
-  weapons = {
-    default = {
-      bullets = tk.limited:new(30),
-      bullets_other = 90,
-      fire_time = .12
-    }
-  }
   
   actions = {
     fire = aspects.action:new("fire", "armed", "armed", "fire", {
@@ -82,31 +74,7 @@ function love.load()
     disarm = aspects.action:new("disarm", "armed", "normal", nil, {start = function(entity) return entity.arming_time end})
   }
 
-  mc = {
-    cluster = {
-      normal = content.sprites.soldier_normal,
-      armed = content.sprites.soldier_armed
-    },
-    sprite = content.sprites.soldier_normal,
-    position = tk.vector:new(400, 300),
-    velocity = tk.vector:zero(),
-    fire_source = tk.vector:new(-54, -16),
-    rotation = 0,
-    speed = 250,
-    run_multiplier = 1.5,
-    weapon = weapons.default,
-    -- bullets = tk.limited:new(30),
-    -- bullets_other = 90,
-    stamina = tk.limited:new(5),
-    action = false,
-    -- fire_time = .12,
-    reload_time = 1.5,
-    arming_time = 1.3,
-    animation = false,
-    animations = {
-      fire = content.animations.soldier_fire
-    }
-  }
+  mc = tk.copy(content.units.mc)
 
   controller = {
     controls = mc,
