@@ -5,7 +5,7 @@ tk = require "libraries.girvel_toolkit"
 describe("my own lua framework", function()
   describe("deep copy function", function()
     it("should copy", function()
-      test_table = {
+      local test_table = {
         a = 1,
         b = 2
       }
@@ -16,7 +16,7 @@ describe("my own lua framework", function()
     end)
 
     it("should be deep", function()
-      test_table = {
+      local test_table = {
         a = 1,
         b = 2,
         c = {a = 1}
@@ -26,7 +26,7 @@ describe("my own lua framework", function()
     end)
 
     it("should use :copy function if it exists", function()
-      test_table = {
+      local test_table = {
         a = 1,
         b = 2,
         copy = function(self)
@@ -40,7 +40,7 @@ describe("my own lua framework", function()
 
   describe("require all function", function()
     it("should import all modules from directory", function()
-      parent = tk.require_all("tests.libraries.sample1")
+      local parent = tk.require_all("tests.libraries.sample1")
 
       assert.is_true(parent.sample1)
       assert.is_false(parent.sample2)

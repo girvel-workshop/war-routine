@@ -13,14 +13,20 @@ function toolkit.copy(t)
 end
 
 function toolkit.require_all(directory)
-	local module = {}
+	path = directory:gsub("%.", "/")
+  if not love.filesystem.getInfo(path) then return end
+  
+  local module = {}
+  
+  for _, file in ipairs(love.filesystem.getDirectoryItems(path)) do
+    if love.filesystem.getInfo(directory:gsub("%.", "/") .. "/" .. file, 'file') then
+      module[file:gsub(".lua", "")] = require(directory .. "." .. file:gsub(".lua", ""))
+    else
+      module[file] = toolkit.require_all(directory .. "." .. file)
+    end
+  end
 
-	for _, file in ipairs(love.filesystem.getDirectoryItems(directory)) do
-		name = string.gsub(file, ".lua", "")
-		module[name] = require(directory .. "." .. name)
-	end
-
-	return module
+  return module
 end
 
 toolkit.loop = {}
