@@ -1,5 +1,5 @@
 describe("Just testing", function()
   it("Should work", function()
-    assert.truthy(true)
+    assert.truthy(false)
   end)
 end)
