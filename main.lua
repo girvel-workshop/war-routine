@@ -1,3 +1,9 @@
+if arg[2] == "test" then
+	tk = require("libraries.girvel_toolkit")
+	tk.require_all("tests")
+	return 0
+end
+
 tiny = require("libraries.tiny")
 tk = require("libraries.girvel_toolkit")
 aspects = tk.require_all("aspects")

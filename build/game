@@ -4,7 +4,7 @@ if [[ "$1" == "run" ]]; then
 	love .
 elif [[ "$1" == "commit" ]]; then
     game test
-    if $?; then
+    if [[ $? == 1 ]]; then
         read -p "There are failed tests. Do you want to stop commit? [y/N] " -n 1 -r
         echo
         if [[ $REPLY =~ ^[Yy]$ ]]; then
@@ -16,6 +16,6 @@ elif [[ "$1" == "commit" ]]; then
     git commit -m "$2"
     git push origin master
 elif [[ "$1" == "test" ]]; then
-    busted tests --pattern=".*%.lua" 
+    busted tests --pattern=".*%.lua"
     exit $?
 fi

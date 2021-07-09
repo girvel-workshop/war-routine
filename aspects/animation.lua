@@ -16,7 +16,7 @@ function animation:new(name)
 end
 
 function animation:animate(entity, duration)
-	entity.animation = copy(self)
+	entity.animation = tk.copy(self)
 	entity.animation.duration = tk.limited:new(duration)
 end
 

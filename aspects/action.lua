@@ -1,3 +1,5 @@
+tl = require "libraries.girvel_toolkit"
+
 local action = {}
 
 function action:new(name, starting_state, ending_state, animation, event_container)
@@ -9,7 +11,7 @@ end
 
 function action:order(entity)
 	if entity.action == false then
-		entity.action = copy(self)
+		entity.action = tk.copy(self)
 	end
 end
 

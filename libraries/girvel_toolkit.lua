@@ -1,21 +1,26 @@
-require "love.filesystem"
+local toolkit = {}
 
-function copy(t)
+function toolkit.ls(directory)
+    local i, t, popen = 0, {}, io.popen
+    local pfile = popen('ls -a "'..directory..'"')
+    for filename in pfile:lines() do
+        i = i + 1
+        t[i] = filename
+    end
+    pfile:close()
+    return t
+end
+
+function toolkit.copy(t)
 	local u = {}
 	for k, v in pairs(t) do u[k] = v end
 	return setmetatable(u, getmetatable(t))
 end
 
-local toolkit = {}
-
-function toolkit.curry(f, argument)
-  return function(...) f(argument, unpack(arg)) end
-end
-
 function toolkit.require_all(directory)
 	local module = {}
 
-	for _, file in ipairs(love.filesystem.getDirectoryItems(directory)) do
+	for _, file in ipairs(toolkit.ls(directory)) do
 		name = string.gsub(file, ".lua", "")
 		module[name] = require(directory .. "." .. name)
 	end
