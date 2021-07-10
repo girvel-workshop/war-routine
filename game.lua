@@ -1,7 +1,7 @@
 local tiny = require("libraries.tiny")
 local inspect = require("libraries.inspect")
 local aspects = tk.require_all("aspects")
-local content = require_all("assets.content")
+local assets = require_all("assets")
 
 local systems = tk.require_all("systems")
 
@@ -30,8 +30,8 @@ function love.load()
           return 0
         end
 
-        tiny.add(world, { -- TODO to content
-          sprite = content.sprites.shell,
+        tiny.add(world, { -- TODO to assets
+          sprite = assets.sprites.shell,
           position = entity.position
           + (entity.fire_source 
              + (tk.vector:new(math.random(), math.random()) * 2 - tk.vector:one()) * 15
@@ -39,8 +39,8 @@ function love.load()
           rotation = entity.rotation + 60 * (math.random() * 2 - 1)
         })
 
-        tiny.add(world, { -- TODO to content
-          sprite = content.sprites.bullet,
+        tiny.add(world, { -- TODO to assets
+          sprite = assets.sprites.bullet,
           position = entity.position + entity.fire_source:rotated(entity.rotation),
           rotation = entity.rotation,
           velocity = tk.vector.left():rotated(entity.rotation) * 1000
@@ -56,7 +56,7 @@ function love.load()
         end
 
         tiny.add(world, {
-          sprite = content.sprites.magazine,
+          sprite = assets.sprites.magazine,
           position = entity.position 
           + (entity.fire_source 
              + tk.vector:new(math.random() * 2 - 1, math.random() * 2 - 1) * 15
@@ -73,7 +73,7 @@ function love.load()
     disarm = aspects.action:new("disarm", "armed", "normal", nil, {start = function(entity) return entity.arming_time end})
   }
 
-  mc = tk.copy(content.units.soldier)
+  mc = tk.copy(assets.units.soldier)
 
   controller = {
     controls = mc,

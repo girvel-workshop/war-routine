@@ -1,8 +1,8 @@
-local sprites = require "assets.content.sprites"
-local animations = require "assets.content.animations"
-local weapons = require_all("assets.content.weapons")
+local sprites = require_all("assets.sprites")
+local animations = require_all("assets.animations")
+local weapons = require_all("assets.weapons")
 
-return tk.concat(require "assets.content.abstract.character", {
+return tk.concat(require "assets.units.abstract.character", {
   sprite = sprites.soldier_normal,
   cluster = {
     normal = sprites.soldier_normal,

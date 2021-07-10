@@ -1,4 +1,4 @@
-return tk.concat(require "assets.content.abstract.unit", {
+return tk.concat(require "assets.units.abstract.unit", {
   speed = 250,
   run_multiplier = 1.5,
   stamina = tk.limited:new(5),
