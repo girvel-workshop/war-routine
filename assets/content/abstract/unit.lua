@@ -1,5 +1,4 @@
-return {
-	position = tk.vector:zero(),
-  velocity = tk.vector:zero(),
-  rotation = 0
-}
+return tk.concat(require "assets.content.abstract.physical", {
+	action = false,
+  animation = false
+})

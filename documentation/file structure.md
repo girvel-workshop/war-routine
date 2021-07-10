@@ -1,8 +1,8 @@
  - aspects/       -- modules w/ internal functionality
  - assets/        -- game assets
    - animations/
-   - sprites/
    - content/
+   - sprites/
  - bin/           -- project binaries
  - build/         -- build system
  - documentation/ -- project documentation

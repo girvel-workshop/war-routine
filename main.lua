@@ -1,4 +1,5 @@
-require_all = (require "libraries.girvel_toolkit").require_all
+tk = require "libraries.girvel_toolkit"
+require_all = tk.require_all
 
 if arg[2] == "test" then
 	arg = {}

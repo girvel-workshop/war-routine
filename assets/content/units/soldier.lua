@@ -1,6 +1,5 @@
 local sprites = require "assets.content.sprites"
 local animations = require "assets.content.animations"
-local tk = require "libraries.girvel_toolkit"
 local weapons = require_all("assets.content.weapons")
 
 return tk.concat(require "assets.content.abstract.character", {

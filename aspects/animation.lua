@@ -15,9 +15,4 @@ function animation:new(name)
 	return obj
 end
 
-function animation:animate(entity, duration)
-	entity.animation = tk.copy(self)
-	entity.animation.duration = tk.limited:new(duration)
-end
-
 return animation

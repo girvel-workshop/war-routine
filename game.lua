@@ -1,5 +1,4 @@
 local tiny = require("libraries.tiny")
-local tk = require("libraries.girvel_toolkit")
 local inspect = require("libraries.inspect")
 local aspects = tk.require_all("aspects")
 local content = require_all("assets.content")
