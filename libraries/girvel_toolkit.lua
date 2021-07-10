@@ -2,6 +2,14 @@ require("love.filesystem")
 
 local toolkit = {}
 
+function toolkit.startswith(str, prefix)
+	return str:sub(1, #prefix) == prefix
+end
+
+function toolkit.endswith(str, postfix)
+	return postfix == "" or str:sub(-#postfix) == postfix
+end
+
 function toolkit.copy(t) -- TODO copy non-table values
 	if t == nil then return nil end
 
@@ -23,14 +31,20 @@ function toolkit.concat(table1, table2)
 end
 
 function toolkit.require_all(directory)
-	path = directory:gsub("%.", "/")
+	path = directory:gsub("%.", "/")	
   if not love.filesystem.getInfo(path) then return end
   
   local module = {}
   
   for _, file in ipairs(love.filesystem.getDirectoryItems(path)) do
+  	if file == "_representation.lua" then
+  		return require(directory .. "._representation")
+  	end
+
     if love.filesystem.getInfo(directory:gsub("%.", "/") .. "/" .. file, 'file') then
-      module[file:gsub(".lua", "")] = require(directory .. "." .. file:gsub(".lua", ""))
+  		if tk.endswith(file, '.lua') then
+      	module[file:gsub(".lua", "")] = require(directory .. "." .. file:gsub(".lua", ""))
+      end
     else
       module[file] = toolkit.require_all(directory .. "." .. file)
     end
