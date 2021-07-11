@@ -1,5 +1,5 @@
 return {
-	position = tk.vector:zero(),
-  velocity = tk.vector:zero(),
+	position = vector:zero(),
+  velocity = vector:zero(),
   rotation = 0
 }

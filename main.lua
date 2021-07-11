@@ -1,4 +1,7 @@
-tk = require "libraries.girvel_toolkit"
+tk = require "libraries.girvel.toolkit"
+fnl = require "libraries.girvel.functional"
+vector = require "libraries.girvel.vector"
+
 require_all = tk.require_all
 
 if arg[2] == "test" then

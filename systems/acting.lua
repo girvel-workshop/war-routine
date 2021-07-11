@@ -1,5 +1,4 @@
 tiny = require("libraries.tiny")
-tk = require("libraries.girvel_toolkit")
 
 local acting = tiny.processingSystem()
 acting.filter = tiny.requireAll("action")

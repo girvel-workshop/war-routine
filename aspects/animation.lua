@@ -1,5 +1,4 @@
-fs = require("love.filesystem")
-tk = require("libraries.girvel_toolkit")
+local fs = require("love.filesystem")
 
 local animation = {}
 

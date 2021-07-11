@@ -1,6 +1,7 @@
 require 'busted.runner'()
 local inspect = require "libraries.inspect"
-local tk = require "libraries.girvel_toolkit"
+local tk = require "libraries.girvel.toolkit"
+local fnl = require "libraries.girvel.functional"
 
 describe("my own lua framework", function()
   describe("endswith function", function()
@@ -58,7 +59,7 @@ describe("my own lua framework", function()
         1, 2, 3, 4, 5
       }
 
-      assert.are.same({1, 3, 5}, tk.filter(t, function(x) return x % 2 == 1 end))
+      assert.are.same({1, 3, 5}, fnl.filter(t, function(x) return x % 2 == 1 end))
     end)
   end)
 

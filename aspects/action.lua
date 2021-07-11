@@ -1,5 +1,3 @@
-tl = require "libraries.girvel_toolkit"
-
 local action = {}
 
 function action:new(name, starting_state, ending_state, animation, event_container)

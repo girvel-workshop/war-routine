@@ -23,6 +23,16 @@ function toolkit.copy(t) -- TODO copy non-table values
 	return setmetatable(u, getmetatable(t))
 end
 
+function toolkit.filter(t, predicate)
+	result = {}
+	for _, v in pairs(t) do
+		if predicate(v) then
+			table.insert(result, v)
+		end
+	end
+	return result
+end
+
 function toolkit.concat(table1, table2)
 	result = toolkit.copy(table1)
 	for k, v in pairs(table2) do
@@ -46,7 +56,7 @@ function toolkit.require_all(directory, parent_represent)
 
   local items = love.filesystem.getDirectoryItems(path)
 
-  local represent = #tk.filter(items, function(value) return value == "_representation.lua" end) > 0 
+  local represent = #fnl.filter(items, function(value) return value == "_representation.lua" end) > 0 
   	and require(directory .. "._representation")
   	or parent_represent or default_represent
   
@@ -119,6 +129,62 @@ end
 
 function toolkit.limited:fraction()
 	return (self.limit - self.value) / (self.limit - self.lower_limit)
+end
+
+toolkit.vector = {}
+
+function toolkit.vector:new(x, y)
+	local v={x=x, y=y}
+	setmetatable(v, self)
+	self.__index = self
+	return v
+end
+
+function toolkit.vector:rotated(angle)
+	return toolkit.vector:new(
+		math.cos(angle) * self.x - math.sin(angle) * self.y, 
+		math.sin(angle) * self.x + math.cos(angle) * self.y
+	)	
+end
+
+function toolkit.vector:unpack()
+	return self.x, self.y
+end
+
+function toolkit.vector.__unm(v)
+	return v * -1
+end
+
+function toolkit.vector.__add(v, u)
+	return toolkit.vector:new(v.x + u.x, v.y + u.y)
+end	
+
+function toolkit.vector.__sub(v, u)
+	return v + -u
+end
+
+function toolkit.vector.__mul(v, k)
+	return toolkit.vector:new(v.x * k, v.y * k)
+end
+
+function toolkit.vector.__div(v, k)
+	return v * (1 / k)
+end
+
+function toolkit.vector:zero()
+	return toolkit.vector:new(0, 0)
+end
+
+function toolkit.vector:right()
+	return toolkit.vector:new(1, 0)
+end
+
+function toolkit.vector:left()
+	return toolkit.vector:new(-1, 0)
+end
+
+function toolkit.vector:one()
+  return toolkit.vector:new(1, 1)
 end
 
 return toolkit

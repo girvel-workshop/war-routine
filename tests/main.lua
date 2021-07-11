@@ -1,1 +1,1 @@
-require "tests.libraries.girvel_toolkit"
+require "tests.libraries.girvel"
