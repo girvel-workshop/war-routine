@@ -1,4 +1,5 @@
 require("love.filesystem")
+local inspect = require "libraries.inspect"
 
 local toolkit = {}
 
@@ -22,6 +23,16 @@ function toolkit.copy(t) -- TODO copy non-table values
 	return setmetatable(u, getmetatable(t))
 end
 
+function toolkit.filter(t, predicate)
+	result = {}
+	for _, v in pairs(t) do
+		if predicate(v) then
+			table.insert(result, v)
+		end
+	end
+	return result
+end
+
 function toolkit.concat(table1, table2)
 	result = toolkit.copy(table1)
 	for k, v in pairs(table2) do
@@ -30,24 +41,35 @@ function toolkit.concat(table1, table2)
 	return result
 end
 
-function toolkit.require_all(directory)
-	path = directory:gsub("%.", "/")	
+local default_represent = {
+	repr = function(path)
+		return require(path:gsub(".lua", ""):gsub("/", "."))
+	end,
+	extension = "lua"
+}
+
+function toolkit.require_all(directory, parent_represent)
+	local path = directory:gsub("%.", "/")
   if not love.filesystem.getInfo(path) then return end
   
   local module = {}
-  
-  for _, file in ipairs(love.filesystem.getDirectoryItems(path)) do
-  	if file == "_representation.lua" then
-  		return require(directory .. "._representation")
-  	end
 
-    if love.filesystem.getInfo(directory:gsub("%.", "/") .. "/" .. file, 'file') then
-  		if tk.endswith(file, '.lua') then
-      	module[file:gsub(".lua", "")] = require(directory .. "." .. file:gsub(".lua", ""))
-      end
-    else
-      module[file] = toolkit.require_all(directory .. "." .. file)
-    end
+  local items = love.filesystem.getDirectoryItems(path)
+
+  local represent = #tk.filter(items, function(value) return value == "_representation.lua" end) > 0 
+  	and require(directory .. "._representation")
+  	or parent_represent or default_represent
+  
+  for _, file in ipairs(items) do
+  	if not toolkit.startswith(file, "_") then
+  		local value = nil
+  		if tk.endswith(file, "." .. represent.extension) then
+  			value = represent.repr(path .. "/" .. file)
+  		elseif not love.filesystem.getInfo(path .. "/" .. file, 'file') then
+  			value = toolkit.require_all(path:gsub("/", ".") .. "." .. file, represent)
+  		end
+  		module[file:gsub("%.[%w%d]*", "")] = value
+  	end
   end
 
   return module

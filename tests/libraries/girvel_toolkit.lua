@@ -1,6 +1,6 @@
 require 'busted.runner'()
-inspect = require "libraries.inspect"
-tk = require "libraries.girvel_toolkit"
+local inspect = require "libraries.inspect"
+local tk = require "libraries.girvel_toolkit"
 
 describe("my own lua framework", function()
   describe("endswith function", function()
@@ -52,6 +52,16 @@ describe("my own lua framework", function()
     end)
   end)
 
+  describe("filter function", function()
+    it("should filter tables into other tables", function()
+      local t = {
+        1, 2, 3, 4, 5
+      }
+
+      assert.are.same({1, 3, 5}, tk.filter(t, function(x) return x % 2 == 1 end))
+    end)
+  end)
+
   describe("require all function", function()
     it("should import all modules from directory", function()
       local parent = tk.require_all("tests.libraries.sample1")
@@ -66,11 +76,11 @@ describe("my own lua framework", function()
       assert.is_true(parent.child.sample)
     end)
 
-    it("should use _representation.lua if possible", function()
+    it("should recursively use _representation.lua if possible", function()
       local parent = tk.require_all("tests.libraries.sample3")
 
-      assert.are.equal("Hello, world!", parent)
-      assert.is_nil(parent.a)
+      assert.are.equal(1, parent.a)
+      assert.are.same({b = 1}, parent.b)
     end)
   end)
 end)

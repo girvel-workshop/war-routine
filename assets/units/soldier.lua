@@ -3,11 +3,8 @@ local animations = require_all("assets.animations")
 local weapons = require_all("assets.weapons")
 
 return tk.concat(require "assets.units.abstract.character", {
-  sprite = sprites.soldier_normal,
-  cluster = {
-    normal = sprites.soldier_normal,
-    armed = sprites.soldier_armed
-  },
+  sprite = sprites.soldier.normal,
+  cluster = sprites.soldier,
   animations = {
     fire = animations.soldier_fire
   },
