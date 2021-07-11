@@ -1,14 +1,14 @@
 local tiny = require("libraries.tiny")
 local inspect = require("libraries.inspect")
-local aspects = tk.require_all("aspects")
+local aspects = require_all("aspects")
 local assets = require_all("assets")
 
-local systems = tk.require_all("systems")
+local systems = require_all("systems")
 
 math.randomseed(os.time())
 
 function love.load()
-  window_size = tk.vector:new(
+  window_size = vector:new(
     love.graphics.getWidth(),
     love.graphics.getHeight()
   )
@@ -73,7 +73,7 @@ function love.update(dt)
 
   -- MOVEMENT
 
-  mc.velocity = tk.vector:zero()
+  mc.velocity = vector:zero()
 
   if love.keyboard.isDown("w") then -- TODO REFACTOR
     mc.velocity.y = -mc.speed

@@ -1,4 +1,4 @@
-vector = {}
+local vector = {}
 
 function vector:new(x, y)
 	local v={x=x, y=y}
