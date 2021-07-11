@@ -6,8 +6,8 @@ return (require "aspects.action"):new("fire", "armed", "armed", "fire", {
       return 0
     end
 
-    game:add(units.shell):put(entity)
-    game:add(units.bullet):fire(entity)
+    game:add(units.items.shell):put(entity)
+    game:add(units.items.bullet):fire(entity)
 
     return entity.weapon.fire_time
   end

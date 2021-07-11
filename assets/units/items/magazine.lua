@@ -1,5 +1,5 @@
 return tk.concat(require "assets.units.abstract.physical", {
-	sprite = require_all("assets.sprites").magazine,
+	sprite = require_all("assets.sprites").items.magazine,
 	put = function(self, parent)
 		self.position = parent.position 
 	    + (parent.fire_source 

@@ -1,5 +1,5 @@
 return tk.concat(require "assets.units.abstract.physical", {
-	sprite = require_all("assets.sprites").bullet,
+	sprite = require_all("assets.sprites").items.bullet,
 	fire = function(self, parent)
 		self.position = parent.position + parent.fire_source:rotated(parent.rotation)
     self.rotation = parent.rotation

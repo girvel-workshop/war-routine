@@ -33,9 +33,9 @@ function love.load()
 
   -- PRESETS
 
-  mc = tk.copy(assets.units.soldier)
+  mc = game:add(assets.units.characters.soldier)
 
-  controller = {
+  controller = { -- TODO :use_map
     controls = mc,
     keyboard_map = {
       q = {assets.actions.arm, assets.actions.disarm},
@@ -53,7 +53,6 @@ function love.load()
   }
 
   tiny.add(world, camera)
-  tiny.add(world, mc)
 end
 
 function love.update(dt)
