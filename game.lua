@@ -37,14 +37,27 @@ function love.load()
 
   controller = { -- TODO :use_map
     controls = mc,
-    keyboard_map = {
-      q = {assets.actions.arm, assets.actions.disarm},
-      r = {assets.actions.reload}
-    },
-    mouse_map = {
-      [1] = {assets.actions.fire}
+    maps = {
+      keypressed = {
+        q = {assets.actions.arm, assets.actions.disarm},
+        r = {assets.actions.reload}
+      },
+      mousepressed = {
+        [1] = {assets.actions.fire}
+      }
     }
   }
+
+  function controller:use_map(map, key)
+    local actions = controller.maps[map][key]
+    if not actions then return end
+    
+    for _, action in ipairs(actions) do
+      if action:order(controller.controls) then
+        return
+      end
+    end
+  end
 
   camera = {
     follows = controller.controls,
@@ -90,27 +103,11 @@ function love.update(dt)
 end
 
 function love.keypressed(key)
-  local a = controller.keyboard_map[key]
-  if not a then return end
-  
-  for _, action in ipairs(a) do -- TODO unify
-    if controller.controls.cluster[action.starting_state] == controller.controls.sprite then
-      action:order(controller.controls) 
-      break
-    end
-  end
+  controller:use_map("keypressed", key)
 end
 
 function love.mousepressed(x, y, button, istouch)
-  local a = controller.mouse_map[button]
-  if not a then return end
-  
-  for _, action in ipairs(a) do
-    if controller.controls.cluster[action.starting_state] == controller.controls.sprite then
-      action:order(controller.controls) 
-      break
-    end
-  end
+  controller:use_map("mousepressed", button)
 end
 
 function love.draw()
