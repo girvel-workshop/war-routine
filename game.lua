@@ -18,7 +18,8 @@ function love.load()
     systems.drawing,
     systems.moving,
     systems.following,
-    systems.acting
+    systems.acting,
+    systems.looking
   )
 
   game = {
@@ -34,6 +35,7 @@ function love.load()
   -- PRESETS
 
   mc = game:add(assets.units.characters.soldier)
+  mc.look = function() return camera.position - camera.anchor + vector:new(love.mouse.getPosition()) end
 
   controller = { -- TODO :use_map
     controls = mc,
@@ -45,19 +47,18 @@ function love.load()
       mousepressed = {
         [1] = {assets.actions.fire}
       }
-    }
-  }
-
-  function controller:use_map(map, key)
-    local actions = controller.maps[map][key]
-    if not actions then return end
-    
-    for _, action in ipairs(actions) do
-      if action:order(controller.controls) then
-        return
+    },
+    use_map = function(self, map, key)
+      local actions = controller.maps[map][key]
+      if not actions then return end
+      
+      for _, action in ipairs(actions) do
+        if action:order(controller.controls) then
+          return
+        end
       end
     end
-  end
+  }
 
   camera = {
     follows = controller.controls,
@@ -98,8 +99,8 @@ function love.update(dt)
 
   -- MOUSE
 
-  local mx, my = love.mouse.getPosition()
-  mc.rotation = math.atan2(window_size.y / 2 - my, window_size.x / 2 - mx)
+  -- local mx, my = love.mouse.getPosition()
+  -- mc.rotation = math.atan2(window_size.y / 2 - my, window_size.x / 2 - mx)
 end
 
 function love.keypressed(key)
