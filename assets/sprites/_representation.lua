@@ -1,2 +1,4 @@
-local aspects = require_all("aspects")
-return aspects.container:new("assets/sprites", "png", love.graphics.newImage)
+return { -- TODO to class
+	repr = love.graphics.newImage,
+	extension = "png"
+}
