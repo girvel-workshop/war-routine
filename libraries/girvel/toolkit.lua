@@ -48,7 +48,7 @@ local default_represent = {
 	extension = "lua"
 }
 
-function toolkit.require_all(directory, parent_represent)
+function toolkit.require_all(directory, parent_represent) -- TODO cache
 	local path = directory:gsub("%.", "/")
   if not love.filesystem.getInfo(path) then return end
   

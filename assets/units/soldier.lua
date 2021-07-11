@@ -9,5 +9,5 @@ return tk.concat(require "assets.units.abstract.character", {
     fire = animations.soldier_fire
   },
   weapon = weapons.default,
-  fire_source = tk.vector:new(-54, -16)
+  fire_source = vector:new(-54, -16)
 })
