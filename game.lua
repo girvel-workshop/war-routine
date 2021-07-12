@@ -37,7 +37,7 @@ function love.load()
   mc = game:add(assets.units.characters.soldier)
   mc.look = function() return camera.position - camera.anchor + vector:new(love.mouse.getPosition()) end
 
-  controller = { -- TODO :use_map
+  controller = {
     controls = mc,
     maps = {
       keypressed = {
@@ -96,11 +96,6 @@ function love.update(dt)
   else
     mc.stamina:move(dt)
   end
-
-  -- MOUSE
-
-  -- local mx, my = love.mouse.getPosition()
-  -- mc.rotation = math.atan2(window_size.y / 2 - my, window_size.x / 2 - mx)
 end
 
 function love.keypressed(key)
