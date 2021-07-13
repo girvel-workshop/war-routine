@@ -35,7 +35,7 @@ function love.load()
   -- PRESETS
 
   mc = game:add(assets.units.characters.soldier)
-  mc.look = function() return camera.position - camera.anchor + vector:new(love.mouse.getPosition()) end
+  -- mc.look = function() return camera.position - camera.anchor + vector:new(love.mouse.getPosition()) end
   mc.follows = game:add(mc.legs)
   mc.legs = mc.follows
 
@@ -62,13 +62,11 @@ function love.load()
     end
   }
 
-  camera = {
+  camera = game:add({
     follows = controller.controls,
     position = controller.controls.position,
     anchor = window_size / 2,
-  }
-
-  tiny.add(world, camera)
+  })
 end
 
 function love.update(dt)
@@ -79,20 +77,17 @@ function love.update(dt)
   mc.legs.velocity = vector:zero()
 
   if love.keyboard.isDown("w") then -- TODO REFACTOR
-    mc.legs.velocity.y = -mc.legs.speed
+    mc.legs.velocity = vector:left():rotated(mc.rotation) * mc.legs.speed
     assets.actions.move:order(mc.legs)
   end
   if love.keyboard.isDown("s") then
-    mc.legs.velocity.y = mc.legs.speed
-    assets.actions.move:order(mc.legs)
+    mc.legs.velocity = -vector:left():rotated(mc.rotation) * mc.legs.speed
   end
   if love.keyboard.isDown("a") then
-    mc.legs.velocity.x = -mc.legs.speed
-    assets.actions.move:order(mc.legs)
+    mc.rotation = mc.rotation - mc.rotation_speed * dt
   end
   if love.keyboard.isDown("d") then
-    mc.legs.velocity.x = mc.legs.speed
-    assets.actions.move:order(mc.legs)
+    mc.rotation = mc.rotation + mc.rotation_speed * dt
   end
 
   if love.keyboard.isDown("lshift") then 

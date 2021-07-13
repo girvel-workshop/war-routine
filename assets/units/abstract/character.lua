@@ -7,6 +7,7 @@ return tk.concat(require "assets.units.abstract.unit", {
   },
   legs = require "assets.units.legs",
   follows = false,
+  rotation_speed = 2 * math.pi * 1,
 
   layer = require("assets.config.layers").character
 })
