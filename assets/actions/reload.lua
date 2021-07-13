@@ -1,6 +1,6 @@
 local units = require_all("assets.units")
 
-return (require "aspects.action"):new("reload", "armed", "armed", nil, {
+return (require "aspects.action"):new("reload", "armed", "armed", "reload", {
   start = function(entity)
     if entity.weapon.bullets_other <= 0 then
       return 0
