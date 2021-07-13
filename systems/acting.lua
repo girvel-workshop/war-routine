@@ -7,7 +7,9 @@ function acting:process(entity, dt)
 	if entity.action == false then return end
 
 	if entity.action.duration == nil then
-		entity.action.duration = tk.limited:new(entity.action.event_container.start(entity))
+		entity.action.duration = tk.limited:new(entity.action.event_container.start
+			and entity.action.event_container.start(entity)
+			 or entity.skills[entity.action.name])
 	end
 
 	if not entity.action.duration:move(-dt) then
@@ -23,11 +25,13 @@ function acting:process(entity, dt)
     	entity.action.event_container.update(entity, dt)
   	end
 
-  	if entity.action.animation then 
-  		local fr = entity.action.duration:fraction()
-  		local animation = entity.animations[entity.action.animation]
+  	if entity.action.name then 
+  		local animation = entity.animations[entity.action.name]
+  		if animation then 
+	  		local fr = entity.action.duration:fraction()
 
-			entity.sprite = animation.frames[math.ceil(fr * #animation.frames)]
+				entity.sprite = animation.frames[math.ceil(fr * #animation.frames)]
+			end
   	end
   end
 end
