@@ -3,5 +3,7 @@ return tk.concat(require "assets.units.abstract.unit", {
   reload_time = 1.5,
   arming_time = 1.3,
   legs = require "assets.units.legs",
-  follows = false
+  follows = false,
+
+  layer = require("assets.config.layers").character
 })

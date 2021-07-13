@@ -4,5 +4,6 @@ return {
   rotation = 0,
 
   sprite = false,
+  layer = 0,
   cluster = {}
 }

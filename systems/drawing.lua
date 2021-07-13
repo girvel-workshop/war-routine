@@ -1,8 +1,12 @@
 tiny = require("libraries.tiny")
 sprite = require("aspects.sprite")
 
-local drawing = tiny.processingSystem({drawing_system_flag = true})
+local drawing = tiny.sortedProcessingSystem({drawing_system_flag = true})
 drawing.filter = tiny.requireAll("sprite", "position")
+
+function drawing:compare(e1, e2)
+	return e1.layer < e2.layer
+end
 
 function drawing:preProcess(_)
 	love.graphics.setBackgroundColor(.75, .75, .75)
