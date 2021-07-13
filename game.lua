@@ -80,15 +80,19 @@ function love.update(dt)
 
   if love.keyboard.isDown("w") then -- TODO REFACTOR
     mc.legs.velocity.y = -mc.legs.speed
+    assets.actions.move:order(mc.legs)
   end
   if love.keyboard.isDown("s") then
     mc.legs.velocity.y = mc.legs.speed
+    assets.actions.move:order(mc.legs)
   end
   if love.keyboard.isDown("a") then
     mc.legs.velocity.x = -mc.legs.speed
+    assets.actions.move:order(mc.legs)
   end
   if love.keyboard.isDown("d") then
     mc.legs.velocity.x = mc.legs.speed
+    assets.actions.move:order(mc.legs)
   end
 
   if love.keyboard.isDown("lshift") then 

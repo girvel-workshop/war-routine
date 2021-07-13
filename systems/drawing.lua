@@ -8,13 +8,15 @@ function drawing:preProcess(_)
 	love.graphics.setBackgroundColor(.75, .75, .75)
 end
 
-function drawing:process(e, _)
-	local anchor = sprite.get_anchor(e)
+function drawing:process(entity, _)
+	if not entity.sprite then return end
+
+	local anchor = sprite.get_anchor(entity)
 
 	love.graphics.draw(
-		e.sprite,
-		e.position.x, e.position.y,
-		e.rotation, 
+		entity.sprite,
+		entity.position.x, entity.position.y,
+		entity.rotation, 
 		1, 1, 
 		anchor:unpack()
 	)
