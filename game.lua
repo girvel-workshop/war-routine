@@ -36,6 +36,8 @@ function love.load()
 
   mc = game:add(assets.units.characters.soldier)
   mc.look = function() return camera.position - camera.anchor + vector:new(love.mouse.getPosition()) end
+  mc.follows = game:add(mc.legs)
+  mc.legs = mc.follows
 
   controller = {
     controls = mc,
@@ -74,24 +76,24 @@ function love.update(dt)
 
   -- MOVEMENT
 
-  mc.velocity = vector:zero()
+  mc.legs.velocity = vector:zero()
 
   if love.keyboard.isDown("w") then -- TODO REFACTOR
-    mc.velocity.y = -mc.speed
+    mc.legs.velocity.y = -mc.legs.speed
   end
   if love.keyboard.isDown("s") then
-    mc.velocity.y = mc.speed
+    mc.legs.velocity.y = mc.legs.speed
   end
   if love.keyboard.isDown("a") then
-    mc.velocity.x = -mc.speed
+    mc.legs.velocity.x = -mc.legs.speed
   end
   if love.keyboard.isDown("d") then
-    mc.velocity.x = mc.speed
+    mc.legs.velocity.x = mc.legs.speed
   end
 
   if love.keyboard.isDown("lshift") then 
     if mc.stamina:move(-dt) then
-      mc.velocity = mc.velocity * mc.run_multiplier
+      mc.legs.velocity = mc.legs.velocity * mc.legs.run_multiplier
     end
   else
     mc.stamina:move(dt)

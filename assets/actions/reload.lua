@@ -6,11 +6,12 @@ return (require "aspects.action"):new("reload", "armed", "armed", "reload", {
       return 0
     end
 
-    game:add(units.items.magazine):put(entity)
-
     entity.weapon.bullets.value = math.min(entity.weapon.bullets.limit, entity.weapon.bullets_other)
     entity.weapon.bullets_other = entity.weapon.bullets_other - entity.weapon.bullets.value
 
     return entity.reload_time
+  end,
+  stop = function(entity)
+    game:add(units.items.magazine):put(entity)
   end
 })
