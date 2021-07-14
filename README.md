@@ -1,4 +1,4 @@
-(Plans)
+![documentation/diagram.png]
 
 # Eros as a game engine
 

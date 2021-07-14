@@ -20,7 +20,8 @@ function love.load()
     systems.moving,
     systems.following,
     systems.acting,
-    systems.looking
+    systems.looking,
+    systems.death_timing
   )
 
   game = {
@@ -33,11 +34,17 @@ function love.load()
     return result
   end
 
+  function game:remove(entity)
+    tiny.remove(self.world, entity)
+  end
+
   -- PRESETS
 
   mc = game:add(assets.units.characters.soldier)
   mc.follows = game:add(mc.legs)
   mc.legs = mc.follows
+
+  game:add(assets.units.ui.help)
 
   controller = {
     controls = mc,
