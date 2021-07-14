@@ -1,5 +1,5 @@
 tiny = require("libraries.tiny")
-sprite = require("aspects.sprite")
+sprite = require("eros.aspects.sprite")
 
 local drawing = tiny.sortedProcessingSystem({drawing_system_flag = true})
 drawing.filter = tiny.requireAll("sprite", "position")

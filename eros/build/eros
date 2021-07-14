@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 if [[ "$1" == "run" ]]; then
-    game test
+    eros test
     if [[ $? == 1 ]]; then
         read -p "There are failed tests. Do you want to stop run? [y/N] " -n 1 -r
         echo
@@ -12,7 +12,7 @@ if [[ "$1" == "run" ]]; then
 
 	love .
 elif [[ "$1" == "commit" ]]; then
-    game test
+    eros test
     if [[ $? == 1 ]]; then
         read -p "There are failed tests. Do you want to stop commit? [y/N] " -n 1 -r
         echo

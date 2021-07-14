@@ -1,4 +1,4 @@
-return (require "aspects.action"):new("move", nil, nil, {
+return (require "eros.aspects.action"):new("move", nil, nil, {
   start = function(entity)
     return 128 / entity.velocity:magnitude()
   end,
