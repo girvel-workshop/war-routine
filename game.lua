@@ -1,5 +1,6 @@
 local tiny = require("libraries.tiny")
 local inspect = require("libraries.inspect")
+local gamera = require("libraries.gamera")
 local aspects = require_all("aspects")
 local assets = require_all("assets")
 
@@ -35,7 +36,6 @@ function love.load()
   -- PRESETS
 
   mc = game:add(assets.units.characters.soldier)
-  -- mc.look = function() return camera.position - camera.anchor + vector:new(love.mouse.getPosition()) end
   mc.follows = game:add(mc.legs)
   mc.legs = mc.follows
 
@@ -66,6 +66,7 @@ function love.load()
     follows = controller.controls,
     position = controller.controls.position,
     anchor = window_size / 2,
+    gamera = gamera.new(-10000, -10000, 20000, 20000) -- TODO levels
   })
 end
 
@@ -108,7 +109,10 @@ function love.mousepressed(x, y, button, istouch)
 end
 
 function love.draw()
-  love.graphics.translate((camera.anchor - camera.position):unpack()) -- TODO camera system
+  camera.gamera:setPosition(camera.position:unpack())
+  camera.gamera:setAngle(camera.follows.rotation - math.pi / 2)
 
-  world:update(0, tiny.requireAll("drawing_system_flag"))
+  camera.gamera:draw(function(l, t, w, h)
+    world:update(0, tiny.requireAll("drawing_system_flag"))
+  end)
 end

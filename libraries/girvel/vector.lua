@@ -7,6 +7,10 @@ function vector:new(x, y)
 	return v
 end
 
+function vector:magnitude()
+	return (self.x ^ 2 + self.y ^ 2) ^ .5
+end
+
 function vector:rotated(angle)
 	return vector:new(
 		math.cos(angle) * self.x - math.sin(angle) * self.y, 
