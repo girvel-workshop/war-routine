@@ -1,30 +1,57 @@
-#!/usr/bin/bash
+#!/usr/bin/xonsh
 
-if [[ "$1" == "run" ]]; then
-    eros test
-    if [[ $? == 1 ]]; then
-        read -p "There are failed tests. Do you want to stop run? [y/N] " -n 1 -r
+from termcolor import colored
+
+if $ARG1 == "launch": 
+    if ![$ARG0 test].returncode != 0:
+        read -p "There are failed tests. Do you want to stop the launch? [y/N] " -n 1 -r
         echo
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
-            exit 1
-        fi
-    fi
+        if $REPLY in ("Y", "y"):
+            exit(1)
+    print("Launching", colored($(basename $PWD)[:-1], 'red'))
+    love .
 
-	love .
-elif [[ "$1" == "commit" ]]; then
-    eros test
-    if [[ $? == 1 ]]; then
-        read -p "There are failed tests. Do you want to stop commit? [y/N] " -n 1 -r
+if $ARG1 == "commit":
+    if ![love . test].returncode != 0:
+        read -p "There are failed tests. Do you want to stop the commit? [y/N] " -n 1 -r
         echo
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
-            exit 1
-        fi
-    fi
-
+        if $REPLY in ("Y", "y"):
+            exit(1)
     git add .
-    git commit -m "$2"
+    git commit -m $ARG2
     git push origin master
-elif [[ "$1" == "test" ]]; then
-    love . test
-    exit $?
-fi
+
+if $ARG1 == "test":
+    print("Starting tests via", colored("busted", "red"))
+    exit(![love . test].returncode)
+
+
+
+# if [[ "$1" == "run" ]]; then
+#     eros test
+#     if [[ $? == 1 ]]; then
+#         read -p "There are failed tests. Do you want to stop run? [y/N] " -n 1 -r
+#         echo
+#         if [[ $REPLY =~ ^[Yy]$ ]]; then
+#             exit 1
+#         fi
+#     fi
+
+# 	love .
+# elif [[ "$1" == "commit" ]]; then
+#     eros test
+#     if [[ $? == 1 ]]; then
+#         read -p "There are failed tests. Do you want to stop commit? [y/N] " -n 1 -r
+#         echo
+#         if [[ $REPLY =~ ^[Yy]$ ]]; then
+#             exit 1
+#         fi
+#     fi
+
+#     git add .
+#     git commit -m "$2"
+#     git push origin master
+# elif [[ "$1" == "test" ]]; then
+#     love . test
+#     exit $?
+# fi

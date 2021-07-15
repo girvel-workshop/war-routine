@@ -15,6 +15,7 @@ describe("my own lua framework", function()
     it("should check prefixes", function()
       assert.is_true(("hello world"):startswith("hello w"))
       assert.is_false(("hi world"):startswith("dd"))
+      assert.is_true(false)
     end)
   end)
 
