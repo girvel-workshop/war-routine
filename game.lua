@@ -1,6 +1,3 @@
-local tiny = require("libraries.tiny")
-local inspect = require("libraries.inspect")
-local gamera = require("libraries.gamera")
 local aspects = require_all("eros.aspects")
 local assets = require_all("assets")
 
