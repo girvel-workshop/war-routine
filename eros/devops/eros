@@ -12,7 +12,7 @@ if $ARG1 == "launch":
     love .
 
 if $ARG1 == "commit":
-    if ![love . test].returncode != 0:
+    if ![$ARG0 test].returncode != 0:
         read -p "There are failed tests. Do you want to stop the commit? [y/N] " -n 1 -r
         echo
         if $REPLY in ("Y", "y"):
@@ -22,5 +22,11 @@ if $ARG1 == "commit":
     git push origin master
 
 if $ARG1 == "test":
-    print("Starting tests via", colored("busted", "red"))
-    exit(![love . test].returncode)
+    print("Starting", colored("EROS", "red"), "tests via", colored("busted", "red"))
+    result1 = ![love . selftest].returncode
+
+    print("Starting", colored($(basename $PWD)[:-1], 'red'), "tests via", colored("busted", "red"))
+    result2 = ![love . test].returncode
+
+    if result1 * result2:
+        exit(1)

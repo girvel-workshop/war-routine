@@ -9,7 +9,11 @@ tiny = require("eros.libraries.tiny")
 gamera = require("eros.libraries.gamera")
 
 
-if arg[2] == "test" then
+if arg[2] == "selftest" then
+  arg = {}
+  result = pcall(function() require("eros.tests.main") end)
+  love.event.quit(result)
+elseif arg[2] == "test" then
 	arg = {}
 	result = pcall(function() require("tests.main") end)
 	love.event.quit(result)

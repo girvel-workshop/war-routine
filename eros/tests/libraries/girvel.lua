@@ -64,20 +64,20 @@ describe("my own lua framework", function()
 
   describe("require all function", function()
     it("should import all modules from directory", function()
-      local parent = tk.require_all("tests.libraries.sample1")
+      local parent = tk.require_all("eros.tests.libraries.sample1")
 
       assert.is_true(parent.sample1)
       assert.is_false(parent.sample2)
     end)
 
     it("should be recursive", function()
-      local parent = tk.require_all("tests.libraries.sample2")
+      local parent = tk.require_all("eros.tests.libraries.sample2")
 
       assert.is_true(parent.child.sample)
     end)
 
     it("should recursively use _representation.lua if possible", function()
-      local parent = tk.require_all("tests.libraries.sample3")
+      local parent = tk.require_all("eros.tests.libraries.sample3")
 
       assert.are.equal(1, parent.a)
       assert.are.same({b = 1}, parent.b)
