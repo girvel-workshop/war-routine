@@ -12,6 +12,8 @@ return (require "eros.aspects.action"):new("reload", "armed", "armed", {
     return entity.skills.reload
   end,
   stop = function(entity)
-    game:add(units.items.magazine):put(entity)
+    if entity.weapon.bullets_other > 0 then
+      game:add(units.items.magazine):put(entity)
+    end
   end
 })

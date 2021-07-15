@@ -24,34 +24,3 @@ if $ARG1 == "commit":
 if $ARG1 == "test":
     print("Starting tests via", colored("busted", "red"))
     exit(![love . test].returncode)
-
-
-
-# if [[ "$1" == "run" ]]; then
-#     eros test
-#     if [[ $? == 1 ]]; then
-#         read -p "There are failed tests. Do you want to stop run? [y/N] " -n 1 -r
-#         echo
-#         if [[ $REPLY =~ ^[Yy]$ ]]; then
-#             exit 1
-#         fi
-#     fi
-
-# 	love .
-# elif [[ "$1" == "commit" ]]; then
-#     eros test
-#     if [[ $? == 1 ]]; then
-#         read -p "There are failed tests. Do you want to stop commit? [y/N] " -n 1 -r
-#         echo
-#         if [[ $REPLY =~ ^[Yy]$ ]]; then
-#             exit 1
-#         fi
-#     fi
-
-#     git add .
-#     git commit -m "$2"
-#     git push origin master
-# elif [[ "$1" == "test" ]]; then
-#     love . test
-#     exit $?
-# fi
