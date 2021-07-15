@@ -1,5 +1,4 @@
 require("love.filesystem")
-local inspect = require "libraries.inspect"
 
 local toolkit = {}
 

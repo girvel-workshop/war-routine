@@ -1,5 +1,3 @@
-tiny = require("libraries.tiny")
-
 local looking = tiny.processingSystem()
 looking.filter = tiny.requireAll("look")
 

@@ -1,5 +1,3 @@
-tiny = require("libraries.tiny")
-
 local following = tiny.processingSystem()
 following.filter = tiny.requireAll("follows")
 

@@ -1,7 +1,6 @@
 require 'busted.runner'()
-local inspect = require "libraries.inspect"
-local tk = require "libraries.girvel.toolkit"
-local fnl = require "libraries.girvel.functional"
+local tk = require "eros.libraries.girvel.toolkit"
+local fnl = require "eros.libraries.girvel.functional"
 
 describe("my own lua framework", function()
   describe("endswith function", function()
@@ -15,7 +14,6 @@ describe("my own lua framework", function()
     it("should check prefixes", function()
       assert.is_true(("hello world"):startswith("hello w"))
       assert.is_false(("hi world"):startswith("dd"))
-      assert.is_true(false)
     end)
   end)
 

@@ -1,5 +1,3 @@
-tiny = require("libraries.tiny")
-
 local moving = tiny.processingSystem()
 moving.filter = tiny.requireAll("velocity", "position")
 

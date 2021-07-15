@@ -1,5 +1,3 @@
-local vector = require "libraries.girvel.vector"
-
 local drawing = {}
 
 function drawing.get_anchor(entity)

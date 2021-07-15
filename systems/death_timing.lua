@@ -1,5 +1,3 @@
-tiny = require("libraries.tiny")
-
 local death_timing = tiny.sortedProcessingSystem()
 death_timing.filter = tiny.requireAll("death_delay")
 

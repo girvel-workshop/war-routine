@@ -1,5 +1,3 @@
-tiny = require("libraries.tiny")
-
 local acting = tiny.processingSystem()
 acting.filter = tiny.requireAll("action")
 
