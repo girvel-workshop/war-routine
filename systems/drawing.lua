@@ -1,5 +1,3 @@
-local sprite = require("eros.aspects.sprite")
-
 local drawing = tiny.sortedProcessingSystem({drawing_system_flag = true})
 drawing.filter = tiny.requireAll("sprite", "position")
 
@@ -14,7 +12,7 @@ end
 function drawing:process(entity, _)
 	if not entity.sprite then return end
 
-	local anchor = sprite.get_anchor(entity)
+	local anchor = aspects.sprite.get_anchor(entity)
 
 	love.graphics.draw(
 		entity.sprite,

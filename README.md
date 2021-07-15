@@ -5,9 +5,9 @@
 Eros game engine includes:
 
  - *LÖVE* as parent engine
+ - *busted* as testing system
  - *tiny.ecs* as Entity-Component-System framework
  - *eros* as development optimization utility
- - *busted* as testing system
  - *gamera* as camera library
  - *inspect.lua* as debug utility
 
@@ -16,15 +16,15 @@ Eros game engine includes:
 Basic functionality:
 
 ```bash
-eros init
+eros init  # In development
 eros test
 eros launch
-eros build
+eros build  # In development
 eros commit
 ```
 
 Refactoring:
 
 ```bash
-eros move soldier assets/units/soldier
+eros move soldier assets/units/soldier  # In development
 ```

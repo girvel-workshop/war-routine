@@ -5,7 +5,9 @@ EROS PART
 - eros/
   - aspects/     -- modules w/ internal functionality
   - devops/      -- development optimization utilities
-- main.lua       -- main source file
+  - libraries/   -- engine libraries
+  - tests        -- engine unit tests
+- main.lua       -- main engine script
 - conf.lua       -- love2d config file
 
 WAR-ROUTINE PART
@@ -20,9 +22,9 @@ WAR-ROUTINE PART
 - bin/           -- project binaries
 - documentation/ -- project documentation
   - concepts/    -- future features
-- libraries/     -- portable modules
 - systems/       -- ECS systems declaration
-- main.lua       -- main source file
+- tests/         -- game unit tests
+- game.lua       -- main source file
 - conf.lua       -- love2d config file
 - README.md      -- readme file
 
