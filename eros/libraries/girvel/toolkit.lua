@@ -10,6 +10,14 @@ function string:endswith(postfix)
 	return postfix == "" or self:sub(-#postfix) == postfix
 end
 
+function toolkit.values(t)
+	result = {}
+	for k, v in pairs(t) do
+		table.insert(result, v)
+	end
+	return result
+end
+
 function toolkit.copy(t) -- TODO copy non-table values
 	if t == nil then return nil end
 
