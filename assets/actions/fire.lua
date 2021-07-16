@@ -5,6 +5,8 @@ return (require "eros.aspects.action"):new("fire", "armed", "armed", {
     if not entity.weapon.bullets:move(-1) then
       return 0
     end
+    
+    assets.sounds.fire:play()
 
     game:add(units.items.shell):put(entity)
     game:add(units.items.bullet):fire(entity)

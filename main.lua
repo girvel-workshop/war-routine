@@ -8,6 +8,8 @@ inspect = require("eros.libraries.inspect")
 tiny = require("eros.libraries.tiny")
 gamera = require("eros.libraries.gamera")
 
+require("eros.libraries.tesound")
+
 
 if arg[2] == "selftest" then
   arg = {}
@@ -72,6 +74,7 @@ else
   end
 
   function love.update(dt)
+    TEsound.cleanup()
     game.world:update(dt, tiny.rejectAll("drawing_system_flag"))
 
     local subj = game.controller.controls

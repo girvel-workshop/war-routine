@@ -26,7 +26,6 @@ function acting:process(entity, dt)
   	end
 
   	if was_more_than_half and entity.action.duration:fraction() <= 0.5 then
-  		print(1)
   		local half = entity.action.event_container.half
   		if half then
   			half(entity)
