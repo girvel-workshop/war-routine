@@ -135,7 +135,7 @@ function toolkit.limited:is_min()
 end
 
 function toolkit.limited:fraction()
-	return (self.limit - self.value) / (self.limit - self.lower_limit)
+	return (self.value - self.lower_limit) / (self.limit - self.lower_limit)
 end
 
 return toolkit

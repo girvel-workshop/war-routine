@@ -10,6 +10,8 @@ function acting:process(entity, dt)
 			 or entity.skills[entity.action.name])
 	end
 
+	local was_more_than_half = entity.action.duration:fraction() > 0.5
+
 	if not entity.action.duration:move(-dt) then
     entity.sprite = entity.cluster[entity.action.ending_state]
     
@@ -23,10 +25,18 @@ function acting:process(entity, dt)
     	entity.action.event_container.update(entity, dt)
   	end
 
+  	if was_more_than_half and entity.action.duration:fraction() <= 0.5 then
+  		print(1)
+  		local half = entity.action.event_container.half
+  		if half then
+  			half(entity)
+  		end
+  	end
+
   	if entity.action.name then 
   		local animation = entity.animations[entity.action.name]
   		if animation then 
-	  		local fr = entity.action.duration:fraction()
+	  		local fr = 1 - entity.action.duration:fraction()
 
 				entity.sprite = animation.frames[math.ceil(fr * #animation.frames)]
 			end
