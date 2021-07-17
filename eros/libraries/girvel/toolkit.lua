@@ -18,16 +18,35 @@ function toolkit.values(t)
 	return result
 end
 
-function toolkit.copy(t) -- TODO copy non-table values
+function toolkit.remove(table_, value)
+	for i, v in ipairs(table_) do
+		if v == value then
+			table.remove(table_, i)
+			return true
+		end
+	end
+	return false
+end
+
+function toolkit.copy(t, cache) -- TODO copy non-table values
 	if t == nil then return nil end
+
+	if type(t) ~= "table" then return t end
+	if not cache then cache = {} end
+	if cache[t] then return cache[t] end
 
 	if t.copy ~= nil then
 		return t:copy()
 	end
 
 	local u = {}
-	for k, v in pairs(t) do u[k] = v end
-	return setmetatable(u, getmetatable(t))
+	for k, v in pairs(t) do 
+		u[k] = toolkit.copy(v, cache) 
+	end
+
+	local result = setmetatable(u, getmetatable(t))
+	cache[t] = result
+	return result
 end
 
 function toolkit.filter(t, predicate)

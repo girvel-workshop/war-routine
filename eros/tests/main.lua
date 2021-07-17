@@ -1,1 +1,1 @@
-require "eros.tests.libraries.girvel"
+require "eros.tests.libraries.girvel.toolkit"

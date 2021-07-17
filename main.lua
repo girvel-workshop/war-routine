@@ -22,6 +22,7 @@ elseif arg[2] == "test" then
 else
   function love.load()
   	math.randomseed(os.time())
+    love.physics.setMeter(125)
 
   	window_size = vector:new(
       love.graphics.getWidth(),
@@ -35,9 +36,19 @@ else
       add = function(self, prototype)
         result = tk.copy(prototype)
         tiny.add(self.world, result)
+
+        if result.radius then
+          table.insert(self.physics_subjects, result)
+          result.collision_with = false
+        end
+        
         return result
       end,
       remove = function(self, entity)
+        if entity.radius then
+          tk.remove(self.physics_subjects, entity)
+        end
+
         tiny.remove(self.world, entity)
       end,
 
@@ -53,7 +64,9 @@ else
   	        end
   	      end
   	    end
-      }
+      },
+
+      physics_subjects = {}
     }
 
     game.camera = game:add({
@@ -74,6 +87,18 @@ else
   end
 
   function love.update(dt)
+    -- for _, object in ipairs(game.physics_subjects) do 
+
+    for i, object1 in ipairs(game.physics_subjects) do
+      for j, object2 in ipairs(game.physics_subjects) do -- TODO optimize
+        if i ~= j and (object1.position - object2.position):magnitude() <= object1.radius + object2.radius then
+          object1.collision_with = object2
+          object2.collision_with = object1
+        end
+      end
+    end
+
+
     TEsound.cleanup()
     game.world:update(dt, tiny.rejectAll("drawing_system_flag"))
 
