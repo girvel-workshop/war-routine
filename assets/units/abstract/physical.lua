@@ -1,4 +1,6 @@
-return {
+return tk.concat(require("assets.units.abstract.entity"), {
+  name = "abstract.physical",
+
 	position = vector:zero(),
   velocity = vector:zero(),
   rotation = 0,
@@ -6,4 +8,4 @@ return {
   sprite = false,
   layer = 0,
   cluster = {}
-}
+})

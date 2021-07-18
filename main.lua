@@ -10,6 +10,8 @@ gamera = require("eros.libraries.gamera")
 
 require("eros.libraries.tesound")
 
+aspects = require_all("eros.aspects")
+
 
 if arg[2] == "selftest" then
   arg = {}
@@ -35,6 +37,14 @@ else
       ),
       add = function(self, prototype)
         result = tk.copy(prototype)
+
+        if prototype.get_parts then
+          for _, partname in ipairs(prototype:get_parts()) do
+            tiny.add(self.world, result[partname])
+          end
+        end
+
+        print("tiny.add", result)
         tiny.add(self.world, result)
 
         if result.radius then
@@ -70,13 +80,14 @@ else
     }
 
     game.camera = game:add({
+      name = "game.camera",
+
       follows = false,
       position = vector:zero(),
       anchor = window_size / 2,
       gamera = gamera.new(-10000, -10000, 20000, 20000) -- TODO levels
     })
 
-    aspects = require_all("eros.aspects")
     assets = require_all("assets")
 
     eros = {}
@@ -131,20 +142,20 @@ else
     end
   end
 
-function love.keypressed(key)
-  game.controller:use_map("keypressed", key)
-end
+  function love.keypressed(key)
+    game.controller:use_map("keypressed", key)
+  end
 
-function love.mousepressed(x, y, button, istouch)
-  game.controller:use_map("mousepressed", button)
-end
+  function love.mousepressed(x, y, button, istouch)
+    game.controller:use_map("mousepressed", button)
+  end
 
-function love.draw()
-  game.camera.gamera:setPosition(game.camera.position:unpack())
-  game.camera.gamera:setAngle(game.camera.follows.rotation - math.pi / 2)
+  function love.draw()
+    game.camera.gamera:setPosition(game.camera.position:unpack())
+    game.camera.gamera:setAngle(game.camera.follows.rotation - math.pi / 2)
 
-  game.camera.gamera:draw(function(l, t, w, h)
-    game.world:update(0, tiny.requireAll("drawing_system_flag"))
-  end)
-end
+    game.camera.gamera:draw(function(l, t, w, h)
+      game.world:update(0, tiny.requireAll("drawing_system_flag"))
+    end)
+  end
 end

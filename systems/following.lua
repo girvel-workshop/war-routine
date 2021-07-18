@@ -1,10 +1,9 @@
-local following = tiny.processingSystem()
-following.filter = tiny.requireAll("follows")
+return tk.concat(tiny.processingSystem(), {
+	name = "systems.following",
+	filter = tiny.requireAll("follows"),
 
-function following:process(e, _)
-	if not e.follows then return end
-
-	e.position = e.follows.position
-end
-
-return following
+	process = function(self, entity, dt)
+		if not entity.follows then return end
+		entity.position = entity.follows.position
+	end
+})
