@@ -1,4 +1,4 @@
-return fnl.extend(require("assets.units.abstract.entity"), {
+return fnl.extend(require("eros.units.entity"), {
   name = "abstract.physical",
 
 	position = vector:zero(),

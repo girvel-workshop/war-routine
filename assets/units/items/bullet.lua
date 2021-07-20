@@ -1,4 +1,4 @@
-return fnl.extend(require "assets.units.abstract.physical", {
+return fnl.extend(require "eros.units.physical", {
 	sprite = require_all("assets.sprites").items.bullet,
 	layer = require("assets.config.layers").on_floor,
 	fire_from = function(self, parent)

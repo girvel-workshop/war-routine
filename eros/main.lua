@@ -18,12 +18,8 @@ aspects = require_all("eros.aspects")
 
 if arg[2] == "selftest" then
   arg = {}
-  result = pcall(function() require("eros.tests.main") end)
+  result = pcall(function() require("eros.tests") end)
   love.event.quit(result)
-elseif arg[2] == "test" then
-	arg = {}
-	result = pcall(function() require("tests.main") end)
-	love.event.quit(result)
 else
   function love.load()
   	math.randomseed(os.time())

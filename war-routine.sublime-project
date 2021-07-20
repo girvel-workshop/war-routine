@@ -5,17 +5,13 @@
 			"path": ".",
 			"file_exclude_patterns": [
 		        "*.sublime-project",
-		        ".gitignore",
-		        "main.lua"
+		        "./.gitignore",
+		        "./main.lua"
 		      ],
 			"folder_exclude_patterns": [
 				"*/bin",
-		        "*/.*",
 		        "*/documentation"
 		      ]
-		},
-		{
-			"path": "../eros",
 		},
 		{
 			"path": "documentation"

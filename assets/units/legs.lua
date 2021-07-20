@@ -1,4 +1,4 @@
-return fnl.extend(require "assets.units.abstract.unit", {
+return fnl.extend(require "eros.units.unit", {
   name = "legs",
 
   run_multiplier = 1.5,
