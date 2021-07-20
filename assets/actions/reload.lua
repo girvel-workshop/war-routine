@@ -5,11 +5,11 @@ return aspects.action:new[[reload | armed -> armed]]({
     end
 
     entity.weapon.bullets:move(entity.weapon.bullets_other)
-    entity.weapon.bullets.other = entity.weapon.bullets.other - entity.weapon.bullets.value
+    entity.weapon.bullets_other = entity.weapon.bullets_other - entity.weapon.bullets.value
   end,
   [1] = function(entity)
     if entity.weapon.bullets_other > 0 then 
-      game:add(units.items.magazine):put_near(entity)
+      game:add(require("assets.units.items.magazine")):put_near(entity)
     end
   end
 })
