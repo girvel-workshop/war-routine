@@ -24,7 +24,6 @@ elseif arg[2] == "test" then
 else
   function love.load()
   	math.randomseed(os.time())
-    love.physics.setMeter(125)
 
   	window_size = vector:new(
       love.graphics.getWidth(),
@@ -84,6 +83,7 @@ else
 
       follows = false,
       position = vector:zero(),
+      rotation = 0,
       anchor = window_size / 2,
       gamera = gamera.new(-10000, -10000, 20000, 20000) -- TODO levels
     })
@@ -109,7 +109,6 @@ else
       end
     end
 
-
     TEsound.cleanup()
     game.world:update(dt, tiny.rejectAll("drawing_system_flag"))
 
@@ -127,10 +126,10 @@ else
       subj.legs.velocity = -vector:left():rotated(subj.rotation) * subj.legs.speed
     end
     if love.keyboard.isDown("a") then
-      subj.rotation = subj.rotation - subj.rotation_speed * dt
+      subj.legs.rotation = subj.legs.rotation - subj.legs.rotation_speed * dt
     end
     if love.keyboard.isDown("d") then
-      subj.rotation = subj.rotation + subj.rotation_speed * dt
+      subj.legs.rotation = subj.legs.rotation + subj.legs.rotation_speed * dt
     end
 
     if love.keyboard.isDown("lshift") then 
@@ -152,7 +151,7 @@ else
 
   function love.draw()
     game.camera.gamera:setPosition(game.camera.position:unpack())
-    game.camera.gamera:setAngle(game.camera.follows.rotation - math.pi / 2)
+    game.camera.gamera:setAngle(game.camera.rotation - math.pi / 2) -- TODO rotate MC sprite!!!
 
     game.camera.gamera:draw(function(l, t, w, h)
       game.world:update(0, tiny.requireAll("drawing_system_flag"))

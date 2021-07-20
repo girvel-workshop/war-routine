@@ -1,16 +1,16 @@
 local action = {}
 
-function action:new(name, starting_state, ending_state, event_container)
-	obj={
-		name = name, 
-		starting_state = starting_state, 
-		ending_state = ending_state, 
-		animation = animation, 
-		event_container = event_container or {}
-	}
-	setmetatable(obj, self)
-	self.__index = self
-	return obj
+function action:new(behaviour)
+	return function(timeline)
+		local obj = setmetatable({
+			name = behaviour:match("%S+ |"):sub(1, -3),
+			starting_state = behaviour:match("| %S+ -"):sub(3, -1),
+			ending_state = behaviour:match("> %S+"):sub(3),
+			timeline = timeline or {}
+		}, action)
+		self.__index = self
+		return obj
+	end
 end
 
 function action:order(entity)

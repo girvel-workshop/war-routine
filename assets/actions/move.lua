@@ -4,13 +4,10 @@ local function add_footprint(entity)
   fp.rotation = entity.rotation
 end
 
-return (require "eros.aspects.action"):new("move", nil, nil, {
-  start = function(entity)
-    return 128 / entity.velocity:magnitude()
+return aspects.action:new[[move | normal -> normal]]({
+  [0] = function(entity)
+    return 128 / entity.velocity:magnitude() -- TODO refactor
   end,
-  update = function(entity, dt)
-    entity.rotation = math.atan2(entity.velocity.y, entity.velocity.x)
-  end,
-  stop = add_footprint,
-  half = add_footprint
+  [.5] = add_footprint,
+  [1] = add_footprint
 })

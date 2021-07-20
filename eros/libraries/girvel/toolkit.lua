@@ -2,7 +2,7 @@ require("love.filesystem")
 
 local toolkit = {}
 
-function string:startswith(prefix)
+function string:startswith(prefix) -- TODO replace w/ strong
 	return self:sub(1, #prefix) == prefix
 end
 
@@ -15,10 +15,10 @@ function toolkit.values(t)
 	for k, v in pairs(t) do
 		table.insert(result, v)
 	end
-	return result
+	return result -- TODO move to functional
 end
 
-function toolkit.remove(table_, value)
+function toolkit.remove(table_, value) -- TODO move to functional
 	for i, v in ipairs(table_) do
 		if v == value then
 			table.remove(table_, i)
@@ -28,7 +28,7 @@ function toolkit.remove(table_, value)
 	return false
 end
 
-function toolkit.copy(t, cache) -- TODO copy non-table values
+function toolkit.copy(t, cache)
 	if t == nil then return nil end
 
 	if type(t) ~= "table" then return t end
@@ -49,22 +49,12 @@ function toolkit.copy(t, cache) -- TODO copy non-table values
 	return result
 end
 
-function toolkit.filter(t, predicate)
-	result = {}
-	for _, v in pairs(t) do
-		if predicate(v) then
-			table.insert(result, v)
-		end
-	end
-	return result
-end
-
 function toolkit.concat(table1, table2)
 	result = toolkit.copy(table1)
 	for k, v in pairs(table2) do
 		result[k] = v -- TODO copy here
 	end
-	return result
+	return result -- TODO to functional & rename to extend
 end
 
 local default_represent = {
@@ -101,9 +91,9 @@ function toolkit.require_all(directory, parent_represent) -- TODO cache
   return module
 end
 
-toolkit.loop = {}
+toolkit.loop = {} -- TODO to separate file
 
-function toolkit.loop:new(collection, index)
+function toolkit.loop:new(collection, index) 
 	index = index or 1
 	obj={collection=collection, index=index, value=collection[index]}
 	setmetatable(obj, self)
@@ -122,13 +112,17 @@ function toolkit.loop:next()
 	return self.value
 end
 
-toolkit.limited = {}
+toolkit.limited = {} -- TODO to separate file
 
-function toolkit.limited:new(limit, value, lower_limit)
-	obj = {limit=limit, value=value or limit, lower_limit=lower_limit or 0}
+function toolkit.limited:empty(limit, value, lower_limit) -- TODO tk.inherit
+	obj = {limit=limit, value=value or 0, lower_limit=lower_limit or 0}
 	setmetatable(obj, self)
 	self.__index = self
 	return obj
+end
+
+function toolkit.limited:full(limit, value, lower_limit)
+	return self:empty(limit, value or limit, lower_limit or 0)
 end
 
 function toolkit.limited:move(delta)

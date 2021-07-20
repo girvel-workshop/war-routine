@@ -1,3 +1,1 @@
-return (require "eros.aspects.action"):new(
-	"disarm", "armed", "normal"
-)
+return aspects.action:new[[arm | armed -> normal]]()

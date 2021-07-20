@@ -1,19 +1,15 @@
-local units = require_all("assets.units")
-
-return (require "eros.aspects.action"):new("reload", "armed", "armed", {
-  start = function(entity)
+return aspects.action:new[[reload | armed -> armed]]({
+  [0] = function(entity)
     if entity.weapon.bullets_other <= 0 then
       return 0
     end
 
-    entity.weapon.bullets.value = math.min(entity.weapon.bullets.limit, entity.weapon.bullets_other)
-    entity.weapon.bullets_other = entity.weapon.bullets_other - entity.weapon.bullets.value
-
-    return entity.skills.reload
+    entity.weapon.bullets:move(entity.weapon.bullets_other)
+    entity.weapon.bullets.other = entity.weapon.bullets.other - entity.weapon.bullets.value
   end,
-  stop = function(entity)
-    if entity.weapon.bullets_other > 0 then
-      game:add(units.items.magazine):put(entity)
+  [1] = function(entity)
+    if entity.weapon.bullets_other > 0 then 
+      game:add(units.items.magazine):put_near(entity)
     end
   end
 })

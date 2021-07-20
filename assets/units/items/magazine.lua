@@ -1,7 +1,7 @@
 return tk.concat(require "assets.units.abstract.physical", {
 	sprite = require_all("assets.sprites").items.magazine,
 	layer = require("assets.config.layers").on_floor,
-	put = function(self, parent)
+	put_near = function(self, parent)
 		self.position = parent.position 
 	    + (parent.fire_source 
 	       + vector:new(math.random() * 2 - 1, math.random() * 2 - 1) * 15

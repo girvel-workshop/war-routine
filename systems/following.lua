@@ -4,6 +4,10 @@ return tk.concat(tiny.processingSystem(), {
 
 	process = function(self, entity, dt)
 		if not entity.follows then return end
-		entity.position = entity.follows.position
+
+		entity.position = tk.copy(entity.follows.position)
+		if entity.rotation and entity.follows.rotation then
+			entity.rotation = entity.follows.rotation
+		end
 	end
 })
