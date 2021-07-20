@@ -1,9 +1,8 @@
 return {
-	empty = function(self, limit, value, lower_limit) -- TODO tk.inherit
-		obj = {limit=limit, value=value or 0, lower_limit=lower_limit or 0}
-		setmetatable(obj, self)
-		self.__index = self
-		return obj
+	empty = function(self, limit, value, lower_limit)
+		return fnl.inherit(self, {
+			limit=limit, value=value or 0, lower_limit=lower_limit or 0
+		})
 	end,
 
 	full = function(self, limit, value, lower_limit)

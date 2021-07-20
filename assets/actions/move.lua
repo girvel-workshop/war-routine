@@ -1,6 +1,6 @@
 local function add_footprint(entity)
   local fp = game:add(require("assets.units.footprint"))
-  fp.position = tk.copy(entity.position)
+  fp.position = fnl.copy(entity.position)
   fp.rotation = entity.rotation
 end
 

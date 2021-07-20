@@ -20,7 +20,7 @@ describe("my own lua framework", function()
   describe("remove function", function()
     it("should remove value from table", function()
       t = {1, 2, 3, 4, 5}
-      tk.remove(t, 4)
+      fnl.remove(t, 4)
       assert.are.same(t, {1, 2, 3, 5})
     end)
   end)
@@ -33,7 +33,7 @@ describe("my own lua framework", function()
       }
 
       assert.are.same(
-        test_table, tk.copy(test_table)
+        test_table, fnl.copy(test_table)
       )
     end)
 
@@ -44,8 +44,8 @@ describe("my own lua framework", function()
         c = {a = 1}
       }
 
-      assert.are.same(test_table, tk.copy(test_table))
-      assert.are.not_equal(test_table.c, tk.copy(test_table).c)
+      assert.are.same(test_table, fnl.copy(test_table))
+      assert.are.not_equal(test_table.c, fnl.copy(test_table).c)
     end)
 
     it("should use :copy function if it exists", function()
@@ -57,7 +57,7 @@ describe("my own lua framework", function()
         end
       }
 
-      assert.are.same({}, tk.copy(test_table))
+      assert.are.same({}, fnl.copy(test_table))
     end)
 
     it("should save internal references", function()
@@ -73,7 +73,7 @@ describe("my own lua framework", function()
         }
       }
 
-      local copy = tk.copy(original)
+      local copy = fnl.copy(original)
 
       assert.are.equal(copy.reference1, copy.reference2)
       assert.are.equal(copy.reference1, copy.reference_container.reference)

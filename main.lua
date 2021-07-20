@@ -33,10 +33,10 @@ else
 
   	game = {
       world = tiny.world(
-        unpack(tk.values(require_all("systems")))
+        unpack(fnl.values(require_all("systems")))
       ),
       add = function(self, prototype)
-        result = tk.copy(prototype)
+        result = fnl.copy(prototype)
 
         if prototype.get_parts then
           for _, partname in ipairs(prototype:get_parts()) do
@@ -56,7 +56,7 @@ else
       end,
       remove = function(self, entity)
         if entity.radius then
-          tk.remove(self.physics_subjects, entity)
+          fnl.remove(self.physics_subjects, entity)
         end
 
         tiny.remove(self.world, entity)

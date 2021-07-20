@@ -17,7 +17,7 @@ function action:order(entity)
 	if entity.action == false 
 			and (entity.cluster[self.starting_state] == entity.sprite 
 				or not entity.sprite and not entity.cluster[self.starting_state]) then
-		entity.action = tk.copy(self)
+		entity.action = fnl.copy(self)
 		return true
 	end
 	return false

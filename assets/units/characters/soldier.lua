@@ -2,7 +2,7 @@ local sprites = require_all("assets.sprites")
 local animations = require_all("assets.animations")
 local weapons = require_all("assets.weapons")
 
-return tk.concat(require("assets.units.abstract.character"), {
+return fnl.concat(require("assets.units.abstract.character"), {
   name = "characters.soldier",
 
   sprite = sprites.characters.soldier.normal,
