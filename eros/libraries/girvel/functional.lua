@@ -28,7 +28,7 @@ function fnl.remove(table_, value)
 	return false
 end
 
-function fnl.concat(table1, table2)
+function fnl.extend(table1, table2)
 	result = fnl.copy(table1)
 	for k, v in pairs(table2) do
 		result[k] = v

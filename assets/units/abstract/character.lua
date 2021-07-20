@@ -1,6 +1,6 @@
 local legs = fnl.copy(require("assets.units.legs"))
 
-return fnl.concat(require "assets.units.abstract.unit", {
+return fnl.extend(require "assets.units.abstract.unit", {
   name = "abstract.character",
 
   stamina = limited:full(5),

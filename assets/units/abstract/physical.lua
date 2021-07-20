@@ -1,4 +1,4 @@
-return fnl.concat(require("assets.units.abstract.entity"), {
+return fnl.extend(require("assets.units.abstract.entity"), {
   name = "abstract.physical",
 
 	position = vector:zero(),

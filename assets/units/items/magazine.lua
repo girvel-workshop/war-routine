@@ -1,4 +1,4 @@
-return fnl.concat(require "assets.units.abstract.physical", {
+return fnl.extend(require "assets.units.abstract.physical", {
 	sprite = require_all("assets.sprites").items.magazine,
 	layer = require("assets.config.layers").on_floor,
 	put_near = function(self, parent)

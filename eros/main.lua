@@ -35,7 +35,7 @@ else
 
   	game = {
       world = tiny.world(
-        unpack(fnl.values(require_all("systems")))
+        unpack(fnl.values(require_all("eros.systems")))
       ),
       add = function(self, prototype)
         result = fnl.copy(prototype)

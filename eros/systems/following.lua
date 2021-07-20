@@ -1,4 +1,4 @@
-return fnl.concat(tiny.processingSystem(), {
+return fnl.extend(tiny.processingSystem(), {
 	name = "systems.following",
 	filter = tiny.requireAll("follows"),
 
