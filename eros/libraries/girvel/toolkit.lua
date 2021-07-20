@@ -1,5 +1,3 @@
-require("love.filesystem")
-
 local toolkit = {}
 
 function string:startswith(prefix) -- TODO replace w/ strong
@@ -110,45 +108,6 @@ function toolkit.loop:next()
 
 	self.value = self.collection[self.index]
 	return self.value
-end
-
-toolkit.limited = {} -- TODO to separate file
-
-function toolkit.limited:empty(limit, value, lower_limit) -- TODO tk.inherit
-	obj = {limit=limit, value=value or 0, lower_limit=lower_limit or 0}
-	setmetatable(obj, self)
-	self.__index = self
-	return obj
-end
-
-function toolkit.limited:full(limit, value, lower_limit)
-	return self:empty(limit, value or limit, lower_limit or 0)
-end
-
-function toolkit.limited:move(delta)
-	if delta < 0 then
-		if self.value > 0 then
-			self.value = math.max(self.lower_limit, self.value + delta)
-			return true
-		end
-
-		return false
-	else
-		if self.value < self.limit then
-			self.value = math.min(self.limit, self.value + delta)
-			return true
-		end
-
-		return false
-	end
-end
-
-function toolkit.limited:is_min()
-	return self.value == self.lower_limit
-end
-
-function toolkit.limited:fraction()
-	return (self.value - self.lower_limit) / (self.limit - self.lower_limit)
 end
 
 return toolkit

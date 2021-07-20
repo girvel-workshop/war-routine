@@ -1,6 +1,7 @@
 tk = require("eros.libraries.girvel.toolkit")
 fnl = require("eros.libraries.girvel.functional")
 vector = require("eros.libraries.girvel.vector")
+limited = require("eros.libraries.girvel.limited")
 
 require_all = tk.require_all
 

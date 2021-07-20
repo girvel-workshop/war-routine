@@ -202,6 +202,3 @@ function gamera:toScreen(x,y)
 end
 
 return gamera
-
-
-

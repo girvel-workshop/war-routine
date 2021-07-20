@@ -7,7 +7,7 @@ function acting:process(entity, dt)
 	if not action then return end
 
 	if action.duration == nil then
-		action.duration = tk.limited:empty(
+		action.duration = limited:empty(
 			action.timeline[0]
 				and action.timeline[0](entity)
 				 or entity.skills[action.name]
@@ -18,13 +18,12 @@ function acting:process(entity, dt)
 
 	local active = action.duration:move(dt)
 
-	for moment, event in pairs(action.timeline) do
-		if action.duration:fraction() < moment then
-			break
+	-- TODO #optimization order by key to get O(const) instead O(n)
+	for moment, event in pairs(action.timeline) do 
+		if action.duration:fraction() >= moment then
+			event(entity)
+			action.timeline[moment] = nil
 		end
-
-		event(entity)
-		action.timeline[moment] = nil
 	end
 
 	if active then

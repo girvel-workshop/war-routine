@@ -3,7 +3,7 @@ local legs = tk.copy(require("assets.units.legs"))
 return tk.concat(require "assets.units.abstract.unit", {
   name = "abstract.character",
 
-  stamina = tk.limited:full(5),
+  stamina = limited:full(5),
   skills = {
     reload = 1.5,
     arm = 1.3,
