@@ -5,12 +5,13 @@
 			"path": ".",
 			"file_exclude_patterns": [
 		        "*.sublime-project",
-		        "./.gitignore",
-		        "./main.lua"
+		        ".gitignore",
+		        "./main.lua",
+		        "war-routine.zip"
 		      ],
 			"folder_exclude_patterns": [
-				"*/bin",
-		        "*/documentation"
+				"bin",
+		        "documentation"
 		      ]
 		},
 		{
