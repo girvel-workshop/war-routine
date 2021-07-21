@@ -42,19 +42,23 @@ function vector.__div(v, k)
 	return v * (1 / k)
 end
 
-function vector:zero()
+function vector.zero()
 	return vector:new(0, 0)
 end
 
-function vector:right()
+function vector.right()
 	return vector:new(1, 0)
 end
 
-function vector:left()
+function vector.left()
 	return vector:new(-1, 0)
 end
 
-function vector:one()
+function vector.up()
+	return vector:new(0, -1)
+end
+
+function vector.one()
   return vector:new(1, 1)
 end
 
