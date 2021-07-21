@@ -47,17 +47,18 @@ function fnl.copy(t, cache, not_deep)
 		return t:copy()
 	end
 
-	local u = {}
+	local result = {}
+
+	setmetatable(result, getmetatable(t))
+	cache[t] = result
+
 	for k, v in pairs(t) do
 		if not_deep then
-			u[k] = v
+			result[k] = v
 		else
-			u[k] = fnl.copy(v, cache)
+			result[k] = fnl.copy(v, cache)
 		end
 	end
-
-	local result = setmetatable(u, getmetatable(t))
-	cache[t] = result
 	return result
 end
 
