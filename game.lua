@@ -1,4 +1,6 @@
 function eros.load()
+  love.mouse.setCursor(love.mouse.newCursor("assets/sprites/ui/cursor.png"))
+
   mc = game:create(assets.units.characters.soldier)
 
   obj1 = game:create(assets.units.characters.soldier)

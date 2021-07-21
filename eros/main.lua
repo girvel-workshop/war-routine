@@ -123,11 +123,11 @@ else
     subj.legs.velocity = vector:zero()
 
     if love.keyboard.isDown("w") then -- TODO REFACTOR
-      subj.legs.velocity = vector:left():rotated(subj.rotation) * subj.legs.speed
+      subj.legs.velocity = vector.up():rotated(subj.rotation) * subj.legs.speed
       assets.actions.move:order(mc.legs)
     end
     if love.keyboard.isDown("s") then
-      subj.legs.velocity = -vector:left():rotated(subj.rotation) * subj.legs.speed
+      subj.legs.velocity = -vector.left():rotated(subj.rotation) * subj.legs.speed
     end
     if love.keyboard.isDown("a") then
       subj.legs.rotation = subj.legs.rotation - subj.legs.rotation_speed * dt
@@ -155,7 +155,7 @@ else
 
   function love.draw()
     game.camera.gamera:setPosition(game.camera.position:unpack())
-    game.camera.gamera:setAngle(game.camera.rotation - math.pi / 2) -- TODO rotate MC sprite!!!
+    game.camera.gamera:setAngle(game.camera.rotation)
 
     game.camera.gamera:draw(function(l, t, w, h)
       game.world:update(0, tiny.requireAll("drawing_system_flag"))
