@@ -9,7 +9,7 @@ return fnl.extend(require("eros.units.character"), {
   cluster = sprites.characters.soldier,
   animations = animations.characters.soldier,
   weapon = weapons.default,
-  fire_source = vector:new(-54, -16),
+  fire_source = vector:new(16, -54),
 
   get_parts = function(self)
     return {"legs"}

@@ -52,7 +52,7 @@ else
 
         if entity.radius then
           table.insert(self.physics_subjects, entity)
-          entity.collision_with = false
+          entity.collides_with = false
         end
       end,
       remove = function(self, entity)
@@ -101,14 +101,14 @@ else
 
   function love.update(dt)
     for _, object in ipairs(game.physics_subjects) do 
-      object.collision_with = false
+      object.collides_with = false
     end
 
     for i, object1 in ipairs(game.physics_subjects) do
       for j, object2 in ipairs(game.physics_subjects) do -- TODO optimize
         if i ~= j and (object1.position - object2.position):magnitude() <= object1.radius + object2.radius then
-          object1.collision_with = object2
-          object2.collision_with = object1
+          object1.collides_with = object2
+          object2.collides_with = object1
         end
       end
     end
@@ -127,7 +127,7 @@ else
       assets.actions.move:order(mc.legs)
     end
     if love.keyboard.isDown("s") then
-      subj.legs.velocity = -vector.left():rotated(subj.rotation) * subj.legs.speed
+      subj.legs.velocity = -vector.up():rotated(subj.rotation) * subj.legs.speed
     end
     if love.keyboard.isDown("a") then
       subj.legs.rotation = subj.legs.rotation - subj.legs.rotation_speed * dt

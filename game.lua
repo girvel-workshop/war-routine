@@ -3,8 +3,7 @@ function eros.load()
 
   mc = game:create(assets.units.characters.soldier)
 
-  obj1 = game:create(assets.units.characters.soldier)
-  obj1.legs.position = vector:new(200, 0)
+  game:create(assets.units.decorations.target).position = vector:new(0, -500)
 
   game:create(assets.units.ui.help)
 
