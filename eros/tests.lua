@@ -1,8 +1,34 @@
 require 'busted.runner'()
-local tk = require "eros.libraries.girvel.toolkit"
-local fnl = require "eros.libraries.girvel.functional"
 
-describe("my own lua framework", function()
+describe("my own lua toolkit", function()
+  local tk = require "eros.libraries.girvel.toolkit"
+
+  describe("require all function", function()
+    it("should import all modules from directory", function()
+      local parent = tk.require_all("eros.test_samples.sample1")
+
+      assert.is_true(parent.sample1)
+      assert.is_false(parent.sample2)
+    end)
+
+    it("should be recursive", function()
+      local parent = tk.require_all("eros.test_samples.sample2")
+
+      assert.is_true(parent.child.sample)
+    end)
+
+    it("should recursively use _representation.lua if possible", function()
+      local parent = tk.require_all("eros.test_samples.sample3")
+
+      assert.are.equal(1, parent.a)
+      assert.are.same({b = 1}, parent.b)
+    end)
+  end)
+end)
+
+describe("my own functional library", function()
+  local fnl = require "eros.libraries.girvel.functional"
+  
   describe("remove function", function()
     it("should remove value from table", function()
       t = {1, 2, 3, 4, 5}
@@ -75,33 +101,11 @@ describe("my own lua framework", function()
       assert.are.same({1, 3, 5}, fnl.filter(t, function(x) return x % 2 == 1 end))
     end)
   end)
-
-  describe("require all function", function()
-    it("should import all modules from directory", function()
-      local parent = tk.require_all("eros.test_samples.sample1")
-
-      assert.is_true(parent.sample1)
-      assert.is_false(parent.sample2)
-    end)
-
-    it("should be recursive", function()
-      local parent = tk.require_all("eros.test_samples.sample2")
-
-      assert.is_true(parent.child.sample)
-    end)
-
-    it("should recursively use _representation.lua if possible", function()
-      local parent = tk.require_all("eros.test_samples.sample3")
-
-      assert.are.equal(1, parent.a)
-      assert.are.same({b = 1}, parent.b)
-    end)
-  end)
 end)
 
-local action = require("eros.aspects.action")
-
 describe("action aspect", function()
+  local action = require("eros.aspects.action")
+
   describe(":new", function()
     it("should realize eDSL", function()
       local result = action:new[[die | alive -> dead]](1)
