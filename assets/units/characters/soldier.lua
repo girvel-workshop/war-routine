@@ -10,7 +10,6 @@ return fnl.extend(require("eros.units.character"), {
   animations = animations.characters.soldier,
   weapon = weapons.default,
   fire_source = vector:new(-54, -16),
-  radius = 34,
 
   get_parts = function(self)
     return {"legs"}

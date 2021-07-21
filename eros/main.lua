@@ -33,24 +33,27 @@ else
       world = tiny.world(
         unpack(fnl.values(require_all("eros.systems")))
       ),
-      add = function(self, prototype)
-        result = fnl.copy(prototype)
+      create = function(self, prototype)
+        local result = fnl.copy(prototype)
 
-        if prototype.get_parts then
-          for _, partname in ipairs(prototype:get_parts()) do
-            tiny.add(self.world, result[partname])
+        if result.get_parts then
+          for _, partname in ipairs(result:get_parts()) do
+            self:add(result[partname])
           end
         end
 
-        print("tiny.add", result)
-        tiny.add(self.world, result)
-
-        if result.radius then
-          table.insert(self.physics_subjects, result)
-          result.collision_with = false
-        end
+        self:add(result)
         
         return result
+      end,
+      add = function(self, entity)
+        print("tiny.add", entity)
+        tiny.add(self.world, entity)
+
+        if entity.radius then
+          table.insert(self.physics_subjects, entity)
+          entity.collision_with = false
+        end
       end,
       remove = function(self, entity)
         if entity.radius then
@@ -77,7 +80,7 @@ else
       physics_subjects = {}
     }
 
-    game.camera = game:add({
+    game.camera = game:create({
       name = "game.camera",
 
       follows = false,
@@ -97,7 +100,9 @@ else
   end
 
   function love.update(dt)
-    -- for _, object in ipairs(game.physics_subjects) do 
+    for _, object in ipairs(game.physics_subjects) do 
+      object.collision_with = false
+    end
 
     for i, object1 in ipairs(game.physics_subjects) do
       for j, object2 in ipairs(game.physics_subjects) do -- TODO optimize

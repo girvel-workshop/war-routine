@@ -8,6 +8,8 @@ return fnl.extend(require "eros.units.unit", {
     move = 0.5
   },
 
+  radius = 25,
+
   animations = require_all("assets.animations").legs,
   cluster = {},
   layer = require("assets.config.layers").under_character

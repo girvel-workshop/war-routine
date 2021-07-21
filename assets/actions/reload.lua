@@ -9,7 +9,7 @@ return aspects.action:new[[reload | armed -> armed]]({
   end,
   [1] = function(entity)
     if entity.weapon.bullets_other > 0 then 
-      game:add(require("assets.units.items.magazine")):put_near(entity)
+      game:create(require("assets.units.items.magazine")):put_near(entity)
     end
   end
 })

@@ -7,8 +7,8 @@ return aspects.action:new[[fire | armed -> armed]]({
     end
 
     assets.sounds.fire:play()
-    game:add(units.items.shell):put_near(entity)
-    game:add(units.items.bullet):fire_from(entity)
+    game:create(units.items.shell):put_near(entity)
+    game:create(units.items.bullet):fire_from(entity)
 
     return entity.weapon.fire_time
   end

@@ -1,10 +1,10 @@
 function eros.load()
-  mc = game:add(assets.units.characters.soldier)
+  mc = game:create(assets.units.characters.soldier)
 
-  -- obj1 = game:add(assets.units.characters.soldier)
-  -- obj1.position = vector:new(200, 0)
+  obj1 = game:create(assets.units.characters.soldier)
+  obj1.legs.position = vector:new(200, 0)
 
-  game:add(assets.units.ui.help)
+  game:create(assets.units.ui.help)
 
   game.controller.controls = mc
 
