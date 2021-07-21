@@ -10,7 +10,7 @@ function drawing:preProcess(_)
 end
 
 function drawing:process(entity, _)
-	if not entity.sprite then return end
+	if not entity.sprite or entity.visible == false then return end
 
 	local anchor = aspects.sprite.get_anchor(entity)
 

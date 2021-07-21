@@ -1,0 +1,1 @@
+return aspects.action:new[[fire | default -> default]]()
