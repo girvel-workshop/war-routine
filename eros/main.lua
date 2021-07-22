@@ -1,3 +1,5 @@
+-- TODO refactor this shit
+
 strong = require("eros.libraries.strong")
 
 tk = require("eros.libraries.girvel.toolkit")

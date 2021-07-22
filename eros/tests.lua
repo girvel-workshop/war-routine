@@ -1,7 +1,7 @@
 require 'busted.runner'()
 
-describe("my own lua toolkit", function()
-  local tk = require "eros.libraries.girvel.toolkit"
+describe("my own lua tk", function()
+  local tk = require "eros.libraries.girvel.tk"
 
   describe("require all function", function()
     it("should import all modules from directory", function()

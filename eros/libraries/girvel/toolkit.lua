@@ -1,4 +1,4 @@
-local toolkit = {}
+local tk = {}
 
 local default_represent = {
 	repr = function(path)
@@ -9,7 +9,7 @@ local default_represent = {
 
 local cache = {} -- TODOLONG cache to decorator
 
-function toolkit.require_all(directory, _parent_represent) -- TODO cache
+function tk.require_all(directory, _parent_represent) -- TODO to module module
 	local path = directory:gsub("%.", "/")
   if not love.filesystem.getInfo(path) then return end
 
@@ -29,7 +29,7 @@ function toolkit.require_all(directory, _parent_represent) -- TODO cache
   		if file:ends_with("." .. represent.extension) then
   			value = represent.repr(path .. "/" .. file)
   		elseif not love.filesystem.getInfo(path .. "/" .. file, 'file') then
-  			value = toolkit.require_all(path:gsub("/", ".") .. "." .. file, represent)
+  			value = tk.require_all(path:gsub("/", ".") .. "." .. file, represent)
   		end
   		module[file:gsub("%.[%w%d]*", "")] = value
   	end
@@ -39,7 +39,7 @@ function toolkit.require_all(directory, _parent_represent) -- TODO cache
   return module
 end
 
-function toolkit.require(filepath, _parent_represent)
+function tk.require(filepath, _parent_represent)
   if not cache[filepath] then -- TODOLONG cache decorator
     local path = ""
     local represent = default_represent
@@ -47,20 +47,38 @@ function toolkit.require(filepath, _parent_represent)
     for i, element in ipairs(filepath / ".") do
       path = i == 1 and element or (path .. "." .. element)
       
-      represent = love.filesystem.getInfo(path:gsub("%.", "/") + "/_representation.lua") 
-        and require(path + "._representation")
+      represent = love.filesystem.getInfo(tk.to_posix(path) .. "/_representation.lua") 
+        and require(path .. "._representation")
          or represent
     end
 
-    cache[filepath] = represent.repr(filepath:gsub("%.", "/") .. "." .. represent.extension)
+    cache[filepath] = represent.repr(tk.to_posix(filepath) .. "." .. represent.extension)
   end
   return cache[filepath]
 end
 
-function toolkit.entity(parent_path)
+function tk.module(path)
+  return setmetatable({path = path}, {
+    __index = function(self, item)
+      return tk.module(self.path .. "." .. item)
+    end,
+    __len = function(self)
+      if love.filesystem.getInfo(tk.to_posix(self.path), 'directory') then
+        return tk.require_all(self.path)
+      end
+      return tk.require(self.path)
+    end
+  })
+end
+
+function tk.entity(parent_path) -- TODO move to fnl
   return function(table)
     return fnl.extend(require(parent_path), table)
   end
 end
 
-return toolkit
+function tk.to_posix(path)
+  return path:gsub("%.", "/")
+end
+
+return tk

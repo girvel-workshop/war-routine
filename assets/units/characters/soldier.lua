@@ -2,9 +2,11 @@ local sprites = require_all("assets.sprites")
 local animations = require_all("assets.animations")
 local weapons = require_all("assets.weapons")
 
+local assets = tk.module("assets")
 local soldier = tk.entity[[eros.units.character]]({
   name = "characters.soldier",
 
+  sprite = #assets.sprites.characters.soldier.normal,
   sprite = sprites.characters.soldier.normal,
   cluster = sprites.characters.soldier,
   animations = animations.characters.soldier,
