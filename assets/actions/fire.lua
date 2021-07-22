@@ -6,11 +6,11 @@ return aspects.action:new[[fire | armed -> armed]]({
       return 0
     end
 
-    assets.sounds.fire:play()
+    assets.sounds.fire():play()
     game:create(units.items.shell):put_near(entity)
     game:create(units.items.bullet):fire_from(entity)
 
-    require("assets.actions.weapon_fire"):order(entity.weapon)
+    assets.actions.weapon_fire():order(entity.weapon)
 
     return entity.weapon.fire_time
   end

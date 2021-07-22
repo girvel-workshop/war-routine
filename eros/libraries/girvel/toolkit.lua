@@ -71,6 +71,9 @@ function tk.module(path)
         return tk.require_all(self.path)
       end
       return tk.require(self.path)
+    end,
+    __call = function(self)
+      return -self
     end
   })
 end

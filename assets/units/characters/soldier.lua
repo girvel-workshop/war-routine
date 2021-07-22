@@ -1,4 +1,3 @@
-local assets = tk.module("assets")
 local soldier = tk.entity[[eros.units.character]]({
   name = "characters.soldier",
 

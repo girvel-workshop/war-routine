@@ -92,7 +92,7 @@ else
       gamera = gamera.new(-10000, -10000, 20000, 20000) -- TODO levels
     })
 
-    assets = require_all("assets")
+    assets = tk.module[[assets]]
 
     eros = {}
 
@@ -126,7 +126,7 @@ else
 
     if love.keyboard.isDown("w") then -- TODO REFACTOR
       subj.legs.velocity = vector.up():rotated(subj.rotation) * subj.legs.speed
-      assets.actions.move:order(mc.legs)
+      assets.actions.move():order(mc.legs)
     end
     if love.keyboard.isDown("s") then
       subj.legs.velocity = -vector.up():rotated(subj.rotation) * subj.legs.speed
