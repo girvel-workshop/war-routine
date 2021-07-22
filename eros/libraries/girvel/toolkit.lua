@@ -27,7 +27,8 @@ function tk.require_all(directory, _parent_represent) -- TODO to module module
   	if not file:starts_with("_") then
   		local value = nil
   		if file:ends_with("." .. represent.extension) then
-  			value = represent.repr(path .. "/" .. file)
+        value = cache[directory .. "." .. file:gsub("%.[%w%d]*", "")] or represent.repr(path .. "/" .. file)
+        cache[directory .. "." .. file:gsub("%.[%w%d]*", "")] = value
   		elseif not love.filesystem.getInfo(path .. "/" .. file, 'file') then
   			value = tk.require_all(path:gsub("/", ".") .. "." .. file, represent)
   		end

@@ -6,8 +6,8 @@ local assets = tk.module("assets")
 local soldier = tk.entity[[eros.units.character]]({
   name = "characters.soldier",
 
-  sprite = #assets.sprites.characters.soldier.normal,
-  sprite = sprites.characters.soldier.normal,
+  sprite = tk.require("assets.sprites.characters.soldier.normal"),
+  -- sprite = #assets.sprites.characters.soldier.normal,
   cluster = sprites.characters.soldier,
   animations = animations.characters.soldier,
   weapon = weapons.default,
