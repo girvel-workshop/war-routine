@@ -7,17 +7,21 @@ local default_represent = {
 	extension = "lua"
 }
 
-function toolkit.require_all(directory, parent_represent) -- TODO cache
+local cache = {} -- TODOLONG cache to decorator
+
+function toolkit.require_all(directory, _parent_represent) -- TODO cache
 	local path = directory:gsub("%.", "/")
   if not love.filesystem.getInfo(path) then return end
+
+  if cache[directory] then return cache[directory] end
   
   local module = {}
 
   local items = love.filesystem.getDirectoryItems(path)
 
-  local represent = #fnl.filter(items, function(value) return value == "_representation.lua" end) > 0 
+  local represent = fnl.contains(items, "_representation.lua")
   	and require(directory .. "._representation")
-  	or parent_represent or default_represent
+  	or _parent_represent or default_represent
   
   for _, file in ipairs(items) do
   	if not file:starts_with("_") then
@@ -31,7 +35,26 @@ function toolkit.require_all(directory, parent_represent) -- TODO cache
   	end
   end
 
+  cache[directory] = module
   return module
+end
+
+function toolkit.require(filepath, _parent_represent)
+  if not cache[filepath] then -- TODOLONG cache decorator
+    local path = ""
+    local represent = default_represent
+
+    for i, element in ipairs(filepath / ".") do
+      path = i == 1 and element or (path .. "." .. element)
+      
+      represent = love.filesystem.getInfo(path:gsub("%.", "/") + "/_representation.lua") 
+        and require(path + "._representation")
+         or represent
+    end
+
+    cache[filepath] = represent.repr(filepath:gsub("%.", "/") .. "." .. represent.extension)
+  end
+  return cache[filepath]
 end
 
 function toolkit.entity(parent_path)

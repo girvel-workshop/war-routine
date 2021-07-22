@@ -1,12 +1,10 @@
-local cluster = require_all("assets.sprites").weapons -- TODO wtf?!
-
 return tk.entity[[eros.units.unit]]({
 	power = 2300,
 	fire_time = .12,
 	bullets = limited:full(30),
 	bullets_other = 90,
-	sprite = cluster.default, -- TODO eDSL for require_all
-	cluster = cluster, -- FIXME
+	sprite = tk.require("assets.sprites.weapons.default"),
+	cluster = require_all("assets.sprites").weapons, -- FIXME
 	visible = false,
 	animations = require_all("assets.animations").weapons.default,
 	skills = {

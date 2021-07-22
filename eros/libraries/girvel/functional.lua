@@ -68,4 +68,8 @@ function fnl.inherit(parent, child)
 	return child
 end
 
+function fnl.contains(collection, element)
+	return #fnl.filter(collection, function(v) return v == element end) > 0
+end
+
 return fnl
