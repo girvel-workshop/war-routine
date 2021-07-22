@@ -1,6 +1,6 @@
 local cluster = require_all("assets.sprites").weapons -- TODO wtf?!
 
-return fnl.extend(require("eros.units.unit"), { -- TODO eDSL
+return tk.entity[[eros.units.unit]]({
 	power = 2300,
 	fire_time = .12,
 	bullets = limited:full(30),

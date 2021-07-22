@@ -2,7 +2,7 @@ local sprites = require_all("assets.sprites")
 local animations = require_all("assets.animations")
 local weapons = require_all("assets.weapons")
 
-local soldier = fnl.extend(require("eros.units.character"), {
+local soldier = tk.entity[[eros.units.character]]({
   name = "characters.soldier",
 
   sprite = sprites.characters.soldier.normal,

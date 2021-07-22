@@ -34,4 +34,10 @@ function toolkit.require_all(directory, parent_represent) -- TODO cache
   return module
 end
 
+function toolkit.entity(parent_path)
+  return function(table)
+    return fnl.extend(require(parent_path), table)
+  end
+end
+
 return toolkit
