@@ -1,16 +1,11 @@
-local sprites = require_all("assets.sprites")
-local animations = require_all("assets.animations")
-local weapons = require_all("assets.weapons")
-
 local assets = tk.module("assets")
 local soldier = tk.entity[[eros.units.character]]({
   name = "characters.soldier",
 
-  sprite = tk.require("assets.sprites.characters.soldier.normal"),
-  -- sprite = #assets.sprites.characters.soldier.normal,
-  cluster = sprites.characters.soldier,
-  animations = animations.characters.soldier,
-  weapon = weapons.default,
+  sprite = -assets.sprites.characters.soldier.normal,
+  cluster = -assets.sprites.characters.soldier,
+  animations = -assets.animations.characters.soldier,
+  weapon = -assets.weapons.default,
   fire_source = vector:new(16, -54),
 
   get_parts = function(self)

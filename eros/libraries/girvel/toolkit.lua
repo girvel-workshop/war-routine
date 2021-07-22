@@ -9,7 +9,7 @@ local default_represent = {
 
 local cache = {} -- TODOLONG cache to decorator
 
-function tk.require_all(directory, _parent_represent) -- TODO to module module
+function tk.require_all(directory) -- TODO to module module
 	local path = directory:gsub("%.", "/")
   if not love.filesystem.getInfo(path) then return end
 
@@ -17,13 +17,9 @@ function tk.require_all(directory, _parent_represent) -- TODO to module module
   
   local module = {}
 
-  local items = love.filesystem.getDirectoryItems(path)
-
-  local represent = fnl.contains(items, "_representation.lua")
-  	and require(directory .. "._representation")
-  	or _parent_represent or default_represent
+  local represent = tk.get_represent_for_path(directory)
   
-  for _, file in ipairs(items) do
+  for _, file in ipairs(love.filesystem.getDirectoryItems(path)) do
   	if not file:starts_with("_") then
   		local value = nil
   		if file:ends_with("." .. represent.extension) then
@@ -42,20 +38,25 @@ end
 
 function tk.require(filepath, _parent_represent)
   if not cache[filepath] then -- TODOLONG cache decorator
-    local path = ""
-    local represent = default_represent
-
-    for i, element in ipairs(filepath / ".") do
-      path = i == 1 and element or (path .. "." .. element)
-      
-      represent = love.filesystem.getInfo(tk.to_posix(path) .. "/_representation.lua") 
-        and require(path .. "._representation")
-         or represent
-    end
-
+    local represent = tk.get_represent_for_path(filepath)
     cache[filepath] = represent.repr(tk.to_posix(filepath) .. "." .. represent.extension)
   end
   return cache[filepath]
+end
+
+function tk.get_represent_for_path(fullpath, _parent_represent)
+  local path = ""
+  local represent = default_represent
+
+  for i, element in ipairs(fullpath / ".") do
+    path = i == 1 and element or (path .. "." .. element)
+    
+    represent = love.filesystem.getInfo(tk.to_posix(path) .. "/_representation.lua") 
+      and require(path .. "._representation")
+       or represent
+  end
+
+  return represent
 end
 
 function tk.module(path)
@@ -63,8 +64,10 @@ function tk.module(path)
     __index = function(self, item)
       return tk.module(self.path .. "." .. item)
     end,
-    __len = function(self)
+    __unm = function(self)
+      print("unm", self.path)
       if love.filesystem.getInfo(tk.to_posix(self.path), 'directory') then
+        print("require_all", self.path)
         return tk.require_all(self.path)
       end
       return tk.require(self.path)
