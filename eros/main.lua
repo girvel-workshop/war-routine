@@ -93,8 +93,7 @@ else
     })
 
     assets = tk.module[[assets]]
-
-    eros = {}
+    eros = tk.module[[eros]]
 
   	require("game")
 

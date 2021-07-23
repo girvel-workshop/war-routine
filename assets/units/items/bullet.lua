@@ -1,6 +1,6 @@
-return fnl.extend(require "eros.units.physical", {
-	sprite = require_all("assets.sprites").items.bullet,
-	layer = require("assets.config.layers").on_floor,
+return fnl.extend(-eros.units.physical, {
+	sprite = -assets.sprites.items.bullet,
+	layer = assets.config.layers().on_floor,
 	radius = 2,
 	damage = 100,
 	fire_from = function(self, parent)

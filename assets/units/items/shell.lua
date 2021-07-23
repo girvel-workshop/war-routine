@@ -1,6 +1,6 @@
-return fnl.extend(require "eros.units.physical", {
-	sprite = require_all("assets.sprites").items.shell,
-	layer = require("assets.config.layers").on_floor,
+return fnl.extend(-eros.units.physical, {
+	sprite = -assets.sprites.items.shell,
+	layer = assets.config.layers().on_floor,
 	put_near = function(self, parent)
 		self.position = parent.position
 	    + (parent.fire_source + (vector:new(math.random(), math.random()) * 2 - vector.one()) * 15)

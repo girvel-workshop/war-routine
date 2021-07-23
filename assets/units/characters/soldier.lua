@@ -1,4 +1,4 @@
-local soldier = tk.entity[[eros.units.character]]({
+local soldier = fnl.entity[[eros.units.character]]({
   name = "characters.soldier",
 
   sprite = -assets.sprites.characters.soldier.normal,

@@ -78,12 +78,6 @@ function tk.module(path)
   })
 end
 
-function tk.entity(parent_path) -- TODO move to fnl
-  return function(table)
-    return fnl.extend(require(parent_path), table)
-  end
-end
-
 function tk.to_posix(path)
   return path:gsub("%.", "/")
 end

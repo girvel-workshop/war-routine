@@ -1,3 +1,3 @@
-return fnl.extend(require("eros.units.physical"), {
-	sprite = require_all("assets.sprites").ui.help
+return fnl.extend(-eros.units.physical, {
+	sprite = -assets.sprites.ui.help
 })

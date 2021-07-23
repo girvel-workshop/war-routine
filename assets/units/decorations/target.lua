@@ -1,5 +1,5 @@
-return fnl.extend(require("eros.units.physical"), {
+return fnl.extend(-eros.units.physical, {
   radius = 25,
-  sprite = require_all("assets.sprites").decorations.target,
+  sprite = -assets.sprites.decorations.target,
   health = limited:full(500),
 })
