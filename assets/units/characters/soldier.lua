@@ -4,7 +4,7 @@ local soldier = fnl.extend(-eros.units.character, {
   sprite = -assets.sprites.characters.soldier.normal,
   cluster = -assets.sprites.characters.soldier,
   animations = -assets.animations.characters.soldier,
-  weapon = -assets.weapons.default,
+  weapon = -assets.units.weapons.default,
   fire_source = vector:new(16, -54),
 
   get_parts = function(self)
