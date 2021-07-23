@@ -1,5 +1,26 @@
 local tk = {}
 
+tk.cache = decorator:new(function(self, f) 
+  return function(argument)
+    if not self.global_cache[f] then
+      self.global_cache[f] = {}
+    end
+
+    if not self.global_cache[f][argument] then
+      self.global_cache[f][argument] = f(argument)
+    end
+    
+    return self.global_cache[f][argument]
+  end
+end)
+
+tk.cache.global_cache = {}
+
+function string:to_posix()
+  local str = self:gsub("%.", "/")
+  return str
+end
+
 local default_represent = {
 	repr = function(path)
 		return require(path:gsub(".lua", ""):gsub("/", "."))
@@ -7,95 +28,47 @@ local default_represent = {
 	extension = "lua"
 }
 
-local cache = {} -- TODOLONG cache to decorator
-
-function tk.require_all(directory) -- TODO to module module
-	local path = directory:gsub("%.", "/")
-  if not love.filesystem.getInfo(path) then return end
-
-  if cache[directory] then return cache[directory] end
+tk.require_all = tk.cache() .. function(luapath) -- TODO to module module
+  if not love.filesystem.getInfo(luapath:to_posix()) then return end
   
   local module = {}
 
-  local represent = tk.get_represent_for_path(directory)
+  local represent = tk.get_represent_for_path(luapath)
   
-  for _, file in ipairs(love.filesystem.getDirectoryItems(path)) do
+  for _, file in ipairs(love.filesystem.getDirectoryItems(luapath:to_posix())) do
   	if not file:starts_with("_") then
-  		local value = nil
+  		local value
   		if file:ends_with("." .. represent.extension) then
-        value = cache[directory .. "." .. file:gsub("%.[%w%d]*", "")] or represent.repr(path .. "/" .. file)
-        cache[directory .. "." .. file:gsub("%.[%w%d]*", "")] = value
-  		elseif not love.filesystem.getInfo(path .. "/" .. file, 'file') then
-  			value = tk.require_all(path:gsub("/", ".") .. "." .. file, represent)
+        value = tk.require(luapath .. "." .. file)
+        file = file:gsub("%.[%w%d]*", "")
+  		elseif not love.filesystem.getInfo(luapath:to_posix() .. "/" .. file, 'file') then
+  			value = tk.require_all(luapath .. "." .. file)
   		end
-  		module[file:gsub("%.[%w%d]*", "")] = value
+  		module[file] = value
   	end
   end
 
-  cache[directory] = module
   return module
 end
 
-function tk.require(filepath, _parent_represent)
-  if not cache[filepath] then -- TODOLONG cache decorator
-    local represent = tk.get_represent_for_path(filepath)
-    cache[filepath] = represent.repr(tk.to_posix(filepath) .. "." .. represent.extension)
-  end
-  return cache[filepath]
+tk.require = tk.cache() .. function(luapath)
+  local represent = tk.get_represent_for_path(luapath)
+  return represent.repr(luapath:to_posix() .. "." .. represent.extension)
 end
 
-function tk.get_represent_for_path(fullpath, _parent_represent)
+function tk.get_represent_for_path(luapath)
   local path = ""
   local represent = default_represent
 
-  for i, element in ipairs(fullpath / ".") do
+  for i, element in ipairs(luapath / ".") do
     path = i == 1 and element or (path .. "." .. element)
     
-    represent = love.filesystem.getInfo(tk.to_posix(path) .. "/_representation.lua") 
+    represent = love.filesystem.getInfo(path:to_posix() .. "/_representation.lua") 
       and require(path .. "._representation")
        or represent
   end
 
   return represent
 end
-
-function tk.module(path)
-  return setmetatable({path = path}, {
-    __index = function(self, item)
-      return tk.module(self.path .. "." .. item)
-    end,
-    __unm = function(self)
-      print("unm", self.path)
-      if love.filesystem.getInfo(tk.to_posix(self.path), 'directory') then
-        print("require_all", self.path)
-        return tk.require_all(self.path)
-      end
-      return tk.require(self.path)
-    end,
-    __call = function(self)
-      return -self
-    end
-  })
-end
-
-function tk.to_posix(path)
-  return path:gsub("%.", "/")
-end
-
-tk.cache = decorator:new(function(self, f) 
-  return function(...)
-    if not self.global_cache[f] then
-      self.global_cache[f] = {}
-    end
-
-    if not self.global_cache[f][{...}] then
-      self.global_cache[f][{...}] = f(...)
-    end
-    
-    return self.global_cache[f][{...}]
-  end
-end)
-
-tk.cache.global_cache = {}
 
 return tk

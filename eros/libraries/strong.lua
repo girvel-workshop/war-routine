@@ -23,7 +23,7 @@ end
 -- METATABLE --
 
 local mt = getmetatable("")
-local string = mt.__index
+string = mt.__index
 
 -- OPERATORS --
 
