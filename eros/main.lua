@@ -18,6 +18,7 @@ gamera = -eros.libraries.gamera
 require("eros.libraries.tesound")
 
 log = -eros.libraries.log -- TODO log outfile
+log.level = arg[2] == "--debug" and "trace" or "info"
 
 
 if arg[2] == "selftest" then
@@ -25,7 +26,7 @@ if arg[2] == "selftest" then
   result = pcall(function() require("eros.tests") end)
   love.event.quit(result)
 else
-  print(inspect(config))
+  log.trace[[trace]]
   log.info[[WAR-ROUTINE starts]]
   function love.load()
     log.info[[initializing engine variables]]
