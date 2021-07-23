@@ -4,8 +4,8 @@ return fnl.extend(-eros.units.unit, {
 	fire_time = .12,
 	bullets = limited:full(30),
 	bullets_other = 90,
-	sprite = -assets.sprites.weapons.default,
-	cluster = -assets.sprites.weapons, -- TODO fixme
+	sprite = -assets.sprites.weapons.default.normal,
+	cluster = -assets.sprites.weapons.default,
 	visible = false,
 	animations = -assets.animations.weapons.default,
 	skills = {
