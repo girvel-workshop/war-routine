@@ -1,5 +1,5 @@
 function love.conf(c)
-	c.identity = "War routine"
+	c.identity = "war-routine"
 	c.appendidentity = true
 	c.console = true -- TODO disable on release
 

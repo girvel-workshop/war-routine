@@ -1,4 +1,5 @@
 return fnl.extend(-eros.units.unit, {
+	name = "weapons.default",
 	power = 2300,
 	fire_time = .12,
 	bullets = limited:full(30),

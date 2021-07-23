@@ -1,4 +1,5 @@
 return fnl.extend(-eros.units.physical, {
+	name = "items.shell",
 	sprite = -assets.sprites.items.shell,
 	layer = assets.config.layers().on_floor,
 	put_near = function(self, parent)

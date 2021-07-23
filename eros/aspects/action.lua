@@ -14,11 +14,9 @@ function action:new(behaviour)
 end
 
 function action:order(entity)
-	print(entity.cluster[self.starting_state], entity.sprite)
 	if entity.action == false 
 			and (entity.cluster[self.starting_state] == entity.sprite 
 				or not entity.sprite and not entity.cluster[self.starting_state]) then
-		print(self.name)
 		entity.action = fnl.copy(self)
 		return true
 	end

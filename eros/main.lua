@@ -17,7 +17,7 @@ gamera = -eros.libraries.gamera
 
 require("eros.libraries.tesound")
 
-log = -eros.libraries.log
+log = -eros.libraries.log -- TODO log outfile
 
 
 if arg[2] == "selftest" then
@@ -25,9 +25,10 @@ if arg[2] == "selftest" then
   result = pcall(function() require("eros.tests") end)
   love.event.quit(result)
 else
+  print(inspect(config))
   log.info[[WAR-ROUTINE starts]]
-
   function love.load()
+    log.info[[initializing engine variables]]
   	math.randomseed(os.time())
 
   	window_size = vector:new(
@@ -53,7 +54,7 @@ else
         return result
       end,
       add = function(self, entity)
-        print("tiny.add", entity)
+        log.info("add", entity)
         tiny.add(self.world, entity)
 
         if entity.radius then
@@ -98,9 +99,15 @@ else
 
     assets = module:new[[assets]]
 
+    log.info[[loading the game]]
+
   	require("game")
 
+    log.info[[initializing the game]]
+
     if eros.load then eros.load() end
+
+    log.info[[game started successfully]]
   end
 
   function love.update(dt)
