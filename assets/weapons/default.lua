@@ -1,4 +1,4 @@
-return fnl.entity[[eros.units.unit]]({
+return fnl.extend(-eros.units.unit, {
 	power = 2300,
 	fire_time = .12,
 	bullets = limited:full(30),
