@@ -8,18 +8,20 @@ module.default_represent = {
 }
 
 function module:new(path)
-	return fnl.inherit(self, {path = path})
-end
-
-function module:__unm()
-	if love.filesystem.getInfo(tk.to_posix(self.path), 'directory') then
-    return self.require_all(self.path)
-  end
-  return self.require(self.path)
-end
-
-function module:__call()
-	return -self
+	return setmetatable({path = path}, {
+		__index = function(self, item)
+  		return module:new(self.path .. "." .. item)
+		end,
+		__unm = function(self)
+			if love.filesystem.getInfo(self.path:to_posix(), 'directory') then
+		    return module.require_all(self.path)
+		  end
+		  return module.require(self.path)
+		end,
+		__call = function(self)
+			return -self
+		end
+	})
 end
 
 module.require_all = tk.cache() .. function(luapath)
@@ -33,8 +35,8 @@ module.require_all = tk.cache() .. function(luapath)
   	if not file:starts_with("_") then
   		local value
   		if file:ends_with("." .. represent.extension) then
-        value = module.require(luapath .. "." .. file)
         file = file:gsub("%.[%w%d]*", "")
+        value = module.require(luapath .. "." .. file)
   		elseif not love.filesystem.getInfo(luapath:to_posix() .. "/" .. file, 'file') then
   			value = module.require_all(luapath .. "." .. file)
   		end

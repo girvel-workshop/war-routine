@@ -13,6 +13,6 @@ local soldier = fnl.entity[[eros.units.character]]({
 })
 
 soldier.weapon.follows = soldier -- TODO eDSL
-soldier.weapon.following_offset = soldier.fire_source + vector:new(0, 32) -- FIXME
+soldier.weapon.following_offset = soldier.fire_source + vector:new(0, 32) -- TODO FIXME
 
 return soldier

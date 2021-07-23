@@ -7,6 +7,7 @@ decorator = require("eros.libraries.girvel.decorator")
 tk = require("eros.libraries.girvel.toolkit")
 vector = require("eros.libraries.girvel.vector")
 limited = require("eros.libraries.girvel.limited")
+module = require("eros.libraries.girvel.module")
 
 inspect = require("eros.libraries.inspect")
 tiny = require("eros.libraries.tiny")
@@ -14,12 +15,18 @@ gamera = require("eros.libraries.gamera")
 
 require("eros.libraries.tesound")
 
+log = print
+
 
 if arg[2] == "selftest" then
   arg = {}
   result = pcall(function() require("eros.tests") end)
   love.event.quit(result)
 else
+  log[[WAR-ROUTINE starts]]
+  eros = module:new[[eros]]
+
+  log[[creating love.load function]]
   function love.load()
   	math.randomseed(os.time())
 
@@ -28,9 +35,10 @@ else
       love.graphics.getHeight()
     )
 
+    log[[Creating ECS container]]
   	game = {
       world = tiny.world(
-        unpack(fnl.values(require_all("eros.systems")))
+        unpack(fnl.values(-eros.systems))
       ),
       create = function(self, prototype)
         local result = fnl.copy(prototype)
@@ -79,6 +87,7 @@ else
       physics_subjects = {}
     }
 
+    log[[Creating camera]]
     game.camera = game:create({
       name = "game.camera",
 
@@ -89,14 +98,14 @@ else
       gamera = gamera.new(-10000, -10000, 20000, 20000) -- TODO levels
     })
 
-    assets = tk.module[[assets]]
-    eros = tk.module[[eros]]
+    assets = module:new[[assets]]
 
   	require("game")
 
     if eros.load then eros.load() end
   end
 
+  log[[creating love.update function]]
   function love.update(dt)
     for _, object in ipairs(game.physics_subjects) do 
       object.collides_with = false
@@ -143,14 +152,17 @@ else
     end
   end
 
+  log[[creating love.keypressed function]]
   function love.keypressed(key)
     game.controller:use_map("keypressed", key)
   end
 
+  log[[creating love.mousepressed function]]
   function love.mousepressed(x, y, button, istouch)
     game.controller:use_map("mousepressed", button)
   end
 
+  log[[creating love.draw function]]
   function love.draw()
     game.camera.gamera:setPosition(game.camera.position:unpack())
     game.camera.gamera:setAngle(game.camera.rotation)
@@ -159,4 +171,6 @@ else
       game.world:update(0, tiny.requireAll("drawing_system_flag"))
     end)
   end
+
+  log[[WAR-ROUTINE is loaded]]
 end

@@ -3,10 +3,10 @@ return fnl.entity[[eros.units.unit]]({
 	fire_time = .12,
 	bullets = limited:full(30),
 	bullets_other = 90,
-	sprite = tk.require("assets.sprites.weapons.default"),
-	cluster = require_all("assets.sprites").weapons, -- FIXME
+	sprite = -assets.sprites.weapons.default,
+	cluster = -assets.sprites.weapons, -- TODO fixme
 	visible = false,
-	animations = require_all("assets.animations").weapons.default,
+	animations = -assets.animations.weapons.default,
 	skills = {
 		fire = .05,
 	}

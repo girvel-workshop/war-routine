@@ -12,7 +12,7 @@ end
 function drawing:process(entity, _)
 	if not entity.sprite or entity.visible == false then return end
 
-	local anchor = aspects.sprite.get_anchor(entity)
+	local anchor = eros.aspects.sprite().get_anchor(entity)
 
 	love.graphics.draw(
 		entity.sprite,

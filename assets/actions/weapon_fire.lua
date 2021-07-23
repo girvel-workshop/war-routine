@@ -1,1 +1,1 @@
-return aspects.action:new[[fire | default -> default]]()
+return eros.aspects.action():new[[fire | default -> default]]()

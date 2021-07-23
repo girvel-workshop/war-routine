@@ -4,7 +4,7 @@ local function add_footprint(entity)
   fp.rotation = entity.rotation
 end
 
-return aspects.action:new[[move | normal -> normal]]({
+return eros.aspects.action():new[[move | normal -> normal]]({
   [0] = function(entity)
     return 128 / entity.velocity:magnitude() -- TODO refactor
   end,

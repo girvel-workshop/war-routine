@@ -1,4 +1,4 @@
-return aspects.action:new[[fire | armed -> armed]]({
+return eros.aspects.action():new[[fire | armed -> armed]]({
   [0] = function(entity)
     if not entity.weapon.bullets:move(-1) then
       return 0

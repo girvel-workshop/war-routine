@@ -1,4 +1,4 @@
-return aspects.action:new[[reload | armed -> armed]]({
+return eros.aspects.action():new[[reload | armed -> armed]]({
   [0] = function(entity)
     if entity.weapon.bullets_other <= 0 then
       return 0
