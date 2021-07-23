@@ -82,4 +82,20 @@ function tk.to_posix(path)
   return path:gsub("%.", "/")
 end
 
+tk.cache = decorator:new(function(self, f) 
+  return function(...)
+    if not self.global_cache[f] then
+      self.global_cache[f] = {}
+    end
+
+    if not self.global_cache[f][{...}] then
+      self.global_cache[f][{...}] = f(...)
+    end
+    
+    return self.global_cache[f][{...}]
+  end
+end)
+
+tk.cache.global_cache = {}
+
 return tk

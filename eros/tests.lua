@@ -25,6 +25,24 @@ describe("my own library", function()
         assert.are.same({b = 1}, parent.b)
       end)
     end)
+
+    describe("cache decorator", function()
+      it("should save calculations", function()
+        local cached_factorial
+        local factorial = {f = function(n)
+          return n > 0 and cached_factorial(n - 1) * n or 1
+        end}
+        cached_factorial = factorial.f
+
+        local result1 = cached_factorial(8)
+        local original_factorial = spy.on(factorial, "f")
+        local result2 = cached_factorial(8)
+        local _ = cached_factorial(3)
+
+        assert.are.equal(result1, result2)
+        assert.spy(original_factorial).was_not.called()
+      end)
+    end)
   end)
 
   describe("functional part", function()
@@ -107,12 +125,12 @@ describe("my own library", function()
   describe("decorator module", function()
     local decorator = require("eros.libraries.girvel.decorator")
     it("should decorate functions", function()
-      local dummy = decorator:new(function(f, a, b) return a + b end)
+      local dummy = decorator:new(function(self, f, a, b) return a + b end)
       spy.on(dummy, "_function")
       local f = function() end
 
       local result = dummy(1, 2) .. f
-      assert.spy(dummy._function).was_called_with(f, 1, 2)
+      assert.spy(dummy._function).was_called_with(dummy, f, 1, 2)
       assert.are.equal(3, result)
     end)
   end)
