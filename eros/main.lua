@@ -8,15 +8,11 @@ tk = require("eros.libraries.girvel.toolkit")
 vector = require("eros.libraries.girvel.vector")
 limited = require("eros.libraries.girvel.limited")
 
-require_all = tk.require_all
-
 inspect = require("eros.libraries.inspect")
 tiny = require("eros.libraries.tiny")
 gamera = require("eros.libraries.gamera")
 
 require("eros.libraries.tesound")
-
-aspects = require_all("eros.aspects")
 
 
 if arg[2] == "selftest" then

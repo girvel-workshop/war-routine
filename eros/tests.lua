@@ -4,28 +4,6 @@ describe("my own library", function()
   describe("toolkit part", function()
     local tk = require "eros.libraries.girvel.toolkit"
 
-    describe("require all function", function()
-      it("should import all modules from directory", function()
-        local parent = tk.require_all("eros.test_samples.sample1")
-
-        assert.is_true(parent.sample1)
-        assert.is_false(parent.sample2)
-      end)
-
-      it("should be recursive", function()
-        local parent = tk.require_all("eros.test_samples.sample2")
-
-        assert.is_true(parent.child.sample)
-      end)
-
-      it("should recursively use _representation.lua if possible", function()
-        local parent = tk.require_all("eros.test_samples.sample3")
-
-        assert.are.equal(1, parent.a)
-        assert.are.same({b = 1}, parent.b)
-      end)
-    end)
-
     describe("cache decorator", function()
       it("should save calculations", function()
         local cached_factorial
@@ -41,6 +19,32 @@ describe("my own library", function()
 
         assert.are.equal(result1, result2)
         assert.spy(original_factorial).was_not.called()
+      end)
+    end)
+  end)
+
+  describe("module part", function()
+    local module = require "eros.libraries.girvel.module"
+
+    describe("require all function", function()
+      it("should import all modules from directory", function()
+        local parent = module.require_all("eros.test_samples.sample1")
+
+        assert.is_true(parent.sample1)
+        assert.is_false(parent.sample2)
+      end)
+
+      it("should be recursive", function()
+        local parent = module.require_all("eros.test_samples.sample2")
+
+        assert.is_true(parent.child.sample)
+      end)
+
+      it("should recursively use _representation.lua if possible", function()
+        local parent = module.require_all("eros.test_samples.sample3")
+
+        assert.are.equal(1, parent.a)
+        assert.are.same({b = 1}, parent.b)
       end)
     end)
   end)
