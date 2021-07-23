@@ -72,7 +72,7 @@ function fnl.contains(collection, element)
 	return #fnl.filter(collection, function(v) return v == element end) > 0
 end
 
-function fnl.entity(parent_path) -- TODO move to fnl
+function fnl.entity(parent_path)
   return function(table)
     return fnl.extend(require(parent_path), table)
   end
