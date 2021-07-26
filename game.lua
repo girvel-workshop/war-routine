@@ -1,11 +1,10 @@
 function eros.load()
   love.mouse.setCursor(love.mouse.newCursor("assets/sprites/ui/cursor.png"))
 
+  log.trace(inspect(-assets.levels.prototype))
+  assets.levels.prototype():load()
+
   mc = game:create(-assets.units.characters.soldier)
-
-  game:create(-assets.units.decorations.target).position = vector:new(0, -500)
-
-  game:create(-assets.units.ui.help)
 
   game.controller.controls = mc
 

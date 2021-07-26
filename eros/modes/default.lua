@@ -1,4 +1,3 @@
-log.trace[[trace]]
 log.info[[WAR-ROUTINE starts]]
 function love.load()
   log.info[[initializing engine variables]]
