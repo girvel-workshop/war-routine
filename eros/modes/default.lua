@@ -14,17 +14,7 @@ function love.load()
       unpack(fnl.values(-eros.systems))
     ),
     create = function(self, prototype)
-      local result = fnl.copy(prototype)
-
-      if result.get_parts then
-        for _, partname in ipairs(result:get_parts()) do
-          self:add(result[partname])
-        end
-      end
-
-      self:add(result)
-      
-      return result
+      return self:add(fnl.copy(prototype))
     end,
     add = function(self, entity)
       log.info("add", entity)
@@ -34,6 +24,14 @@ function love.load()
         table.insert(self.physics_subjects, entity)
         entity.collides_with = false
       end
+
+      if entity.get_parts then
+        for _, partname in ipairs(entity:get_parts()) do
+          self:add(entity[partname])
+        end
+      end
+
+      return entity
     end,
     remove = function(self, entity)
       if entity.radius then
