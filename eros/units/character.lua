@@ -1,6 +1,6 @@
-local legs = fnl.copy(require("assets.units.legs"))
+local legs = assets.units.legs() / fnl.copy()
 
-return fnl.extend(require "eros.units.unit", {
+return fnl.extend(-eros.units.unit, {
   name = "abstract.character",
 
   stamina = limited:full(5),
@@ -13,5 +13,5 @@ return fnl.extend(require "eros.units.unit", {
   legs = legs,
   follows = legs,
 
-  layer = require("assets.config.layers").character
+  layer = assets.config.layers().character,
 })

@@ -1,8 +1,8 @@
 return {
 	empty = function(self, limit, value, lower_limit)
-		return fnl.inherit(self, {
+		return {
 			limit=limit, value=value or 0, lower_limit=lower_limit or 0
-		})
+		} / fnl.inherit(self)
 	end,
 
 	full = function(self, limit, value, lower_limit)

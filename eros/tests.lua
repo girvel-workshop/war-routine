@@ -1,6 +1,7 @@
 local fnl = require "eros.libraries.girvel.functional"
 
 log.trace(inspect({1, 2, 3} / fnl.filter(function(x) return x % 2 == 1 end)))
+log.trace({1, 2, 3} / fnl.contains(2))
 
 -- local function tests(testlist)
 --   for name, test in pairs(testlist) do

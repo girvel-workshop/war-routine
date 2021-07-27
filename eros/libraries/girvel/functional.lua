@@ -10,20 +10,6 @@ fnl.pipe = decorator:new(function(_, f)
 	end
 end)
 
--- function fnl.filter(predicate)
--- 	return setmetatable({predicate = predicate}, {
--- 		__div = function(table, self)
--- 			result = {}
--- 			for _, v in pairs(table) do
--- 				if self.predicate(v) then
--- 					table.insert(result, v)
--- 				end
--- 			end
--- 			return result
--- 		end
--- 	})
--- end
-
 fnl.filter = fnl.pipe() .. function(t, predicate)
 	result = {}
 	for _, v in pairs(t) do
@@ -34,7 +20,7 @@ fnl.filter = fnl.pipe() .. function(t, predicate)
 	return result
 end
 
-function fnl.values(t)
+fnl.values = fnl.pipe() .. function(t)
 	result = {}
 	for k, v in pairs(t) do
 		table.insert(result, v)
@@ -52,15 +38,17 @@ function fnl.remove(table_, value)
 	return false
 end
 
+-- fnl.extend = fnl.pipe() .. function(table1, table2) -- TODO
 function fnl.extend(table1, table2)
-	result = fnl.copy(table1)
+	result = table1 / fnl.copy()
 	for k, v in pairs(table2) do
 		result[k] = v
 	end
 	return result
 end
 
-function fnl.copy(t, cache, not_deep)
+fnl.copy = nil
+fnl.copy = fnl.pipe() .. function(t, cache, not_deep)
 	if t == nil then return nil end
 
 	if type(t) ~= "table" then return t end
@@ -77,23 +65,23 @@ function fnl.copy(t, cache, not_deep)
 	cache[t] = result
 
 	for k, v in pairs(t) do
-		if not_deep then
+		if not_deep or type(v) ~= "table" then
 			result[k] = v
 		else
-			result[k] = fnl.copy(v, cache)
+			result[k] = v / fnl.copy(cache)
 		end
 	end
 	return result
 end
 
-function fnl.inherit(parent, child)
+fnl.inherit = fnl.pipe() .. function(child, parent)
 	setmetatable(child, parent)
 	parent.__index = parent
 	return child
 end
 
-function fnl.contains(collection, element)
-	return #fnl.filter(collection, function(v) return v == element end) > 0
+fnl.contains = fnl.pipe() .. function(collection, element)
+	return #(collection / fnl.filter(function(v) return v == element end)) > 0
 end
 
 return fnl

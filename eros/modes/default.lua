@@ -10,10 +10,10 @@ function love.load()
 
 	game = {
     world = tiny.world(
-      unpack(fnl.values(-eros.systems))
+      unpack(eros.systems() / fnl.values())
     ),
     create = function(self, prototype)
-      return self:add(fnl.copy(prototype))
+      return self:add(prototype / fnl.copy())
     end,
     add = function(self, entity)
       log.info("add", entity)

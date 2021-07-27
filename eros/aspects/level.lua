@@ -1,7 +1,7 @@
 local level = {}
 
 function level:new(data)
-	return fnl.inherit(self, {data = data})
+	return {data = data} / fnl.inherit(self)
 end
 
 function level:load()
