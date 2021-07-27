@@ -18,7 +18,6 @@ gamera = -eros.libraries.gamera
 require("eros.libraries.tesound")
 
 log = -eros.libraries.log -- TODO log outfile
-log.level = fnl.contains(arg, "--debug") and "trace" or "info"
-
+log.level = arg[3] == "debug" and "trace" or "info"
 
 require("eros.modes." .. (arg[2] or "default"))

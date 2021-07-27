@@ -1,6 +1,33 @@
 local fnl = require "eros.libraries.girvel.functional"
 
-log.trace(inspect(fnl.filter({1, 2, 3, 4, 5}, function(x) return x % 2 == 1 end)))
+log.trace(inspect({1, 2, 3} / fnl.filter(function(x) return x % 2 == 1 end)))
+
+-- local function tests(testlist)
+--   for name, test in pairs(testlist) do
+--     (test() and log.info or log.error)(name)
+--   end
+-- end
+
+-- local function same(table1, table2)
+--   if not fnl.same(table1, table2) then
+--     print("table1:", inspect(table1))
+--     print("table2:", inspect(table2))
+
+--     return false
+--   end
+
+--   return true
+-- end
+
+-- tests({
+--   ["same() should check for structural equality"] = function()
+--     return fnl.same({1, 2, 3}, fnl.copy({1, 2, 3}))
+--       and not fnl.same({1, 2}, {1, [4] = 2})
+--   end,
+--   ["filter() should filter collection"] = function()
+--     return same(fnl.filter({1, 2, 3, 4, 5}, function(x) return x % 2 == 1 end), {1, 3, 5})
+--   end,
+-- })
 
 -- describe("my own library", {
 --   describe("toolkit part", {

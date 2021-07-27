@@ -1,14 +1,28 @@
 local fnl = {}
 
-function fnl.filter(t, predicate)
-	result = {}
-	for _, v in pairs(t) do
-		if predicate(v) then
-			table.insert(result, v)
+function fnl.filter(predicate)
+	return setmetatable({predicate = predicate}, {
+		__div = function(left, right)
+			result = {}
+			for _, v in pairs(left) do
+				if right.predicate(v) then
+					table.insert(result, v)
+				end
+			end
+			return result
 		end
-	end
-	return result
+	})
 end
+
+-- function fnl.filter(t, predicate)
+-- 	result = {}
+-- 	for _, v in pairs(t) do
+-- 		if predicate(v) then
+-- 			table.insert(result, v)
+-- 		end
+-- 	end
+-- 	return result
+-- end
 
 function fnl.values(t)
 	result = {}
