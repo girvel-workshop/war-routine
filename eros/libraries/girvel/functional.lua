@@ -1,28 +1,38 @@
 local fnl = {}
 
-function fnl.filter(predicate)
-	return setmetatable({predicate = predicate}, {
-		__div = function(left, right)
-			result = {}
-			for _, v in pairs(left) do
-				if right.predicate(v) then
-					table.insert(result, v)
-				end
+fnl.pipe = decorator:new(function(_, f)
+	return function(...)
+		return setmetatable({args = {...}}, {
+			__div = function(table, self)
+				return f(table, unpack(self.args))
 			end
-			return result
-		end
-	})
-end
+		})
+	end
+end)
 
--- function fnl.filter(t, predicate)
--- 	result = {}
--- 	for _, v in pairs(t) do
--- 		if predicate(v) then
--- 			table.insert(result, v)
+-- function fnl.filter(predicate)
+-- 	return setmetatable({predicate = predicate}, {
+-- 		__div = function(table, self)
+-- 			result = {}
+-- 			for _, v in pairs(table) do
+-- 				if self.predicate(v) then
+-- 					table.insert(result, v)
+-- 				end
+-- 			end
+-- 			return result
 -- 		end
--- 	end
--- 	return result
+-- 	})
 -- end
+
+fnl.filter = fnl.pipe() .. function(t, predicate)
+	result = {}
+	for _, v in pairs(t) do
+		if predicate(v) then
+			table.insert(result, v)
+		end
+	end
+	return result
+end
 
 function fnl.values(t)
 	result = {}

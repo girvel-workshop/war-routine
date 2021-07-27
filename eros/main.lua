@@ -1,7 +1,7 @@
 -- TODO refactor this shit
 strong = require("eros.libraries.strong")
-fnl = require("eros.libraries.girvel.functional")
 decorator = require("eros.libraries.girvel.decorator")
+fnl = require("eros.libraries.girvel.functional")
 tk = require("eros.libraries.girvel.toolkit")
 module = require("eros.libraries.girvel.module")
 

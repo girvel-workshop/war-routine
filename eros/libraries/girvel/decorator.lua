@@ -1,7 +1,9 @@
 local decorator = {}
 
 function decorator:new(f)
-	return fnl.inherit(self, {_function = f})
+	result = setmetatable({_function = f}, self)
+	self.__index = self
+	return result
 end
 
 function decorator:__call(...)
