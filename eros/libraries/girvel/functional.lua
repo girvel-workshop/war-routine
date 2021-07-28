@@ -1,5 +1,6 @@
 local decorator = require "eros.libraries.girvel.decorator"
-local strong = require "eros.libraries.strong"
+require "eros.libraries.strong"
+local exception = require "eros.libraries.girvel.exception"
 
 local fnl = {}
 
@@ -19,16 +20,13 @@ fnl.short_lambda = function(text) -- TODO move & add lambdas
 	end
 
 	local full_text = "return function(ix, it) " .. text .. " end"
-	local result = loadstring(full_text)
+	local factory = loadstring(full_text)
 
-	if result == nil then
-		error(setmetatable(
-			{author=fnl.parse, message="Wrong syntax in function `%s`" % full_text}, 
-			{__tostring=function(self) return self.message end}
-		)) -- TODO error module
+	if factory == nil then
+		exception.throw({author=fnl.parse, message="Wrong syntax in function `%s`" % full_text})
 	end
 
-	return result
+	return factory()
 end
 
 fnl.filter = fnl.pipe() .. function(t, predicate)

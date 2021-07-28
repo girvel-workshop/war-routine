@@ -1,6 +1,6 @@
 local fnl = require "eros.libraries.girvel.functional"
 
-log.trace(inspect({1, 2, 3} / fnl.filter[[x % 2 == 1]]))
+log.trace(inspect({1, 2, 3} / fnl.filter[[it % 2 == 1]]))
 log.trace({1, 2, 3} / fnl.contains(2))
 
 -- local function tests(testlist)
