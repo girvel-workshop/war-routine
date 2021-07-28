@@ -1,4 +1,4 @@
-return fnl.extend(require "eros.units.unit", {
+return fnl.extend(-eros.units.unit, {
   name = "legs",
 
   run_multiplier = 1.5,

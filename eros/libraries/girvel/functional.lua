@@ -1,3 +1,6 @@
+local decorator = require "eros.libraries.girvel.decorator"
+local strong = require "eros.libraries.strong"
+
 local fnl = {}
 
 fnl.pipe = decorator:new(function(_, f)
@@ -10,10 +13,32 @@ fnl.pipe = decorator:new(function(_, f)
 	end
 end)
 
+fnl.short_lambda = function(text) -- TODO move & add lambdas
+	if not text:match("return") then
+		text = "return " .. text
+	end
+
+	local full_text = "return function(ix, it) " .. text .. " end"
+	local result = loadstring(full_text)
+
+	if result == nil then
+		error(setmetatable(
+			{author=fnl.parse, message="Wrong syntax in function `%s`" % full_text}, 
+			{__tostring=function(self) return self.message end}
+		)) -- TODO error module
+	end
+
+	return result
+end
+
 fnl.filter = fnl.pipe() .. function(t, predicate)
-	result = {}
-	for _, v in pairs(t) do
-		if predicate(v) then
+	if type(predicate) == "string" then
+		predicate = fnl.short_lambda(predicate)
+	end
+
+	local result = {}
+	for i, v in ipairs(t) do
+		if predicate(i, v) then
 			table.insert(result, v)
 		end
 	end
@@ -81,7 +106,7 @@ fnl.inherit = fnl.pipe() .. function(child, parent)
 end
 
 fnl.contains = fnl.pipe() .. function(collection, element)
-	return #(collection / fnl.filter(function(v) return v == element end)) > 0
+	return #(collection / fnl.filter[[it == element]]) > 0
 end
 
 return fnl
