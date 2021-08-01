@@ -1,5 +1,5 @@
 local decorator = require "eros.libraries.girvel.decorator"
-require "eros.libraries.strong"
+require "strong"
 local exception = require "eros.libraries.girvel.exception"
 local lambda = require[[eros.libraries.girvel.lambda]]
 

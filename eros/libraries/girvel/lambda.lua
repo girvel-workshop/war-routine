@@ -1,4 +1,4 @@
-require "eros.libraries.strong"
+require "strong"
 local exception = require "eros.libraries.girvel.exception"
 local tk = require "eros.libraries.girvel.toolkit"
 

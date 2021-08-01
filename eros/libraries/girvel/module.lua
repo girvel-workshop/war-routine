@@ -32,9 +32,9 @@ module.require_all = tk.cache() .. function(luapath)
   local represent = module.get_represent_for_path(luapath)
   
   for _, file in ipairs(love.filesystem.getDirectoryItems(luapath:to_posix())) do
-  	if not file:starts_with("_") then
+  	if not file:startsWith("_") then
   		local value
-  		if file:ends_with("." .. represent.extension) then
+  		if file:endsWith("." .. represent.extension) then
         file = file:gsub("%.[%w%d]*", "")
         value = module.require(luapath .. "." .. file)
   		elseif not love.filesystem.getInfo(luapath:to_posix() .. "/" .. file, 'file') then
