@@ -1,8 +1,8 @@
 local exception = {}
 
-function exception.throw(message)
-	error(setmetatable(message, {
-		__tostring = function(self) return message.message end
+function exception.throw(ex)
+	error(setmetatable(ex, {
+		__tostring = function(self) return self.message end
 	}))
 end
 

@@ -1,6 +1,7 @@
 local decorator = require "eros.libraries.girvel.decorator"
 require "eros.libraries.strong"
 local exception = require "eros.libraries.girvel.exception"
+local lambda = require[[eros.libraries.girvel.lambda]]
 
 local fnl = {}
 
@@ -14,24 +15,9 @@ fnl.pipe = decorator:new(function(_, f)
 	end
 end)
 
-fnl.short_lambda = function(text) -- TODO move & add lambdas
-	if not text:match("return") then
-		text = "return " .. text
-	end
-
-	local full_text = "return function(ix, it) " .. text .. " end"
-	local factory = loadstring(full_text)
-
-	if factory == nil then
-		exception.throw({author=fnl.parse, message="Wrong syntax in function `%s`" % full_text})
-	end
-
-	return factory()
-end
-
 fnl.filter = fnl.pipe() .. function(t, predicate)
 	if type(predicate) == "string" then
-		predicate = fnl.short_lambda(predicate)
+		predicate = lambda("ix, it -> " .. predicate)
 	end
 
 	local result = {}
