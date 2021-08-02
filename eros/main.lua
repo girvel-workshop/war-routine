@@ -11,13 +11,13 @@ eros = module:new[[eros]]
 vector = -eros.libraries.girvel.vector
 limited = -eros.libraries.girvel.limited
 
-inspect = -eros.libraries.inspect
-tiny = -eros.libraries.tiny
-gamera = -eros.libraries.gamera
+inspect = require[[inspect]]
+tiny = require[[tiny]]
+gamera = -eros.libraries.girvel.gamera
 
-require("eros.libraries.tesound")
+require("eros.libraries.girvel.tesound")
 
-log = -eros.libraries.log -- TODO log outfile
+log = -eros.libraries.girvel.log -- TODO log outfile
 log.level = arg[3] == "debug" and "trace" or "info"
 
 require("eros.modes." .. (arg[2] or "default"))
