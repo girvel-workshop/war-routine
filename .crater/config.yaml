@@ -1,0 +1,4 @@
+name: war-routine
+build_systems:
+  love: true
+version: 0.2-0
