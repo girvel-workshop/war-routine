@@ -1,4 +1,20 @@
 name: war-routine
 build_systems:
-  love: true
-version: 0.2-0
+  love:
+    dependencies:
+    - container
+    - decorator
+    - exception
+    - fnl
+    - gamera
+    - lambda
+    - limited
+    - log
+    - module
+    - tesound
+    - tk
+    - vector
+    - inspect
+    - tiny
+    - strong
+version: 0.3-35
