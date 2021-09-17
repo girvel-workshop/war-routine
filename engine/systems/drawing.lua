@@ -22,7 +22,7 @@ function drawing:process(entity, _)
 		entity.position.x, entity.position.y,
 		entity.rotation, 
 		1, 1, 
-		anchor:unpack()
+		unpack(anchor)
 	)
 end
 

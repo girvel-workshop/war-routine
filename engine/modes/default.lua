@@ -8,12 +8,10 @@ function love.load()
     love.graphics.getHeight()
   )
 
-  systems = engine.systems() / fnl.values()
-  
 	game = {
-    world = tiny.world(
-      engine.systems() / fnl.values() / fnl.unpack()
-    ),
+    world = tiny.world(unpack(
+      engine.systems() / fnl.values()
+    )),
     create = function(self, prototype)
       return self:add(prototype / fnl.copy())
     end,

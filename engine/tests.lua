@@ -1,8 +1,5 @@
 local fnl = require "engine.libraries.girvel.functional"
 
-log.trace(inspect({1, 2, 3} / fnl.filter[[it % 2 == 1]]))
-log.trace({1, 2, 3} / fnl.contains(2))
-
 -- local function tests(testlist)
 --   for name, test in pairs(testlist) do
 --     (test() and log.info or log.error)(name)
