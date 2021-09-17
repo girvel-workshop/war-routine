@@ -1,6 +1,6 @@
-return fnl.extend(-eros.units.physical, {
+return -engine.units.physical / fnl.extend {
   name = "decorations.target",
   radius = 25,
   sprite = -assets.sprites.decorations.target,
-  health = limited:full(500),
-})
+  health = limited.maximized(500),
+}

@@ -1,6 +1,6 @@
 return {
   repr = function(path)
-    return eros.aspects.soundpack():new(path)
+    return engine.aspects.soundpack()(path)
   end,
   extension = "snd"
 }

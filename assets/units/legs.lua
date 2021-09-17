@@ -1,4 +1,4 @@
-return fnl.extend(-eros.units.unit, {
+return -engine.units.unit / fnl.extend{
   name = "legs",
 
   run_multiplier = 1.5,
@@ -11,4 +11,4 @@ return fnl.extend(-eros.units.unit, {
   animations = -assets.animations.legs,
   cluster = {},
   layer = -assets.config.layers().under_character
-})
+}

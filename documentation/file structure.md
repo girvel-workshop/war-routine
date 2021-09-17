@@ -1,8 +1,8 @@
 # Main structure
 
-EROS PART
+engine PART
 
-- eros/
+- engine/
   - aspects/     -- modules w/ internal functionality
   - devops/      -- development optimization utilities
   - libraries/   -- engine libraries

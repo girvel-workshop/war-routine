@@ -1,4 +1,4 @@
-return eros.aspects.action():new[[fire | normal -> normal]]({
+return engine.aspects.action()[[fire | normal -> normal]]({
 	[0] = function(entity)
     if not entity.bullets:move(-1) then
       return 0

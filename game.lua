@@ -1,4 +1,4 @@
-function eros.load()
+function engine.load()
   love.mouse.setCursor(love.mouse.newCursor("assets/sprites/ui/cursor.png"))
 
   log.trace(inspect(-assets.levels.prototype))

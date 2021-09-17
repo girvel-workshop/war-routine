@@ -1,4 +1,4 @@
-return fnl.extend(-eros.units.physical, {
+return -engine.units.physical / fnl.extend{
   name = "footprint",
   sprite = -assets.sprites.footprint
-})
+}

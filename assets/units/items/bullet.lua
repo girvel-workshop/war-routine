@@ -1,4 +1,4 @@
-return fnl.extend(-eros.units.physical, {
+return -engine.units.physical / fnl.extend{
 	name = "items.bullet",
 	sprite = -assets.sprites.items.bullet,
 	layer = assets.config.layers().on_floor,
@@ -9,4 +9,4 @@ return fnl.extend(-eros.units.physical, {
     self.rotation = parent.rotation
     self.velocity = vector.up():rotated(parent.rotation) * parent.power
 	end
-})
+}

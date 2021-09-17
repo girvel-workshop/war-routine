@@ -1,4 +1,4 @@
-return eros.aspects.action():new[[arm | armed -> normal]]({
+return engine.aspects.action()[[arm | armed -> normal]]({
   [0] = function(entity)
     entity.weapon.visible = false
   end

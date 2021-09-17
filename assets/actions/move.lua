@@ -4,7 +4,7 @@ local function add_footprint(entity)
   fp.rotation = entity.rotation
 end
 
-return eros.aspects.action():new[[move | normal -> normal]]({
+return engine.aspects.action()[[move | normal -> normal]]({
   [0] = function(entity)
     assets.sounds.walk():play()
     return 128 / entity.velocity:magnitude() -- TODO refactor

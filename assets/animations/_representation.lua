@@ -1,6 +1,6 @@
 return {
 	repr = function(path)
-		return eros.aspects.animation():new(path)
+		return engine.aspects.animation()(path)
 	end,
 	extension = "anm"
 }
