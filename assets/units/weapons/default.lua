@@ -1,4 +1,4 @@
-return -engine.units.unit / fnl.extend {
+return -engine.units.unit/fnl.extend{
 	name = "weapons.default",
 	power = 2300,
 	fire_time = .12,

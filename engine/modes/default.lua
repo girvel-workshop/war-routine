@@ -34,7 +34,7 @@ function love.load()
     end,
     remove = function(self, entity)
       if entity.radius then
-        fnl.remove(self.physics_subjects, entity)
+        fnl.remove_mut(self.physics_subjects, entity)
       end
 
       tiny.remove(self.world, entity)

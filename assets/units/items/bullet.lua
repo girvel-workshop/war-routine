@@ -1,4 +1,4 @@
-return -engine.units.physical / fnl.extend{
+return -engine.units.physical/fnl.extend{
 	name = "items.bullet",
 	sprite = -assets.sprites.items.bullet,
 	layer = assets.config.layers().on_floor,
