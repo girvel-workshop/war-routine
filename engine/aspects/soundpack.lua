@@ -1,6 +1,6 @@
 local soundpack, module_mt = tk.setmetatable({}, {})
 
-module_mt.__call = function(path)
+module_mt.__call = function(_, path)
   local obj = {
     path = path,
     sounds = {}

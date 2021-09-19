@@ -1,7 +1,7 @@
 local level, module_mt = tk.setmetatable({}, {})
 
 local level_mt = {__index={}}
-function module_mt.__call(data)
+module_mt.__call = function(_, data)
 	return setmetatable({data=data}, level_mt)
 end
 

@@ -6,7 +6,7 @@ return -engine.units.physical / fnl.extend{
 		self.position = parent.position 
 	    + (parent.fire_source 
 	       + vector(math.random() * 2 - 1, math.random() * 2 - 1) * 15
-	      ):rotated(parent.rotation) / 2
+	      ):rotated(parent.rotation) * .5
 	  self.rotation = math.random() * 6.28
 	end
 }

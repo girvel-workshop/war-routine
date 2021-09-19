@@ -6,13 +6,10 @@ function drawing:compare(e1, e2)
 end
 
 function drawing:preProcess(_)
-  log.trace "set background color"
 	love.graphics.setBackgroundColor(.75, .75, .75)
 end
 
 function drawing:process(entity, _)
-	log.trace "drawing:process()"
-
 	if not entity.sprite or entity.visible == false then return end
 
 	local anchor = engine.aspects.sprite().get_anchor(entity)

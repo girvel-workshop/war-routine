@@ -6,7 +6,8 @@ end
 
 return engine.aspects.action()[[move | normal -> normal]]({
   [0] = function(entity)
-    assets.sounds.walk():play()
+    -- TODO fix this
+    assets.sounds().walk:play()
     return 128 / entity.velocity:magnitude() -- TODO refactor
   end,
   [.5] = add_footprint,

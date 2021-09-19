@@ -102,11 +102,11 @@ function love.update(dt)
   subj.legs.velocity = vector.zero
 
   if love.keyboard.isDown("w") then -- TODO REFACTOR
-    subj.legs.velocity = vector.up():rotated(subj.rotation) * subj.legs.speed
+    subj.legs.velocity = vector.up:rotated(subj.rotation) * subj.legs.speed
     assets.actions.move():order(mc.legs)
   end
   if love.keyboard.isDown("s") then
-    subj.legs.velocity = -vector.up():rotated(subj.rotation) * subj.legs.speed
+    subj.legs.velocity = -vector.up:rotated(subj.rotation) * subj.legs.speed
   end
   if love.keyboard.isDown("a") then
     subj.legs.rotation = subj.legs.rotation - subj.legs.rotation_speed * dt
