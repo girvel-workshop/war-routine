@@ -1,4 +1,4 @@
-return fnl.extend(tiny.processingSystem(), {
+return tiny.processingSystem()/fnl.extend{
 	name = "systems.following",
 	filter = tiny.requireAll("follows"),
 
@@ -15,4 +15,4 @@ return fnl.extend(tiny.processingSystem(), {
 			entity.rotation = entity.follows.rotation
 		end
 	end
-})
+}

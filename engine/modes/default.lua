@@ -96,28 +96,29 @@ function love.update(dt)
   game.world:update(dt, tiny.rejectAll("drawing_system_flag"))
 
   local subj = game.controller.controls
+  local legs = subj.legs
 
   -- MOVEMENT
 
-  subj.legs.velocity = vector.zero
+  legs.velocity = vector.zero
 
   if love.keyboard.isDown("w") then -- TODO REFACTOR
-    subj.legs.velocity = vector.up:rotated(subj.rotation) * subj.legs.speed
-    assets.actions.move():order(mc.legs)
+    legs.velocity = vector.up:rotated(legs.rotation) * legs.speed
+    assets.actions.move():order(subj.legs)
   end
   if love.keyboard.isDown("s") then
-    subj.legs.velocity = -vector.up:rotated(subj.rotation) * subj.legs.speed
+    legs.velocity = -vector.up:rotated(legs.rotation) * legs.speed
   end
   if love.keyboard.isDown("a") then
-    subj.legs.rotation = subj.legs.rotation - subj.legs.rotation_speed * dt
+    legs.rotation = legs.rotation - legs.rotation_speed * dt
   end
   if love.keyboard.isDown("d") then
-    subj.legs.rotation = subj.legs.rotation + subj.legs.rotation_speed * dt
+    legs.rotation = legs.rotation + legs.rotation_speed * dt
   end
 
   if love.keyboard.isDown("lshift") then 
     if subj.stamina:move(-dt) then
-      subj.legs.velocity = subj.legs.velocity * subj.legs.run_multiplier
+      legs.velocity = legs.velocity * legs.run_multiplier
     end
   else
     subj.stamina:move(dt)
