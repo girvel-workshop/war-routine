@@ -7,6 +7,6 @@ return -engine.units.physical / fnl.extend{
 	fire_from = function(self, parent)
 		self.position = parent.position
     self.rotation = parent.rotation
-    self.velocity = vector.up():rotated(parent.rotation) * parent.power
+    self.velocity = vector.up:rotated(parent.rotation) * parent.power
 	end
 }

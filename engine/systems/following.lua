@@ -2,7 +2,7 @@ return tiny.processingSystem()/fnl.extend{
 	name = "systems.following",
 	filter = tiny.requireAll("follows"),
 
-	process = function(self, entity, dt)
+	process = function(_, entity, _)
 		if not entity.follows then return end
 
 		local offset = vector.zero
