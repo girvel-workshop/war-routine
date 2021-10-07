@@ -3,7 +3,7 @@ function engine.load()
 
   assets.levels.prototype():load()
 
-  mc = game:create(-assets.units.characters.soldier)
+  local mc = game:create(-assets.units.characters.soldier)
 
   game.controller.controls = mc
 

@@ -10,10 +10,10 @@ function love.load()
 
 	game = {
     world = tiny.world(unpack(
-      engine.systems() / fnl.values()
+      engine.systems()/fnl.values()
     )),
     create = function(self, prototype)
-      return self:add(prototype / fnl.copy())
+      return self:add(prototype/fnl.copy())
     end,
     add = function(self, entity)
       log.info("add", entity)
@@ -25,8 +25,8 @@ function love.load()
       end
 
       if entity.get_parts then
-        for _, partname in ipairs(entity:get_parts()) do
-          self:add(entity[partname])
+        for _, part_name in ipairs(entity:get_parts()) do
+          self:add(entity[part_name])
         end
       end
 
@@ -57,7 +57,7 @@ function love.load()
     physics_subjects = {}
   }
 
-  game.camera = game:create({
+  game.camera = game:create{
     name = "game.camera",
 
     follows = false,
@@ -65,7 +65,7 @@ function love.load()
     rotation = 0,
     anchor = window_size * .5,
     gamera = gamera.new(-10000, -10000, 20000, 20000) -- TODO levels
-  })
+  }
 
   assets = module "assets"
 
