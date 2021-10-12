@@ -97,7 +97,7 @@ engine_lib.initialize = function(configuration)
 
   for _, callback in ipairs {'update', 'keypressed', 'mousepressed', 'draw'} do
     love[callback] = function(...)
-      game.world:update({...}, function(x) return x.system_type == callback end)
+      game.world:update({...}, function(_, x) return x.system_type == callback end)
     end
   end
 

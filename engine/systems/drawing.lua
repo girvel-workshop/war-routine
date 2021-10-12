@@ -6,7 +6,6 @@ return tiny.sortedProcessingSystem {
 	compare = function(_, e1, e2) return e1.layer < e2.layer end,
 
 	preProcess = function()
-		log.trace "drawing:preProcess"
 		love.graphics.setBackgroundColor(.75, .75, .75)
 
 		game.camera.gamera:setPosition(unpack(game.camera.position))
