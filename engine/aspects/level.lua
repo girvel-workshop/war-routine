@@ -6,11 +6,13 @@ module_mt.__call = function(_, data)
 end
 
 level_mt.__index.load = function(self)
-	log.info "loading level"
+	log.info("loading level " .. (self.name or ''))
 
-	for i, entity_description in ipairs(self.data) do
+	for _, entity_description in ipairs(self.data) do
 		game:add(fnl.extend_mut(unpack(entity_description)))
 	end
+
+	game:add(game.main_character)
 
 	log.info "level is loaded"
 end

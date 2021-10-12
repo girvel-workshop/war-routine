@@ -1,26 +1,31 @@
-local drawing = tiny.sortedProcessingSystem({drawing_system_flag = true})
-drawing.filter = tiny.requireAll("sprite", "position")
+return tiny.sortedProcessingSystem {
+	name = 'systems.drawing',
+	system_type = 'draw',
+	filter = tiny.requireAll("sprite", "position"),
 
-function drawing:compare(e1, e2)
-	return e1.layer < e2.layer
-end
+	compare = function(_, e1, e2) return e1.layer < e2.layer end,
 
-function drawing:preProcess(_)
-	love.graphics.setBackgroundColor(.75, .75, .75)
-end
+	preProcess = function()
+		log.trace "drawing:preProcess"
+		love.graphics.setBackgroundColor(.75, .75, .75)
 
-function drawing:process(entity, _)
-	if not entity.sprite or entity.visible == false then return end
+		game.camera.gamera:setPosition(unpack(game.camera.position))
+		game.camera.gamera:setAngle(game.camera.rotation)
+	end,
 
-	local anchor = engine.aspects.sprite().get_anchor(entity)
+	process = function(_, entity)
+		if not entity.sprite or entity.visible == false then return end
 
-	love.graphics.draw(
-		entity.sprite,
-		entity.position.x, entity.position.y,
-		entity.rotation, 
-		1, 1, 
-		unpack(anchor)
-	)
-end
+		local anchor = engine.aspects.sprite().get_anchor(entity)
 
-return drawing
+		game.camera.gamera:draw(function(l, t, w, h) -- TODO optimization
+			love.graphics.draw(
+				entity.sprite,
+				entity.position.x, entity.position.y,
+				entity.rotation,
+				1, 1,
+				unpack(anchor)
+			)
+		end)
+	end
+}
