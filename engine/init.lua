@@ -97,8 +97,11 @@ engine_lib.initialize = function(configuration)
 
   for _, callback in ipairs {'update', 'keypressed', 'mousepressed', 'draw'} do
     love[callback] = function(...)
-      game.world:update({...}, function(_, x) return x.system_type == callback end)
-    end
+      game.world:update(
+        select('#', ...) == 1 and select(1, ...) or {...},
+        function(_, x) return x.system_type == callback end
+      )
+      end
   end
 
   game.main_character = configuration.main_character

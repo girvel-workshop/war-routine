@@ -1,5 +1,6 @@
-return tiny.processingSystem()/fnl.extend{
+return tiny.processingSystem {
 	name = "systems.following",
+	system_type = 'update',
 	filter = tiny.requireAll("follows"),
 
 	process = function(_, entity, _)

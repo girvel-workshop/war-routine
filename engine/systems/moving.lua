@@ -1,9 +1,11 @@
-local moving = tiny.processingSystem()
-moving.filter = tiny.requireAll("velocity", "position")
+return tiny.processingSystem {
+	name = 'engine.systems.moving',
+	system_type = 'update',
+	filter = tiny.requireAll("velocity", "position"),
 
-function moving:process(e, dt)
-	if e.collides_with then return end
-	e.position = e.position + e.velocity * dt
-end
+	process = function(_, e, dt)
+		if e.collides_with then return end
+		e.position = e.position + e.velocity * dt
+	end
+}
 
-return moving
