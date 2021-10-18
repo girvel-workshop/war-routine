@@ -42,7 +42,10 @@ engine_lib.put_globals = function()
       return self:add(prototype/fnl.copy())
     end,
     add = function(self, entity)
+      log.stack_delta = 1
       log.info("add", entity)
+      log.stack_delta = nil
+
       tiny.add(self.world, entity)
 
       if entity.radius then
@@ -80,7 +83,7 @@ engine_lib.initialize = function(configuration)
       love.graphics.getHeight()
     )
 
-    game.camera = game:add {
+    game.camera = game:add(engine.units.entity()/fnl.extend {
       name = "game.camera",
 
       follows = false,
@@ -88,7 +91,7 @@ engine_lib.initialize = function(configuration)
       rotation = 0,
       anchor = window_size * .5,
       gamera = gamera.new(-10000, -10000, 20000, 20000) -- TODO levels sizes
-    }
+    })
 
     game:add(game.main_character)
     game.controller = game:create(configuration.controller)
