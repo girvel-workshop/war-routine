@@ -2,7 +2,7 @@
 local engine_lib = {}
 
 engine_lib.put_globals = function()
-  package.path = package.path .. ";engine/lib/?.lua"
+  package.path = "engine/lib/?.lua;" .. package.path
 
   -- external libraries
   log = require "log" -- TODO log outfile
@@ -17,13 +17,13 @@ engine_lib.put_globals = function()
   require "tesound"
 
   -- girvel framework
-  env = require 'env'
-  fnl = require 'fnl'
-  module = require 'module'
-  syntax = require 'syntax'
-  vector = require 'structures.vector'
-  limited = require 'structures.limited'
-  tk = require 'tk'
+  env = require 'girvel.env'
+  fnl = require 'girvel.fnl'
+  module = require 'girvel.module'
+  syntax = require 'girvel.syntax'
+  vector = require 'girvel.structures.vector'
+  limited = require 'girvel.structures.limited'
+  tk = require 'girvel.tk'
 
   env.fix()
 

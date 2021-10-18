@@ -17,7 +17,7 @@ action_mt.__index.order = function(self, entity)
 	if entity.action == false 
 			and (entity.cluster[self.starting_state] == entity.sprite 
 				or not entity.sprite and not entity.cluster[self.starting_state]) then
-		entity.action = self / fnl.copy()
+		entity.action = self/fnl.copy()
 		return true
 	end
 	return false

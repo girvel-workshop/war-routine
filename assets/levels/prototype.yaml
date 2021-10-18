@@ -1,0 +1,11 @@
+# return {
+	# {-assets.units.decorations.target, {position = vector(0, -500)}},
+	# {-assets.units.ui.help, {}}
+# }
+
+objects:
+- prototype: assets.units.decorations.target
+  position:
+    x: 0,
+    y: -500
+- prototype: assets.units.ui.help
