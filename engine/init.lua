@@ -35,9 +35,9 @@ engine_lib.put_globals = function()
 
   -- game
   game = {
-    world = tiny.world(unpack(
+    world = tiny.world(log.trace(unpack(
       engine.systems()/fnl.values()
-    )),
+    ))),
     create = function(self, prototype)
       return self:add(prototype/fnl.copy())
     end,

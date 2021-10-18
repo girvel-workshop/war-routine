@@ -3,7 +3,7 @@ return tiny.processingSystem {  -- TODO redo this
   system_type = 'update',
   filter = tiny.requireAll 'controls',
 
-  update = function(_, controller, dt)
+  process = function(_, controller, dt)
     local controls = controller.controls
     local legs = controls.legs
 
@@ -11,7 +11,7 @@ return tiny.processingSystem {  -- TODO redo this
 
     if love.keyboard.isDown("w") then -- TODO REFACTOR
       legs.velocity = vector.up:rotated(legs.rotation) * legs.speed
-      assets.actions.move():order(subj.legs)
+      assets.actions.move():order(legs)
     end
     if love.keyboard.isDown("s") then
       legs.velocity = -vector.up:rotated(legs.rotation) * legs.speed
@@ -24,11 +24,11 @@ return tiny.processingSystem {  -- TODO redo this
     end
 
     if love.keyboard.isDown("lshift") then
-      if subj.stamina:move(-dt) then
+      if controls.stamina:move(-dt) then
         legs.velocity = legs.velocity * legs.run_multiplier
       end
     else
-      subj.stamina:move(dt)
+      controls.stamina:move(dt)
     end
   end
 }
