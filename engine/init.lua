@@ -17,13 +17,13 @@ engine_lib.put_globals = function()
   require "tesound"
 
   -- girvel framework
-  env = require 'girvel.env'
-  fnl = require 'girvel.fnl'
-  module = require 'girvel.module'
-  syntax = require 'girvel.syntax'
-  vector = require 'girvel.structures.vector'
-  limited = require 'girvel.structures.limited'
-  tk = require 'girvel.tk'
+  env = require 'env'
+  fnl = require 'fnl'
+  module = require 'module'
+  syntax = require 'syntax'
+  vector = require 'structures.vector'
+  limited = require 'structures.limited'
+  tk = require 'tk'
 
   env.fix()
 
