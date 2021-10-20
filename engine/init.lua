@@ -2,7 +2,7 @@
 local engine_lib = {}
 
 engine_lib.put_globals = function()
-  package.path = "engine/lib/?.lua;" .. package.path
+  package.path = "engine/lib/?.lua;engine/framework/?.lua" .. package.path
 
   -- external libraries
   log = require "log" -- TODO log outfile
@@ -35,9 +35,9 @@ engine_lib.put_globals = function()
 
   -- game
   game = {
-    world = tiny.world(log.trace(unpack(
+    world = tiny.world(unpack(
       engine.systems()/fnl.values()
-    ))),
+    )),
     create = function(self, prototype)
       return self:add(prototype/fnl.copy())
     end,

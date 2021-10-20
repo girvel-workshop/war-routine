@@ -1,6 +1,6 @@
 return tiny.processingSystem {
 	name = "engine.systems.acting",
-	system_type = '',
+	system_type = 'update',
 	filter = tiny.requireAll("action"),
 
 	process = function(_, entity, dt)

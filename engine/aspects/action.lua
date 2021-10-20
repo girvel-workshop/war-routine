@@ -17,6 +17,7 @@ action_mt.__index.order = function(self, entity)
 	if entity.action == false 
 			and (entity.cluster[self.starting_state] == entity.sprite 
 				or not entity.sprite and not entity.cluster[self.starting_state]) then
+		log.info('order', entity.name, 'to', self.name)
 		entity.action = self/fnl.copy()
 		return true
 	end
