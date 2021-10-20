@@ -83,19 +83,22 @@ engine_lib.initialize = function(configuration)
       love.graphics.getHeight()
     )
 
+    game.main_character = game:add(configuration.main_character)
+
     game.camera = game:add(engine.units.entity()/fnl.extend {
       name = "game.camera",
 
-      follows = false,
+      follows = game.main_character,
       position = vector.zero,
       rotation = 0,
       anchor = window_size * .5,
       gamera = gamera.new(-10000, -10000, 20000, 20000) -- TODO levels sizes
     })
 
-    game:add(game.main_character)
     game.controller = game:create(configuration.controller)
     game.controller.controls = game.main_character
+
+    configuration.first_level:load()
   end
 
   for _, callback in ipairs {'update', 'keypressed', 'mousepressed', 'draw'} do
@@ -106,9 +109,6 @@ engine_lib.initialize = function(configuration)
       )
       end
   end
-
-  game.main_character = configuration.main_character
-  configuration.first_level:load()
 end
 
 return engine_lib
