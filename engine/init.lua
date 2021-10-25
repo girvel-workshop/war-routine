@@ -2,7 +2,7 @@
 local engine_lib = {}
 
 engine_lib.put_globals = function()
-  package.path = "engine/lib/?.lua;engine/framework/?.lua" .. package.path
+  package.path = "./?.lua;engine/lib/?.lua;engine/framework/?.lua"
 
   -- external libraries
   log = require "log" -- TODO log outfile
@@ -13,7 +13,6 @@ engine_lib.put_globals = function()
   inspect = require 'inspect'
   tiny = require 'tiny'
   gamera = require 'gamera'
-  yaml = require "lyaml"
   require "tesound"
 
   -- girvel framework
