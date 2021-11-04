@@ -1,62 +1,47 @@
---- ECS framework, based on girvel's vision
+--- ECS library
 local ecs = {}
 
 local fnl = require 'fnl'
 
 
--- ecs.system = function(t) add cache end
--- ecs.metasystem = ecs.system
---   .add: adds entity or system
---   .update: switch system_cache to a given system type & update
---   .register: add entities to a new system & cache it
---   .process: update(system, ...)
+-- [[ LOCAL FUNCTIONS ]]
 
+--- iterates through all the system's targets
+local iterate_targets = function(targets)
+  local keys = {}
+  local values = {}
 
---- Tool to brute-force entities
--- @return arguments for :process packed in a table; returned table is reused for optimization purposes, copy before
--- changing outside!
--- TODO make it use filter.repeat_pairs
-local iterate_targets = function(targets, delta)
-  -- early exit if targets is {} and there should be only one iteration
-  if #targets == 0 then
-    return fnl.static(delta or {})
-  end
-
-  -- early exit if one of the collections of the targets is empty
-  if targets/fnl.any(function(_, t) return #t == 0 end) then
-    return fnl.static()
-  end
-
-  local args = {}
-  for i, target_collection in ipairs(targets) do
-    args[i] = target_collection[1]
-  end
-  for i, delta_element in ipairs(delta) do
-    args[#targets + i] = delta_element
+  for k, v in pairs(targets) do
+    table.insert(keys, k)
+    table.insert(values, v)
   end
 
   local indices = {0}
-  for i = 2, #targets + #delta do
+  for i = 2, #values do
     indices[i] = 1
   end
 
   return function()
     indices[1] = indices[1] + 1
     for i = 1, #indices - 1 do
-      if indices[i] <= #targets[i] then
+      if indices[i] <= #values[i] then
         break
       end
 
       indices[i] = 1
       indices[i + 1] = indices[i + 1] + 1
     end
-  end
-end
 
---- Makes table a system
-ecs.system = function(t)
-  t.system_targets = t.filters/fnl.map(function() return {} end)
-  return t
+    if indices[#indices] > #values[#values] then
+      return
+    end
+
+    local result = {}
+    for i, v in ipairs(indices) do
+      result[keys[i]] = values[i][v]
+    end
+    return result
+  end
 end
 
 --- Tries to add entity to a system as a target, calls entity.register on success
@@ -76,25 +61,12 @@ local update = function(system, delta)
   end
 end
 
--- [[ OBSOLETE ]]
+-- [[ LOCALS EXPORT ]]
 
-ecs.metasystem = ecs.system {
-  name = 'ecs.metasystem',
-  all_systems = {},
-  systems = {},
-
-  register = function(self, entity, ...)
-    if entity == nil then return end
-
-
-  end,
-  process = function(self, system_type, ...)
-    for i, system in ipairs(self.systems[system_type]) do -- this is system's loop
-      system:update(...)
-    end
-  end
+ecs.locals = {
+  iterate_targets = iterate_targets,
+  add = add,
+  update = update,
 }
-
--- [[ END OF OBSOLETE ]]
 
 return ecs

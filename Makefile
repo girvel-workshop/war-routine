@@ -2,4 +2,4 @@ launch:
 	love .
 
 spec:
-	busted engine
+	cd engine; busted .

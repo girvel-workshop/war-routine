@@ -19,12 +19,12 @@ function(t, predicate)
   return result
 end
 
---- Maps the table by ipairs & function
+--- Maps the table by pairs & function
 fnl.map = syntax.pipe() .. syntax.implicit_lambda(2, "k, v") ..
 function(t, f)
   local result = {}
-  for k, v in ipairs(t) do
-    table.insert(result, f(k, v))
+  for k, v in pairs(t) do
+    result[k] = f(k, v)
   end
   return result
 end
@@ -224,6 +224,9 @@ fnl.cache.global_cache = {}
 
 --- Generates clojure f() = x
 fnl.static = function(x) return function() return x end end
+
+--- Function x -> x
+fnl.one = function(x) return x  end
 
 -- [[ FUTURE FEATURES ]]
 
