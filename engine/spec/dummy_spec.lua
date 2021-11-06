@@ -1,5 +1,0 @@
-describe("dummy spec", function()
-  it("should just work", function()
-    assert.is_true(true)
-  end)
-end)
