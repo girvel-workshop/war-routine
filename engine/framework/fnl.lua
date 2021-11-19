@@ -30,16 +30,16 @@ function(t, f)
 end
 
 local binary_operators_to_functions = {
-  ["+"] =   {function(a, b) return a + b end},
-  ["-"] =   {function(a, b) return a - b end},
-  ["*"] =   {function(a, b) return a * b end,   function(x) return x == 0 end},
-  ["/"] =   {function(a, b) return a / b end},
-  ["^"] =   {function(a, b) return a ^ b end,   function(x) return x == 1 end},
-  [".."] =  {function(a, b) return a .. b end},
+  ["+"]   = {function(a, b) return a + b end},
+  ["-"]   = {function(a, b) return a - b end},
+  ["*"]   = {function(a, b) return a * b end,   function(x) return x == 0 end},
+  ["/"]   = {function(a, b) return a / b end},
+  ["^"]   = {function(a, b) return a ^ b end,   function(x) return x == 1 end},
+  [".."]  = {function(a, b) return a .. b end},
   ["and"] = {function(a, b) return a and b end, function(x) return not x end},
-  ["or"] =  {function(a, b) return a or b end,  function(x) return x end},
-  ["=="] =  {function(a, b) return a == b end},
-  ["~="] =  {function(a, b) return a ~= b end}
+  ["or"]  = {function(a, b) return a or b end,  function(x) return x end},
+  ["=="]  = {function(a, b) return a == b end},
+  ["~="]  = {function(a, b) return a ~= b end}
 }
 
 --- Folds the table by given predicate or metamethod

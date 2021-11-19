@@ -27,6 +27,31 @@ describe("ecs framework", function()
         )
       end)
     end)
+
+    describe("add", function()
+      it("should try to register entity", function()
+        local it_works = false
+
+        local entity = {
+          name = 'an entity',
+          size = 22,
+          form_type = 'A',
+        }
+
+        local system = ecs.make_system {
+          filters = {
+            entity = {components = {'name', 'size'}}
+          },
+
+          register = function(self, e)
+            it_works = e == entity
+          end
+        }
+
+        ecs.locals.add(system, entity)
+        assert.is_true(it_works)
+      end)
+    end)
   end)
 
   --describe("system", function()
