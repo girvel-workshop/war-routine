@@ -61,6 +61,7 @@ local update = function(system, delta)
 end
 
 -- TODO remove
+-- TODO full testing
 
 -- [[ MAIN STUFF ]]
 
@@ -71,7 +72,7 @@ ecs.make_system = function(system)
 end
 
 ecs.make_metasystem = function(metasystem)
-  return fnl.extend_mut(ecs.make_system(metasystem), {
+  return ecs.make_system(fnl.extend_mut(metasystem, {
     filters = {
       system = {components = {'filters', 'process'}}
     },
@@ -90,16 +91,17 @@ ecs.make_metasystem = function(metasystem)
     ecs_entities = {},
     add = function(self, entity)
       table.insert(self.ecs_entities, entity)
-      for _, system in ipairs(self.ecs_targets) do
+      for _, system in ipairs(self.system_targets.system) do
         add(system, entity)
       end
 
       add(self, entity)
+      return entity
     end,
     update = function(self, delta)
       update(self, delta)
     end
-  })
+  }))
 end
 
 -- [[ LOCALS EXPORT ]]

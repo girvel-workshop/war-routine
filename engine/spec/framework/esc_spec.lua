@@ -43,7 +43,7 @@ describe("ecs framework", function()
             entity = {components = {'name', 'size'}}
           },
 
-          register = function(self, e)
+          register = function(_, e)
             it_works = e == entity
           end
         }
@@ -51,6 +51,39 @@ describe("ecs framework", function()
         ecs.locals.add(system, entity)
         assert.is_true(it_works)
       end)
+    end)
+  end)
+
+  describe("ECS itself", function()
+    it("works", function()
+      local moving_entities_n = 0
+
+      local ms = ecs.make_metasystem {}
+
+      ms:add(ecs.make_system {
+        name = 'testing.systems.movement',
+        filters = {
+          moving = {components = {'position', 'velocity'}}
+        },
+        register = function()
+          moving_entities_n = moving_entities_n + 1
+        end,
+        process = function(_, members, delta)
+          members.moving.position = members.moving.position + members.moving.velocity * delta.time
+        end
+      })
+
+      local e1 = ms:add {position = 0, velocity = 10}
+      local e2 = ms:add {position = -10, velocity = 5}
+      local e3 = ms:add {position = 0}
+
+      ms:update {time = 10}
+      ms:update {time = -1}
+
+      assert.are_equal(2, moving_entities_n)
+      assert.are_same({position = 90, velocity = 10}, e1)
+      assert.are_same({position = 35, velocity = 5}, e2)
+      assert.are_same({position = 0}, e3)
     end)
   end)
 
